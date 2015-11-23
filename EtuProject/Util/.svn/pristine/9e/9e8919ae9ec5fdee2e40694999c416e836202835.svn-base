@@ -1,0 +1,203 @@
+/* Copyright (C) 2012 IGN Entertainment, Inc. */
+
+#import "VideoPlayerView.h"
+#import "UIImage+Oxygen.h"
+
+#define PLAYER_CONTROL_BAR_HEIGHT 30
+#define BUTTON_PADDING 8
+#define CURRENT_POSITION_WIDTH 56
+#define TIME_LEFT_WIDTH 59
+#define ALIGNMENT_FUZZ 2
+#define ROUTE_BUTTON_ALIGNMENT_FUZZ 8
+
+@interface VideoPlayerView ()
+
+@property (readwrite, strong) UIView *playerControlBar;
+@property (readwrite, strong) UIButton *airplayButton;
+@property (readwrite, strong) UIButton *fullScreenButton;
+@property (readwrite, strong) UIButton *playPauseButton;
+@property (readwrite, strong) UISlider *videoScrubber;
+@property (readwrite, strong) UILabel *currentPositionLabel;
+@property (readwrite, strong) UISlider *soundSlider;
+@property (readwrite, strong) UIProgressView *progressView;
+@property (readwrite, strong) UIActivityIndicatorView *activityIndicator;
+@property (readwrite, strong) UIButton *shareButton;
+
+@property (readwrite, strong) UIButton *bigPlayButton;
+
+@property (readwrite, strong) UIImageView *soundIcon;
+@end
+
+@implementation VideoPlayerView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        [self setBackgroundColor:[UIColor blackColor]];
+        
+        _playerControlBar = [[UIView alloc] init];
+        [_playerControlBar setOpaque:NO];
+        [_playerControlBar setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8]];
+        
+        _playPauseButton = [[UIButton alloc] init];
+        [_playPauseButton setImage:[UIImage imageNamed:@"play-button"] forState:UIControlStateNormal];
+        [_playerControlBar addSubview:_playPauseButton];
+        
+        _fullScreenButton = [[UIButton alloc] init];
+        [_fullScreenButton setImage:[UIImage imageNamed:@"fullscreen-button"] forState:UIControlStateNormal];
+        [_playerControlBar addSubview:_fullScreenButton];
+        
+        _progressView = [[UIProgressView alloc] init];
+        _progressView.progressTintColor = [UIColor clearColor];//[UIColor colorWithRed:31.0/255.0 green:31.0/255.0 blue:31.0/255.0 alpha:1.0];
+        _progressView.trackTintColor = [UIColor clearColor];
+        [_playerControlBar addSubview:_progressView];
+        
+        _videoScrubber = [[UISlider alloc] init];
+        [_videoScrubber setThumbImage:[UIImage imageNamed:@"sliderIcon"] forState:UIControlStateNormal];
+        [_videoScrubber setMaximumTrackImage:[UIImage imageWithColor:rgbColor(120, 120, 120)] forState:UIControlStateNormal];
+        [_videoScrubber setMinimumTrackImage:[UIImage imageWithColor:rgbColor(255, 216, 0)] forState:UIControlStateNormal];
+        [_playerControlBar addSubview:_videoScrubber];
+        
+        _currentPositionLabel = [[UILabel alloc] init];
+        [_currentPositionLabel setBackgroundColor:[UIColor clearColor]];
+        [_currentPositionLabel setTextColor:[UIColor whiteColor]];
+        [_currentPositionLabel setFont:[UIFont systemFontOfSize:10.0f]];
+        [_currentPositionLabel setTextAlignment:NSTextAlignmentCenter];
+        [_playerControlBar addSubview:_currentPositionLabel];
+        
+        _soundIcon = [[UIImageView alloc] init];
+        _soundIcon.image = [UIImage imageNamed:@"soundIcon"];
+        [_playerControlBar addSubview:_soundIcon];
+        
+        _soundSlider = [[UISlider alloc] init];
+        [_soundSlider setThumbImage:[UIImage imageNamed:@"sliderIcon"] forState:UIControlStateNormal];
+        [_soundSlider setMaximumTrackImage:[UIImage imageWithColor:rgbColor(50, 50, 50)] forState:UIControlStateNormal];
+        [_soundSlider setMinimumTrackImage:[UIImage imageWithColor:rgbColor(213, 213, 213)] forState:UIControlStateNormal];
+        [_playerControlBar addSubview:_soundSlider];
+        
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [self addSubview:_activityIndicator];
+
+        _shareButton = [[UIButton alloc] init];
+        [_shareButton setImage:[UIImage imageNamed:@"share-button"] forState:UIControlStateNormal];
+        //未添加分享功能，先隐藏该按钮
+        [_shareButton setHidden:YES];
+        
+        [self addSubview:_shareButton];
+        
+        _bigPlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _bigPlayButton.backgroundColor = [UIColor clearColor];
+        [self addSubview:_bigPlayButton];
+        
+        self.controlsEdgeInsets = UIEdgeInsetsZero;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [_airplayButton removeObserver:self forKeyPath:@"alpha"];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGRect bounds = [self bounds];
+
+    CGRect insetBounds = CGRectInset(UIEdgeInsetsInsetRect(bounds, self.controlsEdgeInsets), _padding, _padding);
+    
+    UIImage *shareImage = [UIImage imageNamed:@"share-button"];
+    
+    if (!_fullscreen) {
+        self.autoresizingMask = UIViewAutoresizingNone;
+
+        [_shareButton setFrame:CGRectMake(insetBounds.size.width - shareImage.size.width, insetBounds.origin.y, shareImage.size.width, shareImage.size.height)];
+    } else {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [_shareButton setFrame:CGRectMake(insetBounds.size.width - shareImage.size.width, insetBounds.origin.y, shareImage.size.width, shareImage.size.height)];
+    }
+    
+    [_playerControlBar setFrame:CGRectMake(bounds.origin.x,
+                                           bounds.size.height - PLAYER_CONTROL_BAR_HEIGHT,
+                                           bounds.size.width,
+                                           PLAYER_CONTROL_BAR_HEIGHT)];
+    
+    [_activityIndicator setFrame:CGRectMake((bounds.size.width - _activityIndicator.frame.size.width)/2.0,
+                                            (bounds.size.height - _activityIndicator.frame.size.width)/2.0,
+                                            _activityIndicator.frame.size.width,
+                                            _activityIndicator.frame.size.height)];
+    
+    [_playPauseButton setFrame:CGRectMake(15,
+                                          0,
+                                          PLAYER_CONTROL_BAR_HEIGHT,
+                                          PLAYER_CONTROL_BAR_HEIGHT)];
+    
+    CGRect fullScreenButtonFrame = CGRectMake(bounds.size.width - 35,
+                                              0,
+                                              35,
+                                              30);
+    [_fullScreenButton setFrame:fullScreenButtonFrame];
+    
+    CGRect routeButtonRect = CGRectMake(0, 0, 24, 18);
+    
+    [_currentPositionLabel setFrame:CGRectMake(_playPauseButton.frameRight + 1,
+                                               0,
+                                               CURRENT_POSITION_WIDTH,
+                                               PLAYER_CONTROL_BAR_HEIGHT)];
+    
+    CGRect scrubberRect = CGRectMake(_currentPositionLabel.frameRight + 5,
+                                     0,
+                                     bounds.size.width - (PLAYER_CONTROL_BAR_HEIGHT * 2) - TIME_LEFT_WIDTH -
+                                     CURRENT_POSITION_WIDTH
+                                     - routeButtonRect.size.width,
+                                     PLAYER_CONTROL_BAR_HEIGHT);
+    
+    [_videoScrubber setFrame:scrubberRect];
+    [_progressView setFrame:[_videoScrubber trackRectForBounds:scrubberRect]];
+    
+    [_soundIcon setFrame:CGRectMake(_videoScrubber.frameRight+10, (PLAYER_CONTROL_BAR_HEIGHT-14)/2, 10, 14)];
+    [_soundSlider setFrame:CGRectMake(_videoScrubber.frameRight+22, 0, _fullScreenButton.frameX-_videoScrubber.frameRight-13, PLAYER_CONTROL_BAR_HEIGHT)];
+    
+    [_bigPlayButton setFrame:CGRectMake(0, 0, self.frameWidth, self.frameHeight)];
+}
+
+- (void)setFullscreen:(BOOL)fullscreen
+{
+    if (_fullscreen == fullscreen) {
+        return;
+    }
+    
+    _fullscreen = fullscreen;
+    
+    [self setNeedsLayout];
+}
+
+- (AVPlayer *)player
+{
+    return [(AVPlayerLayer *)[self layer] player];
+}
+
++ (Class)layerClass
+{
+    return [AVPlayerLayer class];
+}
+
+- (void)setPlayer:(AVPlayer *)player
+{
+    [(AVPlayerLayer *)self.layer setPlayer:player];
+    [self addSubview:self.playerControlBar];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (object == _airplayButton && [keyPath isEqualToString:@"alpha"]) {
+        [self setNeedsLayout];
+    }
+}
+
+@end

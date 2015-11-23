@@ -1,0 +1,44 @@
+/* Copyright (C) 2012 IGN Entertainment, Inc. */
+
+#import <UIKit/UIKit.h>
+#import "VideoPlayer.h"
+#import "VideoPlayerView.h"
+
+@protocol VideoPlayerKitDelegate <NSObject>
+
+@end
+
+@interface VideoPlayerKit : UIViewController <VideoPlayer>
+
+@property (nonatomic, strong) UIViewController *containingViewController;
+@property (nonatomic, strong) UIView *playerContainerView;
+
+@property (nonatomic, weak) id <VideoPlayerDelegate> delegate;
+@property (readonly, strong) NSDictionary *currentVideoInfo;
+@property (readonly, strong) VideoPlayerView *videoPlayerView;
+@property (readonly) BOOL fullScreenModeToggled;
+@property (nonatomic) BOOL showStaticEndTime;
+@property (nonatomic, readonly) BOOL isPlaying;
+@property (nonatomic) BOOL allowPortraitFullscreen;
+@property (nonatomic) UIEdgeInsets controlsEdgeInsets;
+@property (readwrite, strong) AVPlayer *videoPlayer;
+
+@property (nonatomic, weak) id<VideoPlayerKitDelegate> playerDelegate;
+
+- (void)playVideoWithTitle:(NSString *)title URL:(NSURL *)url videoID:(NSString *)videoID shareURL:(NSURL *)shareURL isStreaming:(BOOL)streaming playInFullScreen:(BOOL)playInFullScreen;
+- (void)syncFullScreenButton:(UIInterfaceOrientation)toInterfaceOrientation;
+- (void)launchFullScreen;
+- (void)minimizeVideo;
+- (void)playPauseHandler;
++ (VideoPlayerKit *)videoPlayerWithContainingViewController:(UIViewController *)containingViewController
+                                            optionalTopView:(UIView *)topView
+                                    hideTopViewWithControls:(BOOL)hideTopViewWithControls;
+
+- (void)scrubbingDidBegin;
+- (void)scrubberIsScrolling;
+- (void)scrubbingDidEnd;
+
+- (void)soundIsScrolling:(id)sender;
+- (void)soundScrollDidEnd:(id)sender;
+
+@end

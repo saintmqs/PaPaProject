@@ -1,0 +1,24 @@
+{
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0C4A63DA-7BE2-40E1-9036-294B8983CEB8",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : "EtuProject\/EtuProject\/Util\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "EtuProject",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "EtuProject.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn:\/\/svn.025nj.com\/SheQu",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291"
+    }
+  ]
+}
