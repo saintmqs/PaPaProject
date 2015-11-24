@@ -16,9 +16,10 @@
     
     UIButton *cancelButton;
     
-    CBCentralManager *manager;
+    CBCentralManager *centralManager;
     
     UITableView *searchResultTable;
+    NSMutableArray *discoverdPeriparals;
 }
 @end
 
@@ -28,7 +29,8 @@
 {
     self = [super init];
     if (self) {
-        manager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+        centralManager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
+        discoverdPeriparals = [NSMutableArray array];
     }
     return self;
 }
@@ -87,11 +89,11 @@
 - (void)setupGradientView
 {
     _gradientView = [[PPGradientView alloc] initWithFrame:self.bounds];
-//    _gradientView.locations = @[ @0.0f, @0.5f, @0.5f, @1.f];
-//    _gradientView.CGColors = @[ (id)[UIColor blackColor].CGColor,
-//                                (id)[[UIColor blackColor] colorWithAlphaComponent:0.0f].CGColor,
-//                                (id)[[UIColor blackColor] colorWithAlphaComponent:0.0f].CGColor,
-//                                (id)[UIColor blackColor].CGColor ];
+    //    _gradientView.locations = @[ @0.0f, @0.5f, @0.5f, @1.f];
+    //    _gradientView.CGColors = @[ (id)[UIColor blackColor].CGColor,
+    //                                (id)[[UIColor blackColor] colorWithAlphaComponent:0.0f].CGColor,
+    //                                (id)[[UIColor blackColor] colorWithAlphaComponent:0.0f].CGColor,
+    //                                (id)[UIColor blackColor].CGColor ];
     [self.view addSubview:_gradientView];
 }
 
@@ -110,7 +112,10 @@
             message = @"Bluetooth is currently powered off.";
             break;
         case CBCentralManagerStatePoweredOn:
+        {
             message = @"work";
+            [centralManager scanForPeripheralsWithServices:nil options:nil];
+        }
             break;
         case CBCentralManagerStateUnknown:
             break;
@@ -119,5 +124,13 @@
     }
     
     showTip(message);
+}
+
+- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
+{
+    //    static int i = 0;
+    NSString *str = [NSString stringWithFormat:@"Did discover peripheral. peripheral: %@ rssi: %@, UUID: advertisementData: %@ ", peripheral, RSSI, /*peripheral.UUID*,*/ advertisementData];
+    NSLog(@"%@",str);
+    [discoverdPeriparals addObject:peripheral];
 }
 @end

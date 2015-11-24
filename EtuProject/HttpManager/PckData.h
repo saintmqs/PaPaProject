@@ -25,5 +25,41 @@ NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *rep
 //8	用户二次信息添加
 NSDictionary *registerbase(NSInteger uid, NSString *birthday, NSInteger sex, NSInteger height, NSInteger weight, NSInteger step);
 
+//9	修改性别
+NSDictionary *updateSex(NSInteger uid, NSInteger sex);
+
+//10 修改生日
+NSDictionary *updateBirthday(NSInteger uid, NSString *birthday);
+
+//11 修改昵称
+NSDictionary *updateNickname(NSInteger uid, NSString *nickname);
+
+//12 修改密码
+NSDictionary *updatePwd(NSInteger uid, NSString *oldpassword, NSString *password, NSString *repassword);
+
+//13 修改头像
+NSDictionary *updateAvater(NSInteger uid, NSString *avater);
+
+//14 修改身高
+NSDictionary *healthUpdateHeight(NSInteger uid, NSInteger value);
+
+//15 修改体重
+NSDictionary *healthUpdateWeight(NSInteger uid, NSInteger value);
+
+//16 修改目标步数
+NSDictionary *healthUpdateStep(NSInteger uid, NSInteger value);
+
+//17 获取用户信息
+NSDictionary *getUserInfo(NSInteger uid);
+
+//18 找回密码发送验证码
+NSDictionary *sendPwdCode(NSString *phone);
+
+//19 找回密码时验证验证码
+NSDictionary *checkPwdCode(NSString *phone, NSString *code);
+
+//20 找回密码
+NSDictionary *findPwd(NSString *phone, NSString *password, NSString *repassword, NSString *code);
+
 @interface PckData : NSObject
 @end

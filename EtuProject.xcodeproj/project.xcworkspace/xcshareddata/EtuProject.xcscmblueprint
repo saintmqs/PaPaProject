@@ -1,20 +1,28 @@
 {
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "ED25EB0F95607D1A4D127AD3F3236ECF1329F9B3",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
     "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : {
 
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : 0
+    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : 0,
+    "ED25EB0F95607D1A4D127AD3F3236ECF1329F9B3" : 0
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0C4A63DA-7BE2-40E1-9036-294B8983CEB8",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : "EtuProject\/EtuProject\/Util\/"
+    "bbec2ea9-a6be-a84a-825b-3856aacdfa9e++1291" : "EtuProject\/EtuProject\/Util\/",
+    "ED25EB0F95607D1A4D127AD3F3236ECF1329F9B3" : "PaPaProject\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "EtuProject",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "EtuProject.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/saintmqs\/PaPaProject.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ED25EB0F95607D1A4D127AD3F3236ECF1329F9B3"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn:\/\/svn.025nj.com\/SheQu",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
