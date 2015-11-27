@@ -14,8 +14,20 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _progressView = [[PPCircularProgressView alloc] initWithFrame:CGRectMake((mScreenWidth - 240)/2, 20, 240, 240)];
-        _progressView.progress = 0.4;
+        
+        CGFloat radius;
+        CGFloat frameY;
+        if (!iPhone4) {
+            frameY = 20;
+            radius = 270;
+        }
+        else
+        {
+            frameY = 0;
+            radius = 220;
+        }
+        
+        _progressView = [[PPCircularProgressView alloc] initWithFrame:CGRectMake((mScreenWidth - radius)/2, frameY, radius, radius)];
         [self addSubview:_progressView];
         
         _innerView = [[PPProgressInnerView alloc] initWithCenterPoint:_progressView.center];

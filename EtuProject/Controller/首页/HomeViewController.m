@@ -10,16 +10,44 @@
 #import "HomePageProgressItem.h"
 
 @interface HomeViewController ()
-
+{
+    HomeGradientView *gradientView;
+}
 @end
 
 @implementation HomeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.titleLabel.text = @"首页";
+    
+    CGFloat viewFrameHeight;
+    CGFloat viewFrameY;
+    if (!iPhone4) {
+        viewFrameY = self.headerView.frameBottom+90/4;
+        viewFrameHeight = 400;
+    }
+    else
+    {
+        viewFrameY = self.headerView.frameBottom+20/4;
+        viewFrameHeight = 280;
+    }
     // Do any additional setup after loading the view.
-    HomePageProgressItem *item = [[HomePageProgressItem alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 250)];
-    [self.view addSubview:item];
+    SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:@{@"image": @"",@"title":@""} tag:-1];
+    
+    _indicatorView = [[SGFocusImageFrame alloc] initWithFrame:CGRectMake(0, viewFrameY, mScreenWidth, viewFrameHeight) delegate:self imageItems:@[item] isAuto:NO];
+    
+    gradientView = [[HomeGradientView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, _indicatorView.frameBottom)];
+    gradientView.locations = @[ @0.0f, @1.f];
+    gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
+                                (id)rgbaColor(21, 88, 168, 1).CGColor ];
+    
+    [self.view insertSubview:gradientView belowSubview:self.headerView];
+    
+    [self.view addSubview:_indicatorView];
+    
+    [self changeBannersHeaderContent:self.indicatorView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -27,15 +55,82 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark 改变TableView上面滚动栏的内容
+-(void)changeBannersHeaderContent:(SGFocusImageFrame *)vFocusFrame{
+    int length = 2;
+    
+    NSMutableArray *contentDataArr = [NSMutableArray array];
+    
+    NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
+    [dataDict1 setObject:@"今日完成" forKey:@"title"];
+    [dataDict1 setObject:@"3000" forKey:@"content"];
+    [dataDict1 setObject:@"0公里|0千卡" forKey:@"detail"];
+    [dataDict1 setObject:@"0.4" forKey:@"progress"];
+    [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
+    [contentDataArr addObject:dataDict1];
+    
+    
+    NSMutableDictionary *dataDict2 = [NSMutableDictionary dictionary];
+    [dataDict2 setObject:@"昨日睡眠" forKey:@"title"];
+    [dataDict2 setObject:@"6小时" forKey:@"content"];
+    [dataDict2 setObject:@"深度睡眠5小时" forKey:@"detail"];
+    [dataDict2 setObject:@"0.3" forKey:@"progress"];
+    [dataDict2 setObject:[UIColor lightGrayColor] forKey:@"trackTintColor"];
+    [contentDataArr addObject:dataDict2];
+    
+    if (length > 0) {
+        NSMutableArray *itemArray = [NSMutableArray arrayWithCapacity:length+2];
+        //添加最后一张图 用于循环
+        if (length > 1)
+        {
+            NSDictionary *dict = [contentDataArr objectAtIndex:length-1];
+            SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:dict tag:-1];
+            [itemArray addObject:item];
+        }
+        for (int i = 0; i < length; i++)
+        {
+            NSDictionary *dict = [contentDataArr objectAtIndex:i];
+            SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:dict tag:i];
+            [itemArray addObject:item];
+            
+        }
+        //添加第一张图 用于循环
+        if (length >1)
+        {
+            NSDictionary *dict = [contentDataArr objectAtIndex:0];
+            SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:dict tag:length];
+            [itemArray addObject:item];
+        }
+        
+        //    SGFocusImageFrame *vFocusFrame = (SGFocusImageFrame *)aTableContent.table.tableHeaderView;
+        [vFocusFrame changeImageViewsContent:itemArray];
+    }
+    
 }
-*/
+
+- (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(NSInteger)index
+{
+    NSLog(@"%ld",index);
+    switch (index) {
+        case 0:
+        {
+            gradientView.locations = @[ @0.0f, @1.f];
+            gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
+                                        (id)rgbaColor(21, 88, 168, 1).CGColor ];
+        }
+            break;
+        case 1:
+        {
+            gradientView.locations = @[ @0.0f,@0.5f, @1.f];
+            gradientView.CGColors = @[  (id)rgbaColor(44, 21, 38, 1).CGColor,
+                                        (id)rgbaColor(55, 21, 42, 1).CGColor,
+                                        (id)rgbaColor(44, 21, 38, 1).CGColor ];
+        }
+            break;
+        default:
+            break;
+    }
+}
 
 @end
 

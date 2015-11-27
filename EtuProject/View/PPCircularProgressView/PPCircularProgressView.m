@@ -63,7 +63,7 @@
     [self.trackTintColor setFill];
     CGMutablePathRef trackPath = CGPathCreateMutable();
     CGPathMoveToPoint(trackPath, NULL, centerPoint.x, centerPoint.y);
-    CGPathAddArc(trackPath, NULL, centerPoint.x, centerPoint.y, radius, DEGREES_2_RADIANS(270), DEGREES_2_RADIANS(-90), NO);
+    CGPathAddArc(trackPath, NULL, centerPoint.x, centerPoint.y, radius, DEGREES_2_RADIANS(-90), DEGREES_2_RADIANS(270), NO);
     CGPathCloseSubpath(trackPath);
     CGContextAddPath(context, trackPath);
     CGContextFillPath(context);
@@ -106,9 +106,9 @@
     CGContextFillPath(context);
     
     if (!whitepoint) {
-        whitepoint = [[UIView alloc] initWithFrame:CGRectMake(centerPoint.x-5, 5, 12, 12)];
+        whitepoint = [[UIView alloc] initWithFrame:CGRectMake(centerPoint.x-8, 3, 16, 16)];
         whitepoint.backgroundColor = [UIColor whiteColor];
-        whitepoint.layer.cornerRadius = 5;
+        whitepoint.layer.cornerRadius = 8;
         [self addSubview:whitepoint];
     }
 }
@@ -119,7 +119,7 @@
 {
     if (!_trackTintColor)
     {
-        _trackTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.3f];
+        _trackTintColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.1f];
     }
     return _trackTintColor;
 }

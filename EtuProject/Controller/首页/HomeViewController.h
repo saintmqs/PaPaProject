@@ -7,8 +7,11 @@
 //
 
 #import "BaseViewController.h"
+#import "SGFocusImageFrame.h"
 
-@interface HomeViewController : BaseViewController
+@interface HomeViewController : BaseViewController<SGFocusImageFrameDelegate>
+
+@property (nonatomic,strong) SGFocusImageFrame *indicatorView;
 
 @end
 
@@ -16,7 +19,7 @@
 
 @interface HomeGradientView : UIView
 
-@property (nonatomic) NSArray *CGColors;
-@property (nonatomic) NSArray *locations;
+@property (nonatomic, strong) NSArray *CGColors;
+@property (nonatomic, strong) NSArray *locations;
 
 @end

@@ -17,6 +17,11 @@
 {
     self.title = nil;
     self.image = nil;
+    
+    self.content = nil;
+    self.detail = nil;
+    self.progress = nil;
+    self.trackTintColor = nil;
     [super dealloc];
 }
 
@@ -41,6 +46,10 @@
         {
             self.title = [dict objectForKey:@"title"];
             self.image = [dict objectForKey:@"image"];
+            self.content = [dict objectForKey:@"content"];
+            self.detail = [dict objectForKey:@"detail"];
+            self.progress = [dict objectForKey:@"progress"];
+            self.trackTintColor = [dict objectForKey:@"trackTintColor"];
             //...
         }
     }

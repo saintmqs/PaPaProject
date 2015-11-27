@@ -24,6 +24,7 @@
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     UIImageView *splash = [[UIImageView alloc]initWithImage:[UIImage imageNamed:iPhone5 ? @"Default-568h":@"Default"]];
+    self.window.backgroundColor = rgbColor(249, 249, 250);
     [self.window addSubview:splash];
     
     [self systemInit];

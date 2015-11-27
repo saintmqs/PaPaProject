@@ -39,7 +39,7 @@
     
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, mScreenHeight)];
     [backgroundImageView setImage:[UIImage imageNamed:@"loginBg"]];
-    [self.view addSubview:backgroundImageView];
+//    [self.view addSubview:backgroundImageView];
     
     avatorBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth-80)/2, self.headerView.bottom + 20, 80, 80)];
     avatorBgImageView.backgroundColor = [UIColor grayColor];

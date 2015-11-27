@@ -13,6 +13,12 @@
 @property (nonatomic, retain)  NSString     *title;
 @property (nonatomic, retain)  NSString      *image;
 @property (nonatomic, assign)  NSInteger     tag;
+
+@property (nonatomic, retain)  NSString     *content;
+@property (nonatomic, retain)  NSString     *detail;
+@property (nonatomic, retain)  NSString     *progress;
+@property (nonatomic, retain)  UIColor      *trackTintColor;
+
 - (id)initWithTitle:(NSString *)title image:(NSString *)image tag:(NSInteger)tag;
 - (id)initWithDict:(NSDictionary *)dict tag:(NSInteger)tag;
 @end

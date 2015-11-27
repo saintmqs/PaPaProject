@@ -16,7 +16,7 @@
 @protocol SGFocusImageFrameDelegate <NSObject>
 @optional
 - (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame didSelectItem:(SGFocusImageItem *)item;
-- (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(int)index;
+- (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(NSInteger)index;
 
 @end
 

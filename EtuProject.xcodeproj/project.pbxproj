@@ -206,6 +206,7 @@
 		A88A86A11C0753EA00D7C6D2 /* PPCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A01C0753EA00D7C6D2 /* PPCircularProgressView.m */; };
 		A88A86A51C0804D000D7C6D2 /* HomePageProgressItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A41C0804D000D7C6D2 /* HomePageProgressItem.m */; };
 		A88A86A81C08260C00D7C6D2 /* PPProgressInnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */; };
+		A88A86AF1C088A9100D7C6D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A88A86AE1C088A9100D7C6D2 /* CoreGraphics.framework */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -651,6 +652,7 @@
 		A88A86A41C0804D000D7C6D2 /* HomePageProgressItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageProgressItem.m; sourceTree = "<group>"; };
 		A88A86A61C08260C00D7C6D2 /* PPProgressInnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPProgressInnerView.h; sourceTree = "<group>"; };
 		A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPProgressInnerView.m; sourceTree = "<group>"; };
+		A88A86AE1C088A9100D7C6D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A88A86AF1C088A9100D7C6D2 /* CoreGraphics.framework in Frameworks */,
 				A8674B991BEA581B00F3FB44 /* AssetsLibrary.framework in Frameworks */,
 				A8674B971BEA581400F3FB44 /* libc++.dylib in Frameworks */,
 				A8674B951BEA580E00F3FB44 /* libz.dylib in Frameworks */,
@@ -715,6 +718,7 @@
 		A8674B751BEA541100F3FB44 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A88A86AE1C088A9100D7C6D2 /* CoreGraphics.framework */,
 				A8674B981BEA581B00F3FB44 /* AssetsLibrary.framework */,
 				A8674B961BEA581400F3FB44 /* libc++.dylib */,
 				A8674B941BEA580E00F3FB44 /* libz.dylib */,

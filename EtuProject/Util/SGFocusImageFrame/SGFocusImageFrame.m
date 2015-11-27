@@ -9,6 +9,7 @@
 #import "SGFocusImageFrame.h"
 #import "SGFocusImageItem.h"
 #import <objc/runtime.h>
+#import "HomePageProgressItem.h"
 
 #define ITEM_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
@@ -123,15 +124,17 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
     float space = 0;
     CGSize size = CGSizeMake(mScreenWidth, 0);
     for (int i = 0; i < aImageItems.count; i++) {
-        SGFocusImageItem *item = [aImageItems objectAtIndex:i];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * _scrollView.frame.size.width+space, space, _scrollView.frame.size.width-space*2, _scrollView.frame.size.height-2*space-size.height)];
-        //加载图片
-//        imageView.backgroundColor = i%2?[UIColor redColor]:[UIColor blueColor];
-//        imageView.image = [UIImage imageNamed:item.image];
-        imageView.backgroundColor = [UIColor clearColor];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:item.image]];
-        [_scrollView addSubview:imageView];
-        [imageView release];
+        SGFocusImageItem *item = aImageItems[i];
+        HomePageProgressItem *itemView = [[HomePageProgressItem alloc] initWithFrame:CGRectMake(i * _scrollView.frame.size.width+space, space, _scrollView.frame.size.width-space*2, _scrollView.frame.size.height-2*space-size.height)];
+        
+        itemView.progressView.progress = [item.progress floatValue];
+        
+        itemView.innerView.titleLabel.text = item.title;
+        itemView.innerView.contentLabel.text = item.content;
+        itemView.innerView.detailLabel.text = item.detail;
+
+        [_scrollView addSubview:itemView];
+        [itemView release];
     }
     _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * aImageItems.count, _scrollView.frame.size.height);
     _pageControl.numberOfPages = aImageItems.count>1?aImageItems.count -2:aImageItems.count;
@@ -224,10 +227,10 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
     }
     if (page!= _pageControl.currentPage)
     {
-//        if (self.delegate && [self.delegate respondsToSelector:@selector(foucusImageFrame:currentItem:)])
-//        {
-//            [self.delegate foucusImageFrame:self currentItem:page];
-//        }
+        if (self.delegate && [self.delegate respondsToSelector:@selector(foucusImageFrame:currentItem:)])
+        {
+            [self.delegate foucusImageFrame:self currentItem:page];
+        }
     }
     _pageControl.currentPage = page;
 }
