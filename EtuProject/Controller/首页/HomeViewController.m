@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "HomePageProgressItem.h"
 
 @interface HomeViewController ()
 
@@ -17,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    HomePageProgressItem *item = [[HomePageProgressItem alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 250)];
+    [self.view addSubview:item];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -33,5 +36,38 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+@end
+
+
+#pragma mark - Gradient View
+
+@implementation HomeGradientView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.layer.shouldRasterize = YES;
+        self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        self.userInteractionEnabled = NO;
+    }
+    return self;
+}
+
++ (Class)layerClass
+{
+    return [CAGradientLayer class];
+}
+
+- (void)setLocations:(NSArray *)locations
+{
+    ((CAGradientLayer *)self.layer).locations = locations;
+}
+
+- (void)setCGColors:(NSArray *)CGColors
+{
+    ((CAGradientLayer *)self.layer).colors = CGColors;
+}
 
 @end

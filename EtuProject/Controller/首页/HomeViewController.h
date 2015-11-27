@@ -11,3 +11,12 @@
 @interface HomeViewController : BaseViewController
 
 @end
+
+#pragma mark - Gradient View
+
+@interface HomeGradientView : UIView
+
+@property (nonatomic) NSArray *CGColors;
+@property (nonatomic) NSArray *locations;
+
+@end
