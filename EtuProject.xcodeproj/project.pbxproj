@@ -203,6 +203,7 @@
 		A8896E561BEBAD5400ADEB77 /* CommonShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E551BEBAD5400ADEB77 /* CommonShareViewController.m */; };
 		A8896E621BEDCF7A00ADEB77 /* SelectSexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E611BEDCF7A00ADEB77 /* SelectSexViewController.m */; };
 		A8896E6D1BEE468700ADEB77 /* CustomPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E6C1BEE468700ADEB77 /* CustomPickerModel.m */; };
+		A88A86A11C0753EA00D7C6D2 /* PPCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A01C0753EA00D7C6D2 /* PPCircularProgressView.m */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -642,6 +643,8 @@
 		A8896E611BEDCF7A00ADEB77 /* SelectSexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectSexViewController.m; sourceTree = "<group>"; };
 		A8896E6B1BEE468700ADEB77 /* CustomPickerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPickerModel.h; sourceTree = "<group>"; };
 		A8896E6C1BEE468700ADEB77 /* CustomPickerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPickerModel.m; sourceTree = "<group>"; };
+		A88A869F1C0753EA00D7C6D2 /* PPCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPCircularProgressView.h; sourceTree = "<group>"; };
+		A88A86A01C0753EA00D7C6D2 /* PPCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPCircularProgressView.m; sourceTree = "<group>"; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1748,6 +1751,7 @@
 		A8674E191BEA58C300F3FB44 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A88A869E1C0753D600D7C6D2 /* PPCircularProgressView */,
 				A89436871C01B90700D160BD /* PPLoadingView */,
 				A8896E671BEE011600ADEB77 /* CustomPickerView */,
 				A8674E2B1BEA639E00F3FB44 /* CustomScrollView */,
@@ -1989,6 +1993,15 @@
 			path = CustomPickerView;
 			sourceTree = "<group>";
 		};
+		A88A869E1C0753D600D7C6D2 /* PPCircularProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				A88A869F1C0753EA00D7C6D2 /* PPCircularProgressView.h */,
+				A88A86A01C0753EA00D7C6D2 /* PPCircularProgressView.m */,
+			);
+			path = PPCircularProgressView;
+			sourceTree = "<group>";
+		};
 		A891D6981BEA404900E2102F = {
 			isa = PBXGroup;
 			children = (
@@ -2197,6 +2210,7 @@
 				A8674D8A1BEA586400F3FB44 /* IQNSArray+Sort.m in Sources */,
 				A8674DC01BEA586400F3FB44 /* UIButton+Oxygen.m in Sources */,
 				A8674D8E1BEA586400F3FB44 /* IQKeyboardReturnKeyHandler.m in Sources */,
+				A88A86A11C0753EA00D7C6D2 /* PPCircularProgressView.m in Sources */,
 				A8674DB71BEA586400F3FB44 /* NSDictionary+Oxygen.m in Sources */,
 				A8674D761BEA586400F3FB44 /* ASICloudFilesObjectRequest.m in Sources */,
 				A8674DE61BEA586400F3FB44 /* UIImage+GIF.m in Sources */,

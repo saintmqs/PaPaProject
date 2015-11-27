@@ -25,7 +25,7 @@ NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *rep
 //8	用户二次信息添加
 NSDictionary *registerbase(NSInteger uid, NSString *birthday, NSInteger sex, NSInteger height, NSInteger weight, NSInteger step);
 
-//9	修改性别
+//9 修改性别
 NSDictionary *updateSex(NSInteger uid, NSInteger sex);
 
 //10 修改生日
