@@ -9,9 +9,10 @@
 #import "BaseViewController.h"
 #import "SGFocusImageFrame.h"
 
-@interface HomeViewController : BaseViewController<SGFocusImageFrameDelegate>
+@interface HomeViewController : BaseViewController<SGFocusImageFrameDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) SGFocusImageFrame *indicatorView;
+@property (nonatomic,strong) UITableView       *detailTableView;
 
 @end
 

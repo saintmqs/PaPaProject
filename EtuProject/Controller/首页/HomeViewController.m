@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "HomePageProgressItem.h"
+#import "HomeTableViewCell.h"
 
 @interface HomeViewController ()
 {
@@ -48,11 +49,23 @@
     [self.view addSubview:_indicatorView];
     
     [self changeBannersHeaderContent:self.indicatorView];
+    
+    [self configTableUI];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)configTableUI
+{
+    _detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _indicatorView.frameBottom, mScreenWidth, mScreenHeight - _indicatorView.frameBottom - mTabBarHeight)];
+    _detailTableView.delegate = self;
+    _detailTableView.dataSource = self;
+    _detailTableView.backgroundColor = [UIColor clearColor];
+    _detailTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:_detailTableView];
 }
 
 #pragma mark 改变TableView上面滚动栏的内容
@@ -64,7 +77,7 @@
     NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
     [dataDict1 setObject:@"今日完成" forKey:@"title"];
     [dataDict1 setObject:@"3000" forKey:@"content"];
-    [dataDict1 setObject:@"0公里 | 0千卡" forKey:@"detail"];
+    [dataDict1 setObject:@"1公里 | 200千卡" forKey:@"detail"];
     [dataDict1 setObject:@"0.4" forKey:@"progress"];
     [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
     [contentDataArr addObject:dataDict1];
@@ -132,6 +145,43 @@
     }
 }
 
+#pragma mark - UITableView DataSource & Delegate
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row != 0) {
+        HomeTableViewCommonCell * cell = (HomeTableViewCommonCell *)[tableView dequeueReusableCellWithIdentifier:@"HomeTableViewCommonCell"];
+        if (cell == nil) {
+            cell = [[HomeTableViewCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HomeTableViewCommonCell"];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        
+        return cell;
+    }
+    
+    HomeTableViewCell * cell = (HomeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"HomeTableViewCell"];
+    if (cell == nil) {
+        cell = [[HomeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HomeTableViewCell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
 @end
 
 

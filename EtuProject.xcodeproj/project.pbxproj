@@ -212,6 +212,7 @@
 		A88A86BB1C093BE900D7C6D2 /* PPDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B61C093BE900D7C6D2 /* PPDotView.m */; };
 		A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B81C093BE900D7C6D2 /* PPPageControl.m */; };
 		A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */; };
+		A88A86C21C09CEAE00D7C6D2 /* HomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -668,6 +669,8 @@
 		A88A86B81C093BE900D7C6D2 /* PPPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPPageControl.m; sourceTree = "<group>"; };
 		A88A86BD1C09404400D7C6D2 /* HomePageDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageDotView.h; sourceTree = "<group>"; };
 		A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageDotView.m; sourceTree = "<group>"; };
+		A88A86C01C09CEAE00D7C6D2 /* HomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewCell.h; sourceTree = "<group>"; };
+		A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewCell.m; sourceTree = "<group>"; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -2038,6 +2041,8 @@
 				A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */,
 				A88A86BD1C09404400D7C6D2 /* HomePageDotView.h */,
 				A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */,
+				A88A86C01C09CEAE00D7C6D2 /* HomeTableViewCell.h */,
+				A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */,
 			);
 			path = "首页";
 			sourceTree = "<group>";
@@ -2410,6 +2415,7 @@
 				A8896E401BEBABBE00ADEB77 /* ClocksManagerViewController.m in Sources */,
 				A8674DEE1BEA586400F3FB44 /* TCBlobDownloadManager.m in Sources */,
 				A8674DD41BEA586400F3FB44 /* MJRefreshHeaderView.m in Sources */,
+				A88A86C21C09CEAE00D7C6D2 /* HomeTableViewCell.m in Sources */,
 				A894368A1C01B90700D160BD /* PPLoadingView.m in Sources */,
 				A8674DB41BEA586400F3FB44 /* MBProgressHUD.m in Sources */,
 				A8674D801BEA586400F3FB44 /* DAPagesContainer.m in Sources */,
