@@ -207,6 +207,11 @@
 		A88A86A51C0804D000D7C6D2 /* HomePageProgressItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A41C0804D000D7C6D2 /* HomePageProgressItem.m */; };
 		A88A86A81C08260C00D7C6D2 /* PPProgressInnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */; };
 		A88A86AF1C088A9100D7C6D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A88A86AE1C088A9100D7C6D2 /* CoreGraphics.framework */; };
+		A88A86B91C093BE900D7C6D2 /* PPAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B21C093BE900D7C6D2 /* PPAbstractDotView.m */; };
+		A88A86BA1C093BE900D7C6D2 /* PPAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B41C093BE900D7C6D2 /* PPAnimatedDotView.m */; };
+		A88A86BB1C093BE900D7C6D2 /* PPDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B61C093BE900D7C6D2 /* PPDotView.m */; };
+		A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B81C093BE900D7C6D2 /* PPPageControl.m */; };
+		A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -653,6 +658,16 @@
 		A88A86A61C08260C00D7C6D2 /* PPProgressInnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPProgressInnerView.h; sourceTree = "<group>"; };
 		A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPProgressInnerView.m; sourceTree = "<group>"; };
 		A88A86AE1C088A9100D7C6D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A88A86B11C093BE900D7C6D2 /* PPAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPAbstractDotView.h; sourceTree = "<group>"; };
+		A88A86B21C093BE900D7C6D2 /* PPAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPAbstractDotView.m; sourceTree = "<group>"; };
+		A88A86B31C093BE900D7C6D2 /* PPAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPAnimatedDotView.h; sourceTree = "<group>"; };
+		A88A86B41C093BE900D7C6D2 /* PPAnimatedDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPAnimatedDotView.m; sourceTree = "<group>"; };
+		A88A86B51C093BE900D7C6D2 /* PPDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPDotView.h; sourceTree = "<group>"; };
+		A88A86B61C093BE900D7C6D2 /* PPDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPDotView.m; sourceTree = "<group>"; };
+		A88A86B71C093BE900D7C6D2 /* PPPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPPageControl.h; sourceTree = "<group>"; };
+		A88A86B81C093BE900D7C6D2 /* PPPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPPageControl.m; sourceTree = "<group>"; };
+		A88A86BD1C09404400D7C6D2 /* HomePageDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageDotView.h; sourceTree = "<group>"; };
+		A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageDotView.m; sourceTree = "<group>"; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1761,6 +1776,7 @@
 		A8674E191BEA58C300F3FB44 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A88A86B01C093BE900D7C6D2 /* PPPageControl */,
 				A88A86A21C08041F00D7C6D2 /* 首页 */,
 				A88A869E1C0753D600D7C6D2 /* PPCircularProgressView */,
 				A89436871C01B90700D160BD /* PPLoadingView */,
@@ -2020,9 +2036,27 @@
 				A88A86A41C0804D000D7C6D2 /* HomePageProgressItem.m */,
 				A88A86A61C08260C00D7C6D2 /* PPProgressInnerView.h */,
 				A88A86A71C08260C00D7C6D2 /* PPProgressInnerView.m */,
+				A88A86BD1C09404400D7C6D2 /* HomePageDotView.h */,
+				A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */,
 			);
 			path = "首页";
 			sourceTree = "<group>";
+		};
+		A88A86B01C093BE900D7C6D2 /* PPPageControl */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86B11C093BE900D7C6D2 /* PPAbstractDotView.h */,
+				A88A86B21C093BE900D7C6D2 /* PPAbstractDotView.m */,
+				A88A86B31C093BE900D7C6D2 /* PPAnimatedDotView.h */,
+				A88A86B41C093BE900D7C6D2 /* PPAnimatedDotView.m */,
+				A88A86B51C093BE900D7C6D2 /* PPDotView.h */,
+				A88A86B61C093BE900D7C6D2 /* PPDotView.m */,
+				A88A86B71C093BE900D7C6D2 /* PPPageControl.h */,
+				A88A86B81C093BE900D7C6D2 /* PPPageControl.m */,
+			);
+			name = PPPageControl;
+			path = EtuProject/View/PPPageControl;
+			sourceTree = SOURCE_ROOT;
 		};
 		A891D6981BEA404900E2102F = {
 			isa = PBXGroup;
@@ -2243,6 +2277,7 @@
 				A8896E2C1BEBA95600ADEB77 /* UserInfoViewController.m in Sources */,
 				A8674DBD1BEA586400F3FB44 /* UIImage+Oxygen.m in Sources */,
 				A8674D851BEA586400F3FB44 /* EAIntroView.m in Sources */,
+				A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */,
 				A8674D8B1BEA586400F3FB44 /* IQUIView+Hierarchy.m in Sources */,
 				A8674D981BEA586400F3FB44 /* IQAssetsCell.m in Sources */,
 				A8674DC31BEA586400F3FB44 /* UITableView+Oxygen.m in Sources */,
@@ -2255,6 +2290,7 @@
 				A8896E371BEBAAE400ADEB77 /* DeviceManagerViewController.m in Sources */,
 				A8674DCE1BEA586400F3FB44 /* OFSlideView.m in Sources */,
 				A8674D901BEA586400F3FB44 /* IQTextView.m in Sources */,
+				A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */,
 				A8674DC81BEA586400F3FB44 /* OFBaseViewController.m in Sources */,
 				A8674D661BEA586400F3FB44 /* DistancePickerView.m in Sources */,
 				A8674DE81BEA586400F3FB44 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -2272,6 +2308,7 @@
 				A8674D7F1BEA586400F3FB44 /* DAPageIndicatorView.m in Sources */,
 				A8674D751BEA586400F3FB44 /* ASICloudFilesObject.m in Sources */,
 				A8674DDC1BEA586400F3FB44 /* Reachability.m in Sources */,
+				A88A86BA1C093BE900D7C6D2 /* PPAnimatedDotView.m in Sources */,
 				A89608B61BEF9ABC00BAC743 /* CSPickerView.m in Sources */,
 				A89608BF1BF242D700BAC743 /* SelectStepsViewController.m in Sources */,
 				A8674D9E1BEA586400F3FB44 /* IQAudioSession.m in Sources */,
@@ -2294,6 +2331,7 @@
 				A8674D6D1BEA586400F3FB44 /* ASIHTTPRequest.m in Sources */,
 				A8674DEF1BEA586400F3FB44 /* UIView+Toast.m in Sources */,
 				A8674DED1BEA586400F3FB44 /* TCBlobDownload.m in Sources */,
+				A88A86BB1C093BE900D7C6D2 /* PPDotView.m in Sources */,
 				A8674DAE1BEA586400F3FB44 /* NSArray+JSONModel.m in Sources */,
 				A8674E2A1BEA609C00F3FB44 /* BaseViewController.m in Sources */,
 				A8674DDE1BEA586400F3FB44 /* SDImageCache.m in Sources */,
@@ -2308,6 +2346,7 @@
 				A8674DB81BEA586400F3FB44 /* NSNumber+Oxygen.m in Sources */,
 				A8674DD91BEA586400F3FB44 /* RDVTabBar.m in Sources */,
 				A8674DA01BEA586400F3FB44 /* IQFileManager.m in Sources */,
+				A88A86B91C093BE900D7C6D2 /* PPAbstractDotView.m in Sources */,
 				A8674D701BEA586400F3FB44 /* ASIWebPageRequest.m in Sources */,
 				A8674DBB1BEA586400F3FB44 /* NSURL+Oxygen.m in Sources */,
 				A8674D8C1BEA586400F3FB44 /* IQUIWindow+Hierarchy.m in Sources */,

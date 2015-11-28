@@ -30,7 +30,7 @@
 
 - (id)initWithFrame:(CGRect)frame delegate:(id<SGFocusImageFrameDelegate>)delegate focusImageItems:(SGFocusImageItem *)items, ... NS_REQUIRES_NIL_TERMINATION;
 - (id)initWithFrame:(CGRect)frame delegate:(id<SGFocusImageFrameDelegate>)delegate imageItems:(NSArray *)items;
-- (void)scrollToIndex:(int)aIndex;
+- (void)scrollToIndex:(NSInteger)aIndex;
 
 #pragma mark 改变添加视图内容
 -(void)changeImageViewsContent:(NSArray *)aArray;

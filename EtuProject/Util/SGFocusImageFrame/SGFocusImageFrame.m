@@ -10,13 +10,16 @@
 #import "SGFocusImageItem.h"
 #import <objc/runtime.h>
 #import "HomePageProgressItem.h"
+#import "PPPageControl.h"
+#import "HomePageDotView.h"
 
 #define ITEM_WIDTH ([UIScreen mainScreen].bounds.size.width)
 
-@interface SGFocusImageFrame () {
+@interface SGFocusImageFrame ()<PPPageControlDelegate> {
     UIScrollView *_scrollView;
     //    GPSimplePageView *_pageControl;
-    UIPageControl *_pageControl;
+//    UIPageControl *_pageControl;
+    PPPageControl *_pageControl;
 }
 
 - (void)setupViews;
@@ -94,8 +97,13 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
     _scrollView.scrollsToTop = NO;
 
    
-    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height -16-10, mScreenWidth, 10)];
-    _pageControl.userInteractionEnabled = NO;
+//    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height -16-10, mScreenWidth, 10)];
+    _pageControl = [[PPPageControl alloc] initWithFrame:CGRectMake(0, self.frame.size.height -16-20, mScreenWidth, 20)];
+    _pageControl.delegate = self;
+    _pageControl.spacingBetweenDots = 10;
+    _pageControl.dotViewClass = [HomePageDotView class];
+    _pageControl.dotSize = CGSizeMake(14, 14);
+    _pageControl.userInteractionEnabled = YES;
     [self addSubview:_scrollView];
     [self addSubview:_pageControl];
     
@@ -245,7 +253,7 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
 }
 
 
-- (void)scrollToIndex:(int)aIndex
+- (void)scrollToIndex:(NSInteger)aIndex
 {
     NSArray *imageItems = objc_getAssociatedObject(self, (const void *)SG_FOCUS_ITEM_ASS_KEY);
     if ([imageItems count]>1)
@@ -261,5 +269,11 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
     }
     [self scrollViewDidScroll:_scrollView];
     
+}
+
+#pragma mark - PPPageControl Delegate Method
+-(void)PPPageControl:(PPPageControl *)pageControl didSelectPageAtIndex:(NSInteger)index
+{
+    [self scrollToIndex:index];
 }
 @end

@@ -26,7 +26,7 @@
     CGFloat viewFrameY;
     if (!iPhone4) {
         viewFrameY = self.headerView.frameBottom+90/4;
-        viewFrameHeight = 400;
+        viewFrameHeight = 380;
     }
     else
     {
@@ -64,7 +64,7 @@
     NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
     [dataDict1 setObject:@"今日完成" forKey:@"title"];
     [dataDict1 setObject:@"3000" forKey:@"content"];
-    [dataDict1 setObject:@"0公里|0千卡" forKey:@"detail"];
+    [dataDict1 setObject:@"0公里 | 0千卡" forKey:@"detail"];
     [dataDict1 setObject:@"0.4" forKey:@"progress"];
     [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
     [contentDataArr addObject:dataDict1];
