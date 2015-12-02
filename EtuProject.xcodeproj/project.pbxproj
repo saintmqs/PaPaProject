@@ -213,12 +213,6 @@
 		A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B81C093BE900D7C6D2 /* PPPageControl.m */; };
 		A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */; };
 		A88A86C21C09CEAE00D7C6D2 /* HomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */; };
-		A88A86D01C09E76100D7C6D2 /* UUBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C51C09E76100D7C6D2 /* UUBar.m */; };
-		A88A86D11C09E76100D7C6D2 /* UUBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C71C09E76100D7C6D2 /* UUBarChart.m */; };
-		A88A86D21C09E76100D7C6D2 /* UUChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C91C09E76100D7C6D2 /* UUChart.m */; };
-		A88A86D31C09E76100D7C6D2 /* UUChartLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */; };
-		A88A86D41C09E76100D7C6D2 /* UUColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CD1C09E76100D7C6D2 /* UUColor.m */; };
-		A88A86D51C09E76100D7C6D2 /* UULineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CF1C09E76100D7C6D2 /* UULineChart.m */; };
 		A88A86D91C09F29C00D7C6D2 /* RecordTabbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86D81C09F29C00D7C6D2 /* RecordTabbarView.m */; };
 		A88A86E71C0DE12100D7C6D2 /* PPBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86DC1C0DE12100D7C6D2 /* PPBar.m */; };
 		A88A86E81C0DE12100D7C6D2 /* PPBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86DE1C0DE12100D7C6D2 /* PPBarChart.m */; };
@@ -686,18 +680,6 @@
 		A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageDotView.m; sourceTree = "<group>"; };
 		A88A86C01C09CEAE00D7C6D2 /* HomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewCell.h; sourceTree = "<group>"; };
 		A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewCell.m; sourceTree = "<group>"; };
-		A88A86C41C09E76100D7C6D2 /* UUBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUBar.h; sourceTree = "<group>"; };
-		A88A86C51C09E76100D7C6D2 /* UUBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUBar.m; sourceTree = "<group>"; };
-		A88A86C61C09E76100D7C6D2 /* UUBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUBarChart.h; sourceTree = "<group>"; };
-		A88A86C71C09E76100D7C6D2 /* UUBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUBarChart.m; sourceTree = "<group>"; };
-		A88A86C81C09E76100D7C6D2 /* UUChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUChart.h; sourceTree = "<group>"; };
-		A88A86C91C09E76100D7C6D2 /* UUChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUChart.m; sourceTree = "<group>"; };
-		A88A86CA1C09E76100D7C6D2 /* UUChartLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUChartLabel.h; sourceTree = "<group>"; };
-		A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUChartLabel.m; sourceTree = "<group>"; };
-		A88A86CC1C09E76100D7C6D2 /* UUColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUColor.h; sourceTree = "<group>"; };
-		A88A86CD1C09E76100D7C6D2 /* UUColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUColor.m; sourceTree = "<group>"; };
-		A88A86CE1C09E76100D7C6D2 /* UULineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UULineChart.h; sourceTree = "<group>"; };
-		A88A86CF1C09E76100D7C6D2 /* UULineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UULineChart.m; sourceTree = "<group>"; };
 		A88A86D71C09F29C00D7C6D2 /* RecordTabbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordTabbarView.h; sourceTree = "<group>"; };
 		A88A86D81C09F29C00D7C6D2 /* RecordTabbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordTabbarView.m; sourceTree = "<group>"; };
 		A88A86DB1C0DE12100D7C6D2 /* PPBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPBar.h; sourceTree = "<group>"; };
@@ -805,7 +787,6 @@
 		A8674B9A1BEA586400F3FB44 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				A88A86C31C09E76100D7C6D2 /* UUChart */,
 				A8674B9B1BEA586400F3FB44 /* ActionSheetPicker-3.0 */,
 				A8674BAE1BEA586400F3FB44 /* ASIHttp */,
 				A8674BE41BEA586400F3FB44 /* CustomSearchBar */,
@@ -2115,25 +2096,6 @@
 			path = EtuProject/View/PPPageControl;
 			sourceTree = SOURCE_ROOT;
 		};
-		A88A86C31C09E76100D7C6D2 /* UUChart */ = {
-			isa = PBXGroup;
-			children = (
-				A88A86C41C09E76100D7C6D2 /* UUBar.h */,
-				A88A86C51C09E76100D7C6D2 /* UUBar.m */,
-				A88A86C61C09E76100D7C6D2 /* UUBarChart.h */,
-				A88A86C71C09E76100D7C6D2 /* UUBarChart.m */,
-				A88A86C81C09E76100D7C6D2 /* UUChart.h */,
-				A88A86C91C09E76100D7C6D2 /* UUChart.m */,
-				A88A86CA1C09E76100D7C6D2 /* UUChartLabel.h */,
-				A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */,
-				A88A86CC1C09E76100D7C6D2 /* UUColor.h */,
-				A88A86CD1C09E76100D7C6D2 /* UUColor.m */,
-				A88A86CE1C09E76100D7C6D2 /* UULineChart.h */,
-				A88A86CF1C09E76100D7C6D2 /* UULineChart.m */,
-			);
-			path = UUChart;
-			sourceTree = "<group>";
-		};
 		A88A86D61C09EED800D7C6D2 /* 记录 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2392,7 +2354,6 @@
 				A88A86A11C0753EA00D7C6D2 /* PPCircularProgressView.m in Sources */,
 				A8674DB71BEA586400F3FB44 /* NSDictionary+Oxygen.m in Sources */,
 				A8674D761BEA586400F3FB44 /* ASICloudFilesObjectRequest.m in Sources */,
-				A88A86D01C09E76100D7C6D2 /* UUBar.m in Sources */,
 				A8674DE61BEA586400F3FB44 /* UIImage+GIF.m in Sources */,
 				A8674D6F1BEA586400F3FB44 /* ASINetworkQueue.m in Sources */,
 				A8674D871BEA586400F3FB44 /* WZLoadMoreTableFooterView.m in Sources */,
@@ -2415,7 +2376,6 @@
 				A8896E371BEBAAE400ADEB77 /* DeviceManagerViewController.m in Sources */,
 				A8674DCE1BEA586400F3FB44 /* OFSlideView.m in Sources */,
 				A8674D901BEA586400F3FB44 /* IQTextView.m in Sources */,
-				A88A86D21C09E76100D7C6D2 /* UUChart.m in Sources */,
 				A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */,
 				A8674DC81BEA586400F3FB44 /* OFBaseViewController.m in Sources */,
 				A8674D661BEA586400F3FB44 /* DistancePickerView.m in Sources */,
@@ -2429,7 +2389,6 @@
 				A8674D9B1BEA586400F3FB44 /* IQAssetsPickerController.m in Sources */,
 				A8674DB01BEA586400F3FB44 /* JSONHTTPClient.m in Sources */,
 				A8674E211BEA594D00F3FB44 /* NSObject+HTTPRequest.m in Sources */,
-				A88A86D31C09E76100D7C6D2 /* UUChartLabel.m in Sources */,
 				A8674DE91BEA586400F3FB44 /* UIImageView+WebCache.m in Sources */,
 				A8674D9C1BEA586400F3FB44 /* IQMediaCaptureController.m in Sources */,
 				A8674D7F1BEA586400F3FB44 /* DAPageIndicatorView.m in Sources */,
@@ -2468,7 +2427,6 @@
 				A8674DD81BEA586400F3FB44 /* JZLocationConverter.m in Sources */,
 				A8896E291BEBA30000ADEB77 /* WalletViewController.m in Sources */,
 				A8896E431BEBABF700ADEB77 /* ClocksEditListViewController.m in Sources */,
-				A88A86D11C09E76100D7C6D2 /* UUBarChart.m in Sources */,
 				A8674D611BEA586400F3FB44 /* ActionSheetCustomPicker.m in Sources */,
 				A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */,
 				A8674E0D1BEA586400F3FB44 /* mask.c in Sources */,
@@ -2498,7 +2456,6 @@
 				A8674D651BEA586400F3FB44 /* ActionSheetStringPicker.m in Sources */,
 				A8674D7C1BEA586400F3FB44 /* ASIS3Request.m in Sources */,
 				A8896E501BEBACE800ADEB77 /* ChangePwdViewController.m in Sources */,
-				A88A86D51C09E76100D7C6D2 /* UULineChart.m in Sources */,
 				A8674D8F1BEA586400F3FB44 /* IQSegmentedNextPrevious.m in Sources */,
 				A8674D6E1BEA586400F3FB44 /* ASIInputStream.m in Sources */,
 				A88A86E71C0DE12100D7C6D2 /* PPBar.m in Sources */,
@@ -2556,7 +2513,6 @@
 				A8674DCB1BEA586400F3FB44 /* OFMutableDictionary.m in Sources */,
 				A8674DC11BEA586400F3FB44 /* UIImageView+extend.m in Sources */,
 				A8674DA61BEA586400F3FB44 /* IQ_SCSiriWaveformView.m in Sources */,
-				A88A86D41C09E76100D7C6D2 /* UUColor.m in Sources */,
 				A8674D781BEA586400F3FB44 /* ASIS3Bucket.m in Sources */,
 				A8674DAF1BEA586400F3FB44 /* JSONAPI.m in Sources */,
 				A8674D601BEA586400F3FB44 /* AbstractActionSheetPicker.m in Sources */,
