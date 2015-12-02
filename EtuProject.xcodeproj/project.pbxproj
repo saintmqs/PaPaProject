@@ -213,6 +213,21 @@
 		A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86B81C093BE900D7C6D2 /* PPPageControl.m */; };
 		A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */; };
 		A88A86C21C09CEAE00D7C6D2 /* HomeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */; };
+		A88A86D01C09E76100D7C6D2 /* UUBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C51C09E76100D7C6D2 /* UUBar.m */; };
+		A88A86D11C09E76100D7C6D2 /* UUBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C71C09E76100D7C6D2 /* UUBarChart.m */; };
+		A88A86D21C09E76100D7C6D2 /* UUChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86C91C09E76100D7C6D2 /* UUChart.m */; };
+		A88A86D31C09E76100D7C6D2 /* UUChartLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */; };
+		A88A86D41C09E76100D7C6D2 /* UUColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CD1C09E76100D7C6D2 /* UUColor.m */; };
+		A88A86D51C09E76100D7C6D2 /* UULineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86CF1C09E76100D7C6D2 /* UULineChart.m */; };
+		A88A86D91C09F29C00D7C6D2 /* RecordTabbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86D81C09F29C00D7C6D2 /* RecordTabbarView.m */; };
+		A88A86E71C0DE12100D7C6D2 /* PPBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86DC1C0DE12100D7C6D2 /* PPBar.m */; };
+		A88A86E81C0DE12100D7C6D2 /* PPBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86DE1C0DE12100D7C6D2 /* PPBarChart.m */; };
+		A88A86E91C0DE12100D7C6D2 /* PPChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86E01C0DE12100D7C6D2 /* PPChart.m */; };
+		A88A86EA1C0DE12100D7C6D2 /* PPChartLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86E21C0DE12100D7C6D2 /* PPChartLabel.m */; };
+		A88A86EB1C0DE12100D7C6D2 /* PPColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86E41C0DE12100D7C6D2 /* PPColor.m */; };
+		A88A86EC1C0DE12100D7C6D2 /* PPLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86E61C0DE12100D7C6D2 /* PPLineChart.m */; };
+		A88A86F11C0DE3FB00D7C6D2 /* SleepingRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86F01C0DE3FB00D7C6D2 /* SleepingRecordViewController.m */; };
+		A88A86F41C0DE41500D7C6D2 /* SportRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86F31C0DE41500D7C6D2 /* SportRecordViewController.m */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -671,6 +686,37 @@
 		A88A86BE1C09404400D7C6D2 /* HomePageDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageDotView.m; sourceTree = "<group>"; };
 		A88A86C01C09CEAE00D7C6D2 /* HomeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewCell.h; sourceTree = "<group>"; };
 		A88A86C11C09CEAE00D7C6D2 /* HomeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewCell.m; sourceTree = "<group>"; };
+		A88A86C41C09E76100D7C6D2 /* UUBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUBar.h; sourceTree = "<group>"; };
+		A88A86C51C09E76100D7C6D2 /* UUBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUBar.m; sourceTree = "<group>"; };
+		A88A86C61C09E76100D7C6D2 /* UUBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUBarChart.h; sourceTree = "<group>"; };
+		A88A86C71C09E76100D7C6D2 /* UUBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUBarChart.m; sourceTree = "<group>"; };
+		A88A86C81C09E76100D7C6D2 /* UUChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUChart.h; sourceTree = "<group>"; };
+		A88A86C91C09E76100D7C6D2 /* UUChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUChart.m; sourceTree = "<group>"; };
+		A88A86CA1C09E76100D7C6D2 /* UUChartLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUChartLabel.h; sourceTree = "<group>"; };
+		A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUChartLabel.m; sourceTree = "<group>"; };
+		A88A86CC1C09E76100D7C6D2 /* UUColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUColor.h; sourceTree = "<group>"; };
+		A88A86CD1C09E76100D7C6D2 /* UUColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUColor.m; sourceTree = "<group>"; };
+		A88A86CE1C09E76100D7C6D2 /* UULineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UULineChart.h; sourceTree = "<group>"; };
+		A88A86CF1C09E76100D7C6D2 /* UULineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UULineChart.m; sourceTree = "<group>"; };
+		A88A86D71C09F29C00D7C6D2 /* RecordTabbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordTabbarView.h; sourceTree = "<group>"; };
+		A88A86D81C09F29C00D7C6D2 /* RecordTabbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordTabbarView.m; sourceTree = "<group>"; };
+		A88A86DB1C0DE12100D7C6D2 /* PPBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPBar.h; sourceTree = "<group>"; };
+		A88A86DC1C0DE12100D7C6D2 /* PPBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPBar.m; sourceTree = "<group>"; };
+		A88A86DD1C0DE12100D7C6D2 /* PPBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPBarChart.h; sourceTree = "<group>"; };
+		A88A86DE1C0DE12100D7C6D2 /* PPBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPBarChart.m; sourceTree = "<group>"; };
+		A88A86DF1C0DE12100D7C6D2 /* PPChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPChart.h; sourceTree = "<group>"; };
+		A88A86E01C0DE12100D7C6D2 /* PPChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPChart.m; sourceTree = "<group>"; };
+		A88A86E11C0DE12100D7C6D2 /* PPChartLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPChartLabel.h; sourceTree = "<group>"; };
+		A88A86E21C0DE12100D7C6D2 /* PPChartLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPChartLabel.m; sourceTree = "<group>"; };
+		A88A86E31C0DE12100D7C6D2 /* PPColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPColor.h; sourceTree = "<group>"; };
+		A88A86E41C0DE12100D7C6D2 /* PPColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPColor.m; sourceTree = "<group>"; };
+		A88A86E51C0DE12100D7C6D2 /* PPLineChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPLineChart.h; sourceTree = "<group>"; };
+		A88A86E61C0DE12100D7C6D2 /* PPLineChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPLineChart.m; sourceTree = "<group>"; };
+		A88A86EF1C0DE3FB00D7C6D2 /* SleepingRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepingRecordViewController.h; sourceTree = "<group>"; };
+		A88A86F01C0DE3FB00D7C6D2 /* SleepingRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepingRecordViewController.m; sourceTree = "<group>"; };
+		A88A86F21C0DE41500D7C6D2 /* SportRecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportRecordViewController.h; sourceTree = "<group>"; };
+		A88A86F31C0DE41500D7C6D2 /* SportRecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportRecordViewController.m; sourceTree = "<group>"; };
+		A88A86F51C0E8FD200D7C6D2 /* RecordViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordViewControllerDelegate.h; sourceTree = "<group>"; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -759,6 +805,7 @@
 		A8674B9A1BEA586400F3FB44 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				A88A86C31C09E76100D7C6D2 /* UUChart */,
 				A8674B9B1BEA586400F3FB44 /* ActionSheetPicker-3.0 */,
 				A8674BAE1BEA586400F3FB44 /* ASIHttp */,
 				A8674BE41BEA586400F3FB44 /* CustomSearchBar */,
@@ -1779,8 +1826,10 @@
 		A8674E191BEA58C300F3FB44 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A88A86B01C093BE900D7C6D2 /* PPPageControl */,
+				A88A86DA1C0DE12100D7C6D2 /* PPChart */,
+				A88A86D61C09EED800D7C6D2 /* 记录 */,
 				A88A86A21C08041F00D7C6D2 /* 首页 */,
+				A88A86B01C093BE900D7C6D2 /* PPPageControl */,
 				A88A869E1C0753D600D7C6D2 /* PPCircularProgressView */,
 				A89436871C01B90700D160BD /* PPLoadingView */,
 				A8896E671BEE011600ADEB77 /* CustomPickerView */,
@@ -1892,9 +1941,12 @@
 		A8896E201BEBA29D00ADEB77 /* 记录 */ = {
 			isa = PBXGroup;
 			children = (
+				A88A86ED1C0DE3D900D7C6D2 /* 睡眠 */,
+				A88A86EE1C0DE3D900D7C6D2 /* 运动 */,
 				A8896E471BEBAC7D00ADEB77 /* 分享 */,
 				A8896E211BEBA2BE00ADEB77 /* RecordViewController.h */,
 				A8896E221BEBA2BE00ADEB77 /* RecordViewController.m */,
+				A88A86F51C0E8FD200D7C6D2 /* RecordViewControllerDelegate.h */,
 			);
 			path = "记录";
 			sourceTree = "<group>";
@@ -2062,6 +2114,71 @@
 			name = PPPageControl;
 			path = EtuProject/View/PPPageControl;
 			sourceTree = SOURCE_ROOT;
+		};
+		A88A86C31C09E76100D7C6D2 /* UUChart */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86C41C09E76100D7C6D2 /* UUBar.h */,
+				A88A86C51C09E76100D7C6D2 /* UUBar.m */,
+				A88A86C61C09E76100D7C6D2 /* UUBarChart.h */,
+				A88A86C71C09E76100D7C6D2 /* UUBarChart.m */,
+				A88A86C81C09E76100D7C6D2 /* UUChart.h */,
+				A88A86C91C09E76100D7C6D2 /* UUChart.m */,
+				A88A86CA1C09E76100D7C6D2 /* UUChartLabel.h */,
+				A88A86CB1C09E76100D7C6D2 /* UUChartLabel.m */,
+				A88A86CC1C09E76100D7C6D2 /* UUColor.h */,
+				A88A86CD1C09E76100D7C6D2 /* UUColor.m */,
+				A88A86CE1C09E76100D7C6D2 /* UULineChart.h */,
+				A88A86CF1C09E76100D7C6D2 /* UULineChart.m */,
+			);
+			path = UUChart;
+			sourceTree = "<group>";
+		};
+		A88A86D61C09EED800D7C6D2 /* 记录 */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86D71C09F29C00D7C6D2 /* RecordTabbarView.h */,
+				A88A86D81C09F29C00D7C6D2 /* RecordTabbarView.m */,
+			);
+			path = "记录";
+			sourceTree = "<group>";
+		};
+		A88A86DA1C0DE12100D7C6D2 /* PPChart */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86DB1C0DE12100D7C6D2 /* PPBar.h */,
+				A88A86DC1C0DE12100D7C6D2 /* PPBar.m */,
+				A88A86DD1C0DE12100D7C6D2 /* PPBarChart.h */,
+				A88A86DE1C0DE12100D7C6D2 /* PPBarChart.m */,
+				A88A86DF1C0DE12100D7C6D2 /* PPChart.h */,
+				A88A86E01C0DE12100D7C6D2 /* PPChart.m */,
+				A88A86E11C0DE12100D7C6D2 /* PPChartLabel.h */,
+				A88A86E21C0DE12100D7C6D2 /* PPChartLabel.m */,
+				A88A86E31C0DE12100D7C6D2 /* PPColor.h */,
+				A88A86E41C0DE12100D7C6D2 /* PPColor.m */,
+				A88A86E51C0DE12100D7C6D2 /* PPLineChart.h */,
+				A88A86E61C0DE12100D7C6D2 /* PPLineChart.m */,
+			);
+			path = PPChart;
+			sourceTree = "<group>";
+		};
+		A88A86ED1C0DE3D900D7C6D2 /* 睡眠 */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86EF1C0DE3FB00D7C6D2 /* SleepingRecordViewController.h */,
+				A88A86F01C0DE3FB00D7C6D2 /* SleepingRecordViewController.m */,
+			);
+			path = "睡眠";
+			sourceTree = "<group>";
+		};
+		A88A86EE1C0DE3D900D7C6D2 /* 运动 */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86F21C0DE41500D7C6D2 /* SportRecordViewController.h */,
+				A88A86F31C0DE41500D7C6D2 /* SportRecordViewController.m */,
+			);
+			path = "运动";
+			sourceTree = "<group>";
 		};
 		A891D6981BEA404900E2102F = {
 			isa = PBXGroup;
@@ -2265,6 +2382,7 @@
 				A8674DC51BEA586400F3FB44 /* UITextView+Oxygen.m in Sources */,
 				A8896E301BEBA99000ADEB77 /* SettingsViewController.m in Sources */,
 				A8674DD21BEA586400F3FB44 /* MJRefreshBaseView.m in Sources */,
+				A88A86F41C0DE41500D7C6D2 /* SportRecordViewController.m in Sources */,
 				A8674DE71BEA586400F3FB44 /* UIImage+MultiFormat.m in Sources */,
 				A8674D6C1BEA586400F3FB44 /* ASIFormDataRequest.m in Sources */,
 				A8674DDB1BEA586400F3FB44 /* RDVTabBarItem.m in Sources */,
@@ -2274,6 +2392,7 @@
 				A88A86A11C0753EA00D7C6D2 /* PPCircularProgressView.m in Sources */,
 				A8674DB71BEA586400F3FB44 /* NSDictionary+Oxygen.m in Sources */,
 				A8674D761BEA586400F3FB44 /* ASICloudFilesObjectRequest.m in Sources */,
+				A88A86D01C09E76100D7C6D2 /* UUBar.m in Sources */,
 				A8674DE61BEA586400F3FB44 /* UIImage+GIF.m in Sources */,
 				A8674D6F1BEA586400F3FB44 /* ASINetworkQueue.m in Sources */,
 				A8674D871BEA586400F3FB44 /* WZLoadMoreTableFooterView.m in Sources */,
@@ -2285,6 +2404,7 @@
 				A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */,
 				A8674D8B1BEA586400F3FB44 /* IQUIView+Hierarchy.m in Sources */,
 				A8674D981BEA586400F3FB44 /* IQAssetsCell.m in Sources */,
+				A88A86EB1C0DE12100D7C6D2 /* PPColor.m in Sources */,
 				A8674DC31BEA586400F3FB44 /* UITableView+Oxygen.m in Sources */,
 				A8674D861BEA586400F3FB44 /* FHTableView.m in Sources */,
 				A8674DA81BEA586400F3FB44 /* IQMediaPickerControllerConstants.m in Sources */,
@@ -2295,6 +2415,7 @@
 				A8896E371BEBAAE400ADEB77 /* DeviceManagerViewController.m in Sources */,
 				A8674DCE1BEA586400F3FB44 /* OFSlideView.m in Sources */,
 				A8674D901BEA586400F3FB44 /* IQTextView.m in Sources */,
+				A88A86D21C09E76100D7C6D2 /* UUChart.m in Sources */,
 				A88A86BF1C09404400D7C6D2 /* HomePageDotView.m in Sources */,
 				A8674DC81BEA586400F3FB44 /* OFBaseViewController.m in Sources */,
 				A8674D661BEA586400F3FB44 /* DistancePickerView.m in Sources */,
@@ -2308,6 +2429,7 @@
 				A8674D9B1BEA586400F3FB44 /* IQAssetsPickerController.m in Sources */,
 				A8674DB01BEA586400F3FB44 /* JSONHTTPClient.m in Sources */,
 				A8674E211BEA594D00F3FB44 /* NSObject+HTTPRequest.m in Sources */,
+				A88A86D31C09E76100D7C6D2 /* UUChartLabel.m in Sources */,
 				A8674DE91BEA586400F3FB44 /* UIImageView+WebCache.m in Sources */,
 				A8674D9C1BEA586400F3FB44 /* IQMediaCaptureController.m in Sources */,
 				A8674D7F1BEA586400F3FB44 /* DAPageIndicatorView.m in Sources */,
@@ -2327,6 +2449,7 @@
 				A8896E621BEDCF7A00ADEB77 /* SelectSexViewController.m in Sources */,
 				A8674D7D1BEA586400F3FB44 /* ASIS3ServiceRequest.m in Sources */,
 				A8674D931BEA586400F3FB44 /* IQToolbar.m in Sources */,
+				A88A86F11C0DE3FB00D7C6D2 /* SleepingRecordViewController.m in Sources */,
 				A8896E461BEBAC2000ADEB77 /* ClockDetailSettingViewController.m in Sources */,
 				A88A86A81C08260C00D7C6D2 /* PPProgressInnerView.m in Sources */,
 				A8674DD71BEA586400F3FB44 /* GTMBase64.m in Sources */,
@@ -2339,11 +2462,13 @@
 				A88A86BB1C093BE900D7C6D2 /* PPDotView.m in Sources */,
 				A8674DAE1BEA586400F3FB44 /* NSArray+JSONModel.m in Sources */,
 				A8674E2A1BEA609C00F3FB44 /* BaseViewController.m in Sources */,
+				A88A86EC1C0DE12100D7C6D2 /* PPLineChart.m in Sources */,
 				A8674DDE1BEA586400F3FB44 /* SDImageCache.m in Sources */,
 				A8674DAD1BEA586400F3FB44 /* JSONModelError.m in Sources */,
 				A8674DD81BEA586400F3FB44 /* JZLocationConverter.m in Sources */,
 				A8896E291BEBA30000ADEB77 /* WalletViewController.m in Sources */,
 				A8896E431BEBABF700ADEB77 /* ClocksEditListViewController.m in Sources */,
+				A88A86D11C09E76100D7C6D2 /* UUBarChart.m in Sources */,
 				A8674D611BEA586400F3FB44 /* ActionSheetCustomPicker.m in Sources */,
 				A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */,
 				A8674E0D1BEA586400F3FB44 /* mask.c in Sources */,
@@ -2373,8 +2498,10 @@
 				A8674D651BEA586400F3FB44 /* ActionSheetStringPicker.m in Sources */,
 				A8674D7C1BEA586400F3FB44 /* ASIS3Request.m in Sources */,
 				A8896E501BEBACE800ADEB77 /* ChangePwdViewController.m in Sources */,
+				A88A86D51C09E76100D7C6D2 /* UULineChart.m in Sources */,
 				A8674D8F1BEA586400F3FB44 /* IQSegmentedNextPrevious.m in Sources */,
 				A8674D6E1BEA586400F3FB44 /* ASIInputStream.m in Sources */,
+				A88A86E71C0DE12100D7C6D2 /* PPBar.m in Sources */,
 				A8674D9F1BEA586400F3FB44 /* IQCaptureSession.m in Sources */,
 				A8674D711BEA586400F3FB44 /* ASICloudFilesCDNRequest.m in Sources */,
 				A8674DCF1BEA586400F3FB44 /* Oxygen2.m in Sources */,
@@ -2389,12 +2516,14 @@
 				A8674D7E1BEA586400F3FB44 /* CustomSearchBar.m in Sources */,
 				A8674DD61BEA586400F3FB44 /* UIButton+Bootstrap.m in Sources */,
 				A89436831C01A45E00D160BD /* SearchBraceletViewController.m in Sources */,
+				A88A86E91C0DE12100D7C6D2 /* PPChart.m in Sources */,
 				A8674DBF1BEA586400F3FB44 /* UIAlertView+Oxygen.m in Sources */,
 				A88A86A51C0804D000D7C6D2 /* HomePageProgressItem.m in Sources */,
 				A8674D811BEA586400F3FB44 /* DAPagesContainerTopBar.m in Sources */,
 				A8896E1F1BEB918700ADEB77 /* Login.m in Sources */,
 				A8674E0B1BEA586400F3FB44 /* ViewPagerController.m in Sources */,
 				A8674DB31BEA586400F3FB44 /* JSONValueTransformer.m in Sources */,
+				A88A86EA1C0DE12100D7C6D2 /* PPChartLabel.m in Sources */,
 				A8674E0E1BEA586400F3FB44 /* QRCodeGenerator.m in Sources */,
 				A8674DBE1BEA586400F3FB44 /* UIActionSheet+Oxygen.m in Sources */,
 				A8896E191BEB8E8F00ADEB77 /* LoginViewController.m in Sources */,
@@ -2408,7 +2537,9 @@
 				A8674D731BEA586400F3FB44 /* ASICloudFilesContainerRequest.m in Sources */,
 				A8896E1C1BEB910F00ADEB77 /* BaseJSONModel.m in Sources */,
 				A8674DA11BEA586400F3FB44 /* IQBottomContainerView.m in Sources */,
+				A88A86E81C0DE12100D7C6D2 /* PPBarChart.m in Sources */,
 				A8674DDF1BEA586400F3FB44 /* SDWebImageCompat.m in Sources */,
+				A88A86D91C09F29C00D7C6D2 /* RecordTabbarView.m in Sources */,
 				A8674DE21BEA586400F3FB44 /* SDWebImageDownloaderOperation.m in Sources */,
 				A8674DAC1BEA586400F3FB44 /* JSONModelClassProperty.m in Sources */,
 				A8674D831BEA586400F3FB44 /* DARecycledTileView.m in Sources */,
@@ -2425,6 +2556,7 @@
 				A8674DCB1BEA586400F3FB44 /* OFMutableDictionary.m in Sources */,
 				A8674DC11BEA586400F3FB44 /* UIImageView+extend.m in Sources */,
 				A8674DA61BEA586400F3FB44 /* IQ_SCSiriWaveformView.m in Sources */,
+				A88A86D41C09E76100D7C6D2 /* UUColor.m in Sources */,
 				A8674D781BEA586400F3FB44 /* ASIS3Bucket.m in Sources */,
 				A8674DAF1BEA586400F3FB44 /* JSONAPI.m in Sources */,
 				A8674D601BEA586400F3FB44 /* AbstractActionSheetPicker.m in Sources */,

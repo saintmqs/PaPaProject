@@ -160,7 +160,7 @@
 - (UIView *)contentView {
     if (!_contentView) {
         _contentView = [[UIView alloc] init];
-        [_contentView setBackgroundColor:[UIColor whiteColor]];
+        [_contentView setBackgroundColor:rgbColor(249, 249, 250)];
         [_contentView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth|
                                            UIViewAutoresizingFlexibleHeight)];
     }

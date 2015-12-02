@@ -10,6 +10,9 @@
 #import "HomePageProgressItem.h"
 #import "HomeTableViewCell.h"
 
+#import "UserInfoViewController.h"
+#import "DeviceManagerViewController.h"
+
 @interface HomeViewController ()
 {
     HomeGradientView *gradientView;
@@ -22,6 +25,9 @@
     [super viewDidLoad];
     
     self.titleLabel.text = @"首页";
+    
+    self.leftNavButton.hidden = NO;
+    self.rightNavButton.hidden = NO;
     
     CGFloat viewFrameHeight;
     CGFloat viewFrameY;
@@ -68,7 +74,7 @@
     [self.view addSubview:_detailTableView];
 }
 
-#pragma mark 改变TableView上面滚动栏的内容
+#pragma mark 改变上面滚动栏的内容
 -(void)changeBannersHeaderContent:(SGFocusImageFrame *)vFocusFrame{
     int length = 2;
     
@@ -181,6 +187,19 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+}
+
+#pragma mark - UIButton Action
+-(void)didTopLeftButtonClick:(UIButton *)sender
+{
+    UserInfoViewController *vc = [[UserInfoViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)didTopRightButtonClick:(UIButton *)sender
+{
+    DeviceManagerViewController *vc = [[DeviceManagerViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 @end
 

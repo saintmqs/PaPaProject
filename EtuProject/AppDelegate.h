@@ -34,7 +34,7 @@
 - (BOOL)checkNeedLogin;
 - (void)logOut;
 - (void)loginSuccess;
-
+- (void)backToLastPage;
 @end
 
 @interface RDVTabBarController (extend)<EAIntroDelegate>

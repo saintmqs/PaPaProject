@@ -7,8 +7,9 @@
 //
 
 #import "RecordViewController.h"
+#import "RDVTabBarItem.h"
 
-@interface RecordViewController ()
+@interface RecordViewController ()<RDVTabBarControllerDelegate,UINavigationControllerDelegate>
 
 @end
 
@@ -17,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.sport.delegate = self;
+    self.sleep.delegate = self;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,14 +27,53 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)backToHome
+{
+    [APP_DELEGATE backToLastPage];
+    APP_DELEGATE.rootTabbarController.tabBarHidden = NO;
+    [self setTabBarHidden:YES animated:NO];
 }
-*/
+
+- (void)customizeTabBarForController:(RDVTabBarController *)tabBarController
+{
+    UIImage *selectedBg = [UIImage imageNamed:@"tabbar_selected_background"];
+    UIImage *normalBg	= [UIImage imageNamed:@"tabbar_normal_background"];
+    
+    int index = 1;
+    
+    NSArray *titiles = [NSArray arrayWithObjects:@"运动",@"睡眠", nil];
+    
+    for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
+        item.backgroundColor = rgbColor(242, 242, 242);
+        
+        [item setBackgroundSelectedImage:selectedBg withUnselectedImage:normalBg];
+        UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"%d_selected", index]];
+        UIImage *unselectedimage	= [UIImage imageNamed:[NSString stringWithFormat:@"%d_normal", index]];
+        item.title = titiles[index-1];
+        [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
+        [item setBadgeBackgroundColor:color_orange];
+        
+        item.selectedTitleAttributes	= @{NSForegroundColorAttributeName : color_orange, NSFontAttributeName:[UIFont systemFontOfSize:FONT_SIZE - 2]};
+        item.unselectedTitleAttributes	= @{NSForegroundColorAttributeName : color_black, NSFontAttributeName:[UIFont systemFontOfSize:FONT_SIZE - 2]};
+        
+        index++;
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (navigationController.viewControllers.count == 1) {
+        [self setTabBarHidden:NO animated:YES];
+        [UIView animateWithDuration:.0f animations:^{
+            self.tabBar.alpha = 1.0f;
+        } completion:^(BOOL finished) {}];
+    } else if (navigationController.viewControllers.count == 2) {
+        [UIView animateWithDuration:.0f animations:^{
+            self.tabBar.alpha = 0.0f;
+        } completion:^(BOOL finished) {}];
+        [self setTabBarHidden:YES animated:NO];
+    }
+}
 
 @end

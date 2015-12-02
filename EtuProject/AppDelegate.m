@@ -11,6 +11,9 @@
 #import "PckData.h"
 #import "RDVTabBarItem.h"
 
+#import "SleepingRecordViewController.h"
+#import "SportRecordViewController.h"
+
 @interface AppDelegate ()<UINavigationControllerDelegate, RDVTabBarControllerDelegate>
 
 @end
@@ -206,8 +209,29 @@
     
     self.home		= [[HomeViewController alloc] init];
     self.record     = [[RecordViewController alloc] init];
+    {
+        SportRecordViewController *sportRecord = [[SportRecordViewController alloc] init];
+        UINavigationController	*recordTab1	= [[UINavigationController alloc]initWithRootViewController:sportRecord];
+        [recordTab1 setNavigationBarHidden:YES];
+        
+        SleepingRecordViewController *sleepRecord = [[SleepingRecordViewController alloc] init];
+        UINavigationController	*recordTab2	= [[UINavigationController alloc]initWithRootViewController:sleepRecord];
+        [recordTab2 setNavigationBarHidden:YES];
+        
+        self.record.sport = sportRecord;
+        self.record.sleep = sleepRecord;
+        
+        recordTab1.delegate = (id)self.record;
+        recordTab2.delegate = (id)self.record;
+        
+        self.record.viewControllers = @[recordTab1, recordTab2];
+        [self.record setTabBarHidden:YES animated:NO];
+        [self.record customizeTabBarForController:self.record];
+    }
+    
     self.wallet     = [[WalletViewController alloc] init];
     self.rootTabbarController		= [[RDVTabBarController alloc]init];
+    self.rootTabbarController.view.backgroundColor = rgbColor(249, 249, 250);
     _rootTabbarController.delegate	= self;
     UINavigationController	*tab1	= [[UINavigationController alloc]initWithRootViewController:_record];
     [tab1 setNavigationBarHidden:YES];
@@ -245,7 +269,7 @@
     NSArray *titiles = [NSArray arrayWithObjects:@"运动",@"首页",@"钱包", nil];
     
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
-        item.backgroundColor = rgbColor(225, 225, 225);
+        item.backgroundColor = rgbColor(242, 242, 242);
         
         [item setBackgroundSelectedImage:selectedBg withUnselectedImage:normalBg];
         UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"%d_selected", index]];
@@ -301,11 +325,10 @@
 {
     NSUInteger index = [tabBarController.viewControllers indexOfObject:viewController];
     
-//    if (index == 1 || index == 2 || index == 4) {
-//        if ([self checkNeedLogin]) {
-//            return NO;
-//        }
-//    }
+    if (index == 0) {
+        self.rootTabbarController.tabBarHidden = YES;
+        return YES;
+    }
     
     [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%ld",index] forKey:@"lastIndex"];
     
@@ -323,13 +346,21 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (navigationController.viewControllers.count == 1) {
-        [APP_DELEGATE.rootTabbarController setTabBarHidden:NO animated:NO];
+        NSUInteger index = [self.rootTabbarController.viewControllers indexOfObject:navigationController];
+        
+        if (index == 0) {
+            [APP_DELEGATE.rootTabbarController setTabBarHidden:YES animated:YES];
+        }
+        else
+        {
+            [APP_DELEGATE.rootTabbarController setTabBarHidden:NO animated:YES];
+        }
         [UIView animateWithDuration:.0f animations:^{
             APP_DELEGATE.rootTabbarController.tabBar.alpha = 1.0f;
         } completion:^(BOOL finished) {}];
     } else if (navigationController.viewControllers.count == 2) {
         [UIView animateWithDuration:.0f animations:^{
-            APP_DELEGATE.rootTabbarController.tabBar.alpha = .0f;
+            APP_DELEGATE.rootTabbarController.tabBar.alpha = 0.0f;
         } completion:^(BOOL finished) {}];
         [APP_DELEGATE.rootTabbarController setTabBarHidden:YES animated:NO];
     }
