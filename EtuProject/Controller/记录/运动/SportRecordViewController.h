@@ -8,10 +8,12 @@
 
 #import "BaseViewController.h"
 #import "RecordViewControllerDelegate.h"
+#import "PPChart.h"
 
 @interface SportRecordViewController : BaseViewController
 
 @property (nonatomic, assign) id<RecordViewControllerDelegate> delegate;
+
 
 @end
 

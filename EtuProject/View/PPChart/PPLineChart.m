@@ -2,8 +2,8 @@
 //  PPLineChart.m
 //  EtuProject
 //
-//  Created by shake on 14-7-24.
-//  Copyright (c) 2014年 uyiuyao. All rights reserved.
+//  Created by 王家兴 on 15/12/1.
+//  Copyright © 2015年 王家兴. All rights reserved.
 //
 
 #import "PPLineChart.h"
@@ -22,20 +22,19 @@
         // Initialization code
         self.clipsToBounds = YES;
         
-        _yLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 50, self.bounds.size.height - PPLabelHeight)];
-//        _yLabelsScrollView.backgroundColor = [UIColor redColor];
+        _yLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-10, 0, 50, self.bounds.size.height - PPLabelHeight-10)];
         _yLabelsScrollView.delegate = self;
         _yLabelsScrollView.transform = CGAffineTransformMakeRotation(M_PI);
         [self addSubview:_yLabelsScrollView];
         
-        _chartScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, 0, self.bounds.size.width - 60, self.bounds.size.height - PPLabelHeight)];
-//        _chartScrollView.backgroundColor = [UIColor blueColor];
+        _chartScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, 0, self.bounds.size.width - 60, self.bounds.size.height - PPLabelHeight - 10)];
         _chartScrollView.delegate = self;
         _chartScrollView.transform = CGAffineTransformMakeRotation(M_PI);
+        _chartScrollView.showsHorizontalScrollIndicator = NO;
+        _chartScrollView.showsVerticalScrollIndicator = NO;
         [self addSubview:_chartScrollView];
         
-        _xLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, _chartScrollView.frame.size.height, self.bounds.size.width - 60 , PPLabelHeight)];
-//        _xLabelsScrollView.backgroundColor = [UIColor greenColor];
+        _xLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, _chartScrollView.frame.size.height, self.bounds.size.width - 60 , PPLabelHeight+10)];
         _xLabelsScrollView.delegate = self;
         _xLabelsScrollView.userInteractionEnabled = NO;
         [self addSubview:_xLabelsScrollView];
@@ -138,7 +137,7 @@
     
     for (int i=0; i<xLabels.count; i++) {
         NSString *labelText = xLabels[i];
-        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake((i+7) * _xLabelWidth - 10 - _xLabels.count *_xLabelWidth, 0, _xLabelWidth, PPLabelHeight)];
+        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake((i+7) * _xLabelWidth - 10 - _xLabels.count *_xLabelWidth, 10, _xLabelWidth, PPLabelHeight)];
         label.text = labelText;
         [_xLabelsScrollView addSubview:label];
         
@@ -292,7 +291,7 @@
         _chartLine.strokeEnd = 1.0;
         
         _chartScrollView.contentSize = CGSizeMake(10+_xLabels.count*_xLabelWidth, 31*44);
-        _chartScrollView.contentOffset = CGPointMake(10+_xLabels.count*_xLabelWidth - _chartScrollView.frame.size.width, grade * chartCavanHeight);
+        _chartScrollView.contentOffset = CGPointMake(10+_xLabels.count*_xLabelWidth - _chartScrollView.frame.size.width, grade * chartCavanHeight -10);
 
     }
 }
@@ -340,9 +339,9 @@
         _yLabelsScrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y);
     }
     
-    if (scrollView == _xLabelsScrollView) {
-        _chartScrollView.contentOffset = CGPointMake(-_xLabelsScrollView.contentOffset.x, _chartScrollView.contentOffset.y);
-    }
+//    if (scrollView == _xLabelsScrollView) {
+//        _chartScrollView.contentOffset = CGPointMake(-_xLabelsScrollView.contentOffset.x, _chartScrollView.contentOffset.y);
+//    }
     
     if (scrollView == _yLabelsScrollView) {
         _chartScrollView.contentOffset = CGPointMake(_chartScrollView.contentOffset.x,  _yLabelsScrollView.contentOffset.y);

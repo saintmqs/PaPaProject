@@ -2,8 +2,8 @@
 //  PNChartLabel.m
 //  EtuProject
 //
-//  Created by shake on 14-7-24.
-//  Copyright (c) 2014年 uyiuyao. All rights reserved.
+//  Created by 王家兴 on 15/12/1.
+//  Copyright © 2015年 王家兴. All rights reserved.
 //
 
 #import "PPChartLabel.h"
@@ -20,7 +20,7 @@
         [self setMinimumScaleFactor:5.0f];
         [self setNumberOfLines:1];
         [self setFont:[UIFont boldSystemFontOfSize:9.0f]];
-        [self setTextColor: PPDeepGrey];
+        [self setTextColor: PPWhite];
         self.backgroundColor = [UIColor clearColor];
         [self setTextAlignment:NSTextAlignmentCenter];
         self.userInteractionEnabled = YES;

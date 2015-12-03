@@ -17,6 +17,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.titleLabel.text = @"设置";
+    self.headerView.backgroundColor = rgbaColor(0, 155, 232, 1);
+    
+    _infoHeadView = [[UserInfoHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 170)];
+    [self.view addSubview:_infoHeadView];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,14 +30,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)didTopLeftButtonClick:(UIButton *)sender
+{
+    [self.navigationController popViewControllerAnimated:NO];
 }
-*/
 
 @end

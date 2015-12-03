@@ -8,9 +8,11 @@
 
 #import "SportRecordViewController.h"
 
-@interface SportRecordViewController ()
+@interface SportRecordViewController ()<PPChartDataSource>
 {
     SportRecordGradientView *gradientView;
+    
+    PPChart *chartView;
 }
 @end
 
@@ -41,6 +43,8 @@
                                 (id)rgbaColor(21, 88, 168, 1).CGColor ];
     
     [self.view insertSubview:gradientView belowSubview:self.headerView];
+    
+    [self configChartView];
 
 }
 
@@ -54,6 +58,74 @@
     if (_delegate && [_delegate respondsToSelector:@selector(backToHome)]) {
         [_delegate backToHome];
     }
+}
+
+- (void)configChartView
+{
+    chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
+                                              withSource:self
+                                               withStyle:PPChartLineStyle];
+    chartView.backgroundColor = [UIColor clearColor];
+    [chartView showInView:self.view];
+}
+
+- (NSArray *)getXTitles:(int)num
+{
+    NSMutableArray *xTitles = [NSMutableArray array];
+    for (int i=0; i<num; i++) {
+        NSString * str = [NSString stringWithFormat:@"R-%d",i];
+        [xTitles addObject:str];
+    }
+    return xTitles;
+}
+
+#pragma mark - @required
+//横坐标标题数组
+- (NSArray *)PPChart_xLableArray:(PPChart *)chart
+{
+    
+    return [self getXTitles:30];
+    //    return [self getXTitles:20];
+}
+//数值多重数组
+- (NSArray *)PPChart_yValueArray:(PPChart *)chart
+{
+    NSArray *ary = @[@"1",@"2.4",@"5.2",@"3.1",@"7",@"10",@"12.5",@"9",@"0",@"",@"3"];
+    
+    return @[ary];
+}
+
+#pragma mark - @optional
+//颜色数组
+- (NSArray *)PPChart_ColorArray:(PPChart *)chart
+{
+    return @[PPGreen,PPRed,PPBrown];
+}
+
+//显示数值范围
+- (CGRange)PPChartChooseRangeInLineChart:(PPChart *)chart
+{
+    return CGRangeMake(20, 0);
+}
+
+#pragma mark 折线图专享功能
+
+//标记数值区域
+- (CGRange)PPChartMarkRangeInLineChart:(PPChart *)chart
+{
+    return CGRangeZero;
+}
+
+//判断显示横线条
+- (BOOL)PPChart:(PPChart *)chart ShowHorizonLineAtIndex:(NSInteger)index
+{
+    return YES;
+}
+
+//判断显示最大最小值
+- (BOOL)PPChart:(PPChart *)chart ShowMaxMinAtIndex:(NSInteger)index
+{
+    return YES;
 }
 @end
 
