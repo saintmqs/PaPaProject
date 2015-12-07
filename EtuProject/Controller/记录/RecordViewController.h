@@ -19,4 +19,5 @@
 @property (nonatomic,assign) BOOL isRootViewLaunched;
 
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController;
+
 @end

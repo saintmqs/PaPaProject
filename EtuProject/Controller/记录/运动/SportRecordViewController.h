@@ -10,11 +10,11 @@
 #import "RecordViewControllerDelegate.h"
 #import "PPChart.h"
 
-@interface SportRecordViewController : BaseViewController
+@interface SportRecordViewController : BaseViewController<PPChartDataSource>
 
 @property (nonatomic, assign) id<RecordViewControllerDelegate> delegate;
 
-
+@property (nonatomic, strong) PPChart *chartView;
 @end
 
 #pragma mark - Gradient View

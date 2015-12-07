@@ -7,12 +7,13 @@
 //
 
 #import "SportRecordViewController.h"
+#import "RFSegmentView.h"
 
-@interface SportRecordViewController ()<PPChartDataSource>
+@interface SportRecordViewController ()<RFSegmentViewDelegate>
 {
     SportRecordGradientView *gradientView;
     
-    PPChart *chartView;
+    RFSegmentView* segmentView;
 }
 @end
 
@@ -37,12 +38,11 @@
         viewFrameHeight = 280;
     }
     
-    gradientView = [[SportRecordGradientView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, viewFrameY + viewFrameHeight)];
-    gradientView.locations = @[ @0.0f, @1.f];
-    gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
-                                (id)rgbaColor(21, 88, 168, 1).CGColor ];
+    UIImageView *bgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, viewFrameY + viewFrameHeight)];
+    bgView.backgroundColor = rgbaColor(0, 156, 233, 1);
+    [self.view insertSubview:bgView belowSubview:self.headerView];
     
-    [self.view insertSubview:gradientView belowSubview:self.headerView];
+    [self configSegment];
     
     [self configChartView];
 
@@ -60,13 +60,41 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (_chartView) {
+        [_chartView coordinatesCorrection];
+    }
+}
+
+- (void)configSegment
+{
+    segmentView = [[RFSegmentView alloc] initWithFrame:CGRectMake((mScreenWidth - 180)/2, self.headerView.bottom, 180, 40) items:@[@"日",@"周",@"月"]];
+    segmentView.tintColor       = rgbColor(0, 180, 246);
+    segmentView.delegate        = self;
+    
+    [self.view addSubview:segmentView];
+}
+
 - (void)configChartView
 {
-    chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
+    _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
                                               withSource:self
                                                withStyle:PPChartLineStyle];
-    chartView.backgroundColor = [UIColor clearColor];
-    [chartView showInView:self.view];
+    
+    _chartView.backgroundColor = [UIColor clearColor];
+    [_chartView showInView:self.view];
+    
+    gradientView = [[SportRecordGradientView alloc] initWithFrame:CGRectMake(10+50, _chartView.frameY, mScreenWidth - 60, _chartView.frameHeight - 10)];
+    gradientView.locations = @[ @0.0f, @0.2f,@0.5f, @0.8, @1.f];
+    gradientView.CGColors = @[  (id)rgbaColor(0, 156, 233, 0.9).CGColor,
+                                (id)rgbaColor(0, 156, 233, 0.2).CGColor,
+                                (id)rgbaColor(0, 156, 233, 0.1).CGColor,
+                                (id)rgbaColor(0, 156, 233, 0.2).CGColor,
+                                (id)rgbaColor(0, 156, 233, 0.9).CGColor ];
+    
+    [self.view addSubview:gradientView];
 }
 
 - (NSArray *)getXTitles:(int)num

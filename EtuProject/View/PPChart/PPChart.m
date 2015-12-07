@@ -89,6 +89,7 @@
 		
         
 		[_lineChart strokeChart];
+        [_lineChart coordinatesCorrection];
 
 	}else if (self.chartStyle == PPChartBarStyle)
 	{
@@ -121,7 +122,10 @@
 	
 }
 
-
+-(void)coordinatesCorrection
+{
+    [self.lineChart coordinatesCorrection];
+}
 
 @end
 

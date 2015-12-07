@@ -60,6 +60,8 @@ typedef enum {
 
 -(void)strokeChart;
 
+-(void)coordinatesCorrection;
+
 @end
 
 #pragma mark - Gradient View

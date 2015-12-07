@@ -60,6 +60,29 @@
     }
 }
 
+- (void)tabBar:(RDVTabBar *)tabBar didSelectItemAtIndex:(NSInteger)index {
+    if (index < 0 || index >= [[self viewControllers] count]) {
+        return;
+    }
+    
+    [self setSelectedIndex:index];
+    
+    [self didSelectViewController:[self viewControllers][index]];
+}
+
+- (BOOL)didSelectViewController:(UIViewController *)viewController
+{
+    NSUInteger index = [self.viewControllers indexOfObject:viewController];
+    
+    if (index == 0) {
+        UINavigationController *nav = (UINavigationController *)self.viewControllers[0];
+        
+        SportRecordViewController *vc = (SportRecordViewController *)nav.viewControllers[0];
+        [vc.chartView  coordinatesCorrection];
+    }
+    return YES;
+}
+
 #pragma mark - UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {

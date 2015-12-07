@@ -8,6 +8,7 @@
 
 #import "UserInfoViewController.h"
 #import "SettingsViewController.h"
+#import "UserInfoTableViewCell.h"
 
 @interface UserInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -34,6 +35,7 @@
     userInfoTable.delegate = self;
     userInfoTable.backgroundColor = [UIColor clearColor];
     userInfoTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [self.view addSubview:userInfoTable];
 }
 
@@ -57,7 +59,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return 10;
+        return 5;
     }
     return 0;
 }
@@ -79,14 +81,34 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    UserInfoTableViewCell *cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[UserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.backgroundColor = [UIColor whiteColor];
     }
     
-    if (indexPath.section != 0) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    switch (indexPath.section) {
+        case 0:
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.seperateLine.hidden = indexPath.row == 1;
+            cell.titleLabel.text = @"昵    称:";
+            cell.detailLabel.text = @"Saintmqs";
+            cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 20, (60-30)/2, mScreenWidth/2, 30);
+        }
+            break;
+        case 1:
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.seperateLine.hidden = indexPath.row == 4;
+            cell.titleLabel.text = @"性    别:";
+            cell.detailLabel.text = @"女";
+            cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
+
+        }
+            break;
+        default:
+            break;
     }
     
     return cell;

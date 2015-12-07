@@ -292,7 +292,6 @@
         
         _chartScrollView.contentSize = CGSizeMake(10+_xLabels.count*_xLabelWidth, 31*44);
         _chartScrollView.contentOffset = CGPointMake(10+_xLabels.count*_xLabelWidth - _chartScrollView.frame.size.width, grade * chartCavanHeight -10);
-
     }
 }
 
@@ -331,6 +330,11 @@
     return [_chartLabelsForX allObjects];
 }
 
+-(void)coordinatesCorrection
+{
+    _xLabelsScrollView.contentOffset = CGPointMake(-_chartScrollView.contentOffset.x, 0);
+}
+
 #pragma mark - UIScrollView Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -339,9 +343,10 @@
         _yLabelsScrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y);
     }
     
-//    if (scrollView == _xLabelsScrollView) {
+    if (scrollView == _xLabelsScrollView) {
+        _xLabelsScrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
 //        _chartScrollView.contentOffset = CGPointMake(-_xLabelsScrollView.contentOffset.x, _chartScrollView.contentOffset.y);
-//    }
+    }
     
     if (scrollView == _yLabelsScrollView) {
         _chartScrollView.contentOffset = CGPointMake(_chartScrollView.contentOffset.x,  _yLabelsScrollView.contentOffset.y);

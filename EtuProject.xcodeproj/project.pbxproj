@@ -222,6 +222,8 @@
 		A88A86F11C0DE3FB00D7C6D2 /* SleepingRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86F01C0DE3FB00D7C6D2 /* SleepingRecordViewController.m */; };
 		A88A86F41C0DE41500D7C6D2 /* SportRecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86F31C0DE41500D7C6D2 /* SportRecordViewController.m */; };
 		A88A86F91C1074EB00D7C6D2 /* UserInfoHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86F81C1074EB00D7C6D2 /* UserInfoHeadView.m */; };
+		A88A86FC1C11285D00D7C6D2 /* UserInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86FB1C11285D00D7C6D2 /* UserInfoTableViewCell.m */; };
+		A88A87001C15BD7D00D7C6D2 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = A88A86FF1C15BD7D00D7C6D2 /* RFSegmentView.m */; };
 		A891D6A71BEA404900E2102F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A61BEA404900E2102F /* main.m */; };
 		A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A891D6A91BEA404900E2102F /* AppDelegate.m */; };
 		A891D6B01BEA404900E2102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A891D6AE1BEA404900E2102F /* Main.storyboard */; };
@@ -699,6 +701,10 @@
 		A88A86F51C0E8FD200D7C6D2 /* RecordViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordViewControllerDelegate.h; sourceTree = "<group>"; };
 		A88A86F71C1074EB00D7C6D2 /* UserInfoHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoHeadView.h; sourceTree = "<group>"; };
 		A88A86F81C1074EB00D7C6D2 /* UserInfoHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoHeadView.m; sourceTree = "<group>"; };
+		A88A86FA1C11285D00D7C6D2 /* UserInfoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoTableViewCell.h; sourceTree = "<group>"; };
+		A88A86FB1C11285D00D7C6D2 /* UserInfoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoTableViewCell.m; sourceTree = "<group>"; };
+		A88A86FE1C15BD7D00D7C6D2 /* RFSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFSegmentView.h; sourceTree = "<group>"; };
+		A88A86FF1C15BD7D00D7C6D2 /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
 		A891D6A11BEA404900E2102F /* EtuProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EtuProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A891D6A51BEA404900E2102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A891D6A61BEA404900E2102F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -787,6 +793,7 @@
 		A8674B9A1BEA586400F3FB44 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				A88A86FD1C15BD7D00D7C6D2 /* RFSegmentView */,
 				A8674B9B1BEA586400F3FB44 /* ActionSheetPicker-3.0 */,
 				A8674BAE1BEA586400F3FB44 /* ASIHttp */,
 				A8674BE41BEA586400F3FB44 /* CustomSearchBar */,
@@ -2146,8 +2153,19 @@
 			children = (
 				A88A86F71C1074EB00D7C6D2 /* UserInfoHeadView.h */,
 				A88A86F81C1074EB00D7C6D2 /* UserInfoHeadView.m */,
+				A88A86FA1C11285D00D7C6D2 /* UserInfoTableViewCell.h */,
+				A88A86FB1C11285D00D7C6D2 /* UserInfoTableViewCell.m */,
 			);
 			path = "个人设置";
+			sourceTree = "<group>";
+		};
+		A88A86FD1C15BD7D00D7C6D2 /* RFSegmentView */ = {
+			isa = PBXGroup;
+			children = (
+				A88A86FE1C15BD7D00D7C6D2 /* RFSegmentView.h */,
+				A88A86FF1C15BD7D00D7C6D2 /* RFSegmentView.m */,
+			);
+			path = RFSegmentView;
 			sourceTree = "<group>";
 		};
 		A891D6981BEA404900E2102F = {
@@ -2400,6 +2418,7 @@
 				A8674E211BEA594D00F3FB44 /* NSObject+HTTPRequest.m in Sources */,
 				A8674DE91BEA586400F3FB44 /* UIImageView+WebCache.m in Sources */,
 				A8674D9C1BEA586400F3FB44 /* IQMediaCaptureController.m in Sources */,
+				A88A87001C15BD7D00D7C6D2 /* RFSegmentView.m in Sources */,
 				A8674D7F1BEA586400F3FB44 /* DAPageIndicatorView.m in Sources */,
 				A8674D751BEA586400F3FB44 /* ASICloudFilesObject.m in Sources */,
 				A8674DDC1BEA586400F3FB44 /* Reachability.m in Sources */,
@@ -2504,6 +2523,7 @@
 				A8896E1C1BEB910F00ADEB77 /* BaseJSONModel.m in Sources */,
 				A8674DA11BEA586400F3FB44 /* IQBottomContainerView.m in Sources */,
 				A88A86E81C0DE12100D7C6D2 /* PPBarChart.m in Sources */,
+				A88A86FC1C11285D00D7C6D2 /* UserInfoTableViewCell.m in Sources */,
 				A8674DDF1BEA586400F3FB44 /* SDWebImageCompat.m in Sources */,
 				A8674DE21BEA586400F3FB44 /* SDWebImageDownloaderOperation.m in Sources */,
 				A8674DAC1BEA586400F3FB44 /* JSONModelClassProperty.m in Sources */,

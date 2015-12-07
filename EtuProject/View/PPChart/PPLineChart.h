@@ -46,6 +46,8 @@
 
 -(void)strokeChart;
 
+-(void)coordinatesCorrection;
+
 - (NSArray *)chartLabelsForX;
 
 @end
