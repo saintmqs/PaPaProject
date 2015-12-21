@@ -26,7 +26,12 @@
     
     self.titleLabel.text = @"首页";
     
+    [self.leftNavButton setImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
+    [self.leftNavButton setImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateHighlighted];
+    self.leftNavButton.backgroundColor = [UIColor whiteColor];
     self.leftNavButton.hidden = NO;
+    
+    [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoBracelet"] forState:UIControlStateNormal];
     self.rightNavButton.hidden = NO;
     
     CGFloat viewFrameHeight;
@@ -181,7 +186,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 1;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -41,15 +41,12 @@
     
     int index = 1;
     
-    NSArray *titiles = [NSArray arrayWithObjects:@"运动",@"睡眠", nil];
-    
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         item.backgroundColor = rgbColor(242, 242, 242);
         
         [item setBackgroundSelectedImage:selectedBg withUnselectedImage:normalBg];
-        UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"%d_selected", index]];
-        UIImage *unselectedimage	= [UIImage imageNamed:[NSString stringWithFormat:@"%d_normal", index]];
-        item.title = titiles[index-1];
+        UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"bottomIco%dB_Hover", index]];
+        UIImage *unselectedimage	= [UIImage imageNamed:[NSString stringWithFormat:@"bottomIco%dB", index]];
         [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
         [item setBadgeBackgroundColor:color_orange];
         

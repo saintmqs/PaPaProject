@@ -1,0 +1,244 @@
+
+蓝牙消息代理协议类：BLEManagerDelegate 遵守协议：NSObject 接口如下：
+
+方法名：BLEManagerConnected
+功能描述：蓝牙已连接时该函数被调用
+参数：无
+返回值：空
+(void) BLEManagerConnected;
+
+方法名：BLEManagerDisconnected
+功能描述：蓝牙断开连接时该函数被调用
+参数：
+    error：蓝牙错误信息
+返回值：空
+(void) BLEManagerDisconnected:(NSError *)error;
+
+方法名：BLEManagerHasBalanceData
+功能描述：手环通过蓝牙返回钱包余额时该函数被调用
+参数：
+    balance：余额信息
+返回值：空
+(void) BLEManagerHasBalanceData:(NSDictionary *)balance;
+
+方法名：BLEManagerHasExpensesRecord
+功能描述：手环通过蓝牙返回消费记录时该函数被调用
+参数：
+    record：消费记录信息列表，每条记录以NSDictionary存储
+返回值：空
+(void) BLEManagerHasExpensesRecord:(NSArray *)record;
+
+方法名：BLEManagerStepTargetAchieved
+功能描述：手环通过蓝牙返回达到目标步数消息时该函数被调用
+参数：无
+返回值：空
+(void) BLEManagerStepTargetAchieved;
+
+方法名：BLEManagerAlarmClockStopped
+功能描述：手环通过蓝牙返回闹钟触摸停止震动时该函数被调用
+参数：无
+返回值：空
+(void) BLEManagerAlarmClockStopped;
+
+方法名：BLEManagerHasStepData
+功能描述：手环通过蓝牙返回步数信息时该函数被调用
+参数：
+    stepData：步数信息列表，每条记录以NSDictionary存储
+返回值：空
+(void) BLEManagerHasStepData:(NSArray *)stepData;
+
+方法名：BLEManagerHasSleepData
+功能描述：手环通过蓝牙返回睡眠信息时该函数被调用
+参数：
+    sleepData：睡眠信息列表，每条记录以NSDictionary存储
+返回值：空
+(void) BLEManagerHasSleepData:(NSArray *)sleepData;
+
+方法名：BLEManagerHasRemainingBatteryCapacity
+功能描述：手环通过蓝牙返回电池剩余电量时该函数被调用
+参数：
+    level：剩余电量百分比数值（暂定）
+返回值：空
+(void) BLEManagerHasRemainingBatteryCapacity:(NSUInteger)level;
+
+方法名：BLEManagerHasFirmwareVersion
+功能描述：手环通过蓝牙返回固件版本时该函数被调用
+参数：
+    version：手环固件版本
+返回值：空
+(void) BLEManagerHasFirmwareVersion:(NSString *)version;//手环返回固件版本
+
+*****************************************************************************************
+
+蓝牙管理类：BLEManager 继承：NSObject类 遵守协议：CBCentralManagerDelegate, CBPeripheralDelegate 接口如下：
+
+方法名：sharedManager(静态方法）
+功能描述：获取蓝牙管理类唯一对象
+参数：无
+返回值：蓝牙管理类的唯一对象
+(BLEManager *) sharedManager;
+
+方法名：setBLEDelegate
+功能描述：设置蓝牙消息代理
+参数：
+    delegate:蓝牙消息代理对象，需实现BLEManagerDelegate协议
+返回值：空
+(void) setBLEDelegate:(id<BLEManagerDelegate>) delegate;
+
+方法名：peripheralList
+功能描述：获取已搜索到的蓝牙外部设备列表
+参数：无
+返回值：已搜索到的蓝牙外部设备列表，内部数据类型是 CBPeripheral *
+(NSMutableArray *) peripheralList;
+
+方法名：setCurrentPeriPheral
+功能描述：设置当前想要连接的外部设备，deviceIndex是该设备在设备列表中的位置
+参数：
+    deviceIndex:设备在设备列表中的位置
+返回值：ture表示设置成功
+(BOOL) setCurrentPeriPheral:(NSUInteger) deviceIndex;
+
+方法名：getCurrentConnectedPeripheral
+功能描述：获取当前正在连接的外部设备对象
+参数：无
+返回值：当前正在连接的外部设备对象，没有则返回nil
+(CBPeripheral *) getCurrentConnectedPeripheral;
+
+方法名：startScan
+功能描述：开始扫描外部设备
+参数：无
+返回值：空
+(void) startScan;
+
+方法名：stopScan
+功能描述：停止扫描外部设备
+参数：无
+返回值：空
+(void) stopScan;
+
+方法名：startConnect
+功能描述：开始连接当前设备
+参数：无
+返回值：空
+(void) startConnect;
+
+方法名：cancelConnect
+功能描述：断开与当前设备的连接
+参数：无
+返回值：空
+(void) cancelConnect;
+
+方法名：connected
+功能描述：获取当前蓝牙连接状态
+参数：无
+返回值：true表示已连接
+(BOOL) connected;
+
+方法名：bindCurrentWristband
+功能描述：绑定当前已连接手环
+参数：
+    uuid:手机蓝牙的uuid
+返回值：空
+(void) bindCurrentWristband:(NSString *)uuid;
+
+方法名：getRemainingBatteryCapacity
+功能描述：获取当前电池剩余电量
+参数：无
+返回值：无
+(void) getRemainingBatteryCapacity;
+
+方法名：setWristbandTime
+功能描述：设置手环时间
+参数：
+    timestamp:目标时间戳
+返回值：空
+(void) setWristbandTime:(NSInteger) timestamp;
+
+方法名：getBalance
+功能描述：获取余额信息
+参数：无
+返回值：空
+(void) getBalance;
+
+方法名：getExpensesRecord
+功能描述：获取消费信息
+参数：无
+返回值：空
+(void) getExpensesRecord;
+
+方法名：addBalance
+功能描述：增加余额
+参数：
+    value:余额的增加值
+返回值：空
+(void) addBalance: (float)value;
+
+方法名：setStepTarget
+功能描述：设置目标步数
+参数：
+    steps:目标步数
+返回值：空
+(void) setStepTarget:(NSUInteger) steps;
+
+方法名：getStepData
+功能描述：获取步数信息
+参数：无
+返回值：空
+(void) getStepData;
+
+方法名：getSleepingData
+功能描述：获取睡眠信息
+参数：无
+返回值：空
+(void) getSleepingData;
+
+方法名：startPhoneRingShock
+功能描述：开始来电长震动
+参数：无
+返回值：空
+(void) startPhoneRingShock;
+
+方法名：stopPhoneRingShock
+功能描述：停止来电长震动
+参数：无
+返回值：空
+(void) stopPhoneRingShock;
+
+方法名：startMessageShock
+功能描述：开始信息短震动
+参数：无
+返回值：空
+(void) startMessageShock;
+
+方法名：setAlarmClock
+功能描述：设置手环闹钟
+参数：
+    alarm:手环闹钟数据
+返回值：空
+(void) setAlarmClock:(NSDictionary *) alarm;
+
+方法名：timeSynchronization
+功能描述：蓝牙时间同步
+参数：无
+返回值：空
+(void) timeSynchronization;
+
+方法名：removeSyncedData
+功能描述：删除已同步数据
+参数：
+    type:数据类型(睡眠信息，计步信息等)，暂未定义
+返回值：当前正在连接的外部设备对象，没有则返回nil
+(void) removeSyncedData:(NSUInteger) type;
+
+方法名：getFirmwareVersion
+功能描述：获取固件版本
+参数：无
+返回值：空
+(void) getFirmwareVersion;
+
+方法名：updateFirmware
+功能描述：固件升级
+参数：无
+返回值：空
+(void) updateFirmware;/
+

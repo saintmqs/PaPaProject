@@ -16,7 +16,8 @@
     if (self)
     {
         _iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, (60 - 20)/2, 20, 20)];
-        _iconImageView.backgroundColor = [UIColor orangeColor];
+        _iconImageView.backgroundColor = [UIColor clearColor];
+        [_iconImageView setImage:[UIImage imageNamed:@"icoA-1"]];
         [self addSubview:_iconImageView];
         
         _moneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImageView.frameRight + 20, 6, 200, 30)];

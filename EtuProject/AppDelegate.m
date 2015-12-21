@@ -81,17 +81,13 @@
     EAIntroPage *page1 = [EAIntroPage page];
     
     
-    page1.bgImage = [UIImage imageNamed:@"intro_1"];
+    page1.bgImage = [UIImage imageNamed:@"start2"];
     
     EAIntroPage *page2 = [EAIntroPage page];
     
-    page2.bgImage = [UIImage imageNamed:@"intro_2"];
+    page2.bgImage = [UIImage imageNamed:@"start3"];
     
-    EAIntroPage *page3 = [EAIntroPage page];
-    
-    page3.bgImage = [UIImage imageNamed:@"intro_3"];
-    
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.window.bounds andPages:@[page1, page2, page3]];
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.window.bounds andPages:@[page1, page2]];
     
     [intro showInView:self.window animateDuration:0.0];
 }
@@ -198,6 +194,7 @@
     self.userData = nil;
     [self setupViewControllers];
     self.window.rootViewController = self.rootTabbarController;
+    [APP_DELEGATE.rootTabbarController setSelectedIndex:1];
     [self checkNeedLogin];
 }
 
@@ -266,15 +263,12 @@
     
     int index = 1;
     
-    NSArray *titiles = [NSArray arrayWithObjects:@"运动",@"首页",@"钱包", nil];
-    
     for (RDVTabBarItem *item in [[tabBarController tabBar] items]) {
         item.backgroundColor = rgbColor(242, 242, 242);
         
         [item setBackgroundSelectedImage:selectedBg withUnselectedImage:normalBg];
-        UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"%d_selected", index]];
-        UIImage *unselectedimage	= [UIImage imageNamed:[NSString stringWithFormat:@"%d_normal", index]];
-        item.title = titiles[index-1];
+        UIImage *selectedimage		= [UIImage imageNamed:[NSString stringWithFormat:@"bottomIco%dA_Hover", index]];
+        UIImage *unselectedimage	= [UIImage imageNamed:[NSString stringWithFormat:@"bottomIco%dA", index]];
         [item setFinishedSelectedImage:selectedimage withFinishedUnselectedImage:unselectedimage];
         [item setBadgeBackgroundColor:color_orange];
         

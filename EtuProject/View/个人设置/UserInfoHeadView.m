@@ -16,9 +16,16 @@
     if (self) {
         self.backgroundColor = rgbaColor(0, 155, 232, 1);
         
-        _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 80)/2, 10, 80, 80)];
-        _headImageView.backgroundColor = [UIColor grayColor];
+        _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 78)/2, 20, 78, 78)];
+        _headImageView.backgroundColor = [UIColor whiteColor];
+        _headImageView.layer.cornerRadius = _headImageView.frameWidth/2;
+        _headImageView.layer.masksToBounds = YES;
         [self addSubview:_headImageView];
+        
+        UIImageView *headBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, 10, 90, 90)];
+        [headBgImageView setImage:[UIImage imageNamed:@"headBackground"]];
+        headBgImageView.center = CGPointMake(_headImageView.center.x, _headImageView.center.y - 2);
+        [self addSubview:headBgImageView];
         
         CGFloat labelsWidth = (mScreenWidth - 1)/3;
         UIView *infosView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frameHeight - 30 - 10, mScreenWidth , 30)];

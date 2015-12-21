@@ -8,12 +8,17 @@
 
 #import "SportRecordViewController.h"
 #import "RFSegmentView.h"
+#import "RecordDataTableCell.h"
 
-@interface SportRecordViewController ()<RFSegmentViewDelegate>
+@interface SportRecordViewController ()<RFSegmentViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
+    UIImageView *bgView;
+    
     SportRecordGradientView *gradientView;
     
     RFSegmentView* segmentView;
+    
+    UITableView *dataTable;
 }
 @end
 
@@ -38,7 +43,7 @@
         viewFrameHeight = 280;
     }
     
-    UIImageView *bgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, viewFrameY + viewFrameHeight)];
+    bgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, viewFrameY + viewFrameHeight)];
     bgView.backgroundColor = rgbaColor(0, 156, 233, 1);
     [self.view insertSubview:bgView belowSubview:self.headerView];
     
@@ -46,6 +51,7 @@
     
     [self configChartView];
 
+    [self configTable];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -79,9 +85,19 @@
 
 - (void)configChartView
 {
+    CGFloat chartHeight;
+    if (!iPhone4) {
+        chartHeight = 300;
+    }
+    else
+    {
+        chartHeight = 200;
+    }
+
     _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
                                               withSource:self
                                                withStyle:PPChartLineStyle];
+    _chartView.rows = (chartHeight - 20) / 44;
     
     _chartView.backgroundColor = [UIColor clearColor];
     [_chartView showInView:self.view];
@@ -95,6 +111,17 @@
                                 (id)rgbaColor(0, 156, 233, 0.9).CGColor ];
     
     [self.view addSubview:gradientView];
+}
+
+-(void)configTable
+{
+    dataTable = [[UITableView alloc] initWithFrame:CGRectMake(0, bgView.frameBottom, mScreenWidth, mScreenHeight-bgView.frameBottom-mTabBarHeight)];
+    dataTable.dataSource = self;
+    dataTable.delegate = self;
+    dataTable.backgroundColor = [UIColor clearColor];
+    dataTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    dataTable.bounces = NO;
+    [self.view addSubview:dataTable];
 }
 
 - (NSArray *)getXTitles:(int)num
@@ -133,7 +160,7 @@
 //显示数值范围
 - (CGRange)PPChartChooseRangeInLineChart:(PPChart *)chart
 {
-    return CGRangeMake(20, 0);
+    return CGRangeMake(3* _chartView.rows, 0);
 }
 
 #pragma mark 折线图专享功能
@@ -154,6 +181,37 @@
 - (BOOL)PPChart:(PPChart *)chart ShowMaxMinAtIndex:(NSInteger)index
 {
     return YES;
+}
+
+#pragma mark - Segment Delegate Method
+-(void)segmentViewDidSelected:(NSUInteger)index
+{
+    
+}
+
+#pragma mark - UITableView DataSource & Delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"RecordDataTableCell";
+    RecordDataTableCell *cell = (RecordDataTableCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[RecordDataTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.titlesArray = @[@"全天里程",@"全天步数",@"全天消耗"];
+    }
+    cell.dataArray = @[@"1公里",@"3000",@"24千卡"];
+    
+    return cell;
 }
 @end
 

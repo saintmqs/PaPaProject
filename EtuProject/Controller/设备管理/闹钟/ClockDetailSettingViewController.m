@@ -17,6 +17,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.titleLabel.text = @"闹钟设置";
+    self.titleLabel.textColor = [UIColor grayColor];
+    self.headerView.backgroundColor = rgbColor(242, 242, 242);
+    
+    [self resetNavButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -24,14 +29,20 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)resetNavButton
+{
+    [self.leftNavButton setImage:nil forState:UIControlStateNormal];
+    [self.leftNavButton setImage:nil forState:UIControlStateHighlighted];
+    [self.leftNavButton setTitle:@"取消" forState:UIControlStateNormal];
+    [self.leftNavButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    self.leftNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    
+    self.rightNavButton.hidden = NO;
+    [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    [self.rightNavButton setImage:nil forState:UIControlStateHighlighted];
+    [self.rightNavButton setTitle:@"确定" forState:UIControlStateNormal];
+    [self.rightNavButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
 }
-*/
 
 @end

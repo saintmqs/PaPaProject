@@ -8,9 +8,21 @@
 
 #import "BaseViewController.h"
 #import "RecordViewControllerDelegate.h"
+#import "PPChart.h"
 
-@interface SleepingRecordViewController : BaseViewController
+@interface SleepingRecordViewController : BaseViewController<PPChartDataSource>
 
 @property (nonatomic, assign) id<RecordViewControllerDelegate> delegate;
+
+@property (nonatomic, strong) PPChart *chartView;
+
+@end
+
+#pragma mark - Gradient View
+
+@interface SleepingRecordGradientView : UIView
+
+@property (nonatomic, strong) NSArray *CGColors;
+@property (nonatomic, strong) NSArray *locations;
 
 @end

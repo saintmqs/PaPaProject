@@ -7,7 +7,10 @@
 //
 
 #import "BaseViewController.h"
+#import "DeviceManagerHeadView.h"
 
 @interface DeviceManagerViewController : BaseViewController
+
+@property (nonatomic, strong) DeviceManagerHeadView *deviceHeadView;
 
 @end

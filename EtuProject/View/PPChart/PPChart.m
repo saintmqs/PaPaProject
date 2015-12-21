@@ -41,6 +41,7 @@
 	if (self.chartStyle == PPChartLineStyle) {
         if(!_lineChart){
             _lineChart = [[PPLineChart alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+10)];
+            _lineChart.rows = self.rows;
             [self addSubview:_lineChart];
         }
         //选择标记范围

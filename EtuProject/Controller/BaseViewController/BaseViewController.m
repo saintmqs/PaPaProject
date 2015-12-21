@@ -55,24 +55,25 @@
     [_headerView addSubview:_titleLabel];
     
     _leftNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _leftNavButton.frame = CGRectMake(0, 0, 44, 44);
-    _leftNavButton.backgroundColor = [UIColor grayColor];
-    [_leftNavButton setImage:[UIImage imageNamed:@"icon_back_normal"] forState:UIControlStateNormal];
-    [_leftNavButton setImage:[UIImage imageNamed:@"icon_back_highlight"] forState:UIControlStateHighlighted];
+    _leftNavButton.frame = CGRectMake(10, 0, 44, 44);
+    _leftNavButton.backgroundColor = [UIColor clearColor];
+    [_leftNavButton setImage:[UIImage imageNamed:@"topIcoLeftWrite"] forState:UIControlStateNormal];
+    [_leftNavButton setImage:[UIImage imageNamed:@"topIcoLeft"] forState:UIControlStateHighlighted];
     _leftNavButton.contentMode = UIViewContentModeScaleAspectFit;
     [_leftNavButton addTarget:self action:@selector(didTopLeftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     _rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _rightNavButton.frame = CGRectMake(mScreenWidth-44, 0, 44, 44);
-    _rightNavButton.backgroundColor = [UIColor grayColor];
+    _rightNavButton.frame = CGRectMake(mScreenWidth-44 - 10, 0, 44, 44);
+    _rightNavButton.backgroundColor = [UIColor clearColor];
+    [_rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
     _rightNavButton.contentMode = UIViewContentModeScaleAspectFit;
     [_rightNavButton addTarget:self action:@selector(didTopRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     if([[UIDevice currentDevice].systemVersion floatValue] >= 7.0)
     {
         _headerView.frame = CGRectMake(0, 0, mScreenWidth, 64);
-        _leftNavButton.frame = CGRectMake(0, 20, 44, 44);
-        _rightNavButton.frame = CGRectMake(mScreenWidth-44, 20, 44, 44);
+        _leftNavButton.frame = CGRectMake(10, 20, 44, 44);
+        _rightNavButton.frame = CGRectMake(mScreenWidth-44 - 10, 20, 44, 44);
         _titleLabel.frame = CGRectMake(_titleLabel.x, 20, _titleLabel.width, 44);
     }
     [_headerView addSubview:_leftNavButton];

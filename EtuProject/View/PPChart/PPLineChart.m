@@ -79,8 +79,8 @@
         _yValueMin = _chooseRange.min;
     }
 
-    float level = (_yValueMax-_yValueMin) /6;
-    CGFloat chartCavanHeight = self.frame.size.height - PPLabelHeight*3;
+    float level = (_yValueMax-_yValueMin) /self.rows;
+    CGFloat chartCavanHeight = self.frame.size.height - PPLabelHeight*self.rows/3;
     CGFloat levelHeight = 44;// chartCavanHeight /7.0;
 
     _yLabelsScrollView.contentSize =CGSizeMake(50, 30*levelHeight+5);
@@ -88,12 +88,11 @@
     for (int i=0; i<31; i++) {
         PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake(0.0,_yLabelsScrollView.contentSize.height - i*levelHeight, PPYLabelwidth, PPLabelHeight)];
 //        label.backgroundColor = [UIColor yellowColor];
-		label.text = [NSString stringWithFormat:@"%d:00",(int)(level * (30 - i)+_yValueMin)];
+		label.text = [NSString stringWithFormat:@"%.2f",(level * (30 - i)+_yValueMin)];
         label.transform = CGAffineTransformMakeRotation(M_PI);
 		[_yLabelsScrollView addSubview:label];
-        
-        
     }
+    
     if ([super respondsToSelector:@selector(setMarkRange:)]) {
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(PPYLabelwidth, (1-(_markRange.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+PPLabelHeight, self.frame.size.width-PPYLabelwidth, (_markRange.max-_markRange.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
         view.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.1];
@@ -220,7 +219,7 @@
         UIBezierPath *progressline = [UIBezierPath bezierPath];
         CGFloat firstValue = [[childAry objectAtIndex:0] floatValue];
         CGFloat xPosition = 20 + _xLabels.count*_xLabelWidth - _xLabelWidth;
-        CGFloat chartCavanHeight =  self.frame.size.height - PPLabelHeight*3;
+        CGFloat chartCavanHeight =  self.frame.size.height - PPLabelHeight*self.rows/3;
         
         float grade = ((float)firstValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
         NSLog(@"grade = %f",grade);
@@ -316,7 +315,7 @@
         label.font = [UIFont boldSystemFontOfSize:7];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
-        label.text = [NSString stringWithFormat:@"%d:00",(int)value];
+        label.text = [NSString stringWithFormat:@"%.2f",value];
         label.transform = CGAffineTransformMakeRotation(M_PI);
 
         [_chartScrollView addSubview:label];

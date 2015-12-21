@@ -24,6 +24,7 @@
 @property (strong, nonatomic) NSArray * yLabels;
 
 @property (strong, nonatomic) NSArray * yValues;
+@property (assign, nonatomic) CGFloat rows;
 
 @property (nonatomic, strong) NSArray * colors;
 

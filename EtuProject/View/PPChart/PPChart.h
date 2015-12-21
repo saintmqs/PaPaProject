@@ -54,6 +54,8 @@ typedef enum {
 
 @property (assign) PPChartStyle chartStyle;
 
+@property (assign) CGFloat rows;
+
 -(id)initwithPPChartDataFrame:(CGRect)rect withSource:(id<PPChartDataSource>)dataSource withStyle:(PPChartStyle)style;
 
 - (void)showInView:(UIView *)view;

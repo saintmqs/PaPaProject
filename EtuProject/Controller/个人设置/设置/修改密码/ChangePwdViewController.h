@@ -10,4 +10,9 @@
 
 @interface ChangePwdViewController : BaseViewController
 
+@property (nonatomic, strong) UITextField	*password;
+@property (nonatomic, strong) UITextField	*newpassword;
+@property (nonatomic, strong) UITextField	*reNewpassword;
+
+@property (nonatomic, strong) UIButton      *btnFinish;
 @end
