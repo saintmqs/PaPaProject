@@ -26,9 +26,16 @@
     
     self.titleLabel.text = @"首页";
     
-    [self.leftNavButton setImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
-    [self.leftNavButton setImage:[UIImage imageWithColor:[UIColor whiteColor]] forState:UIControlStateHighlighted];
-    self.leftNavButton.backgroundColor = [UIColor whiteColor];
+    [self.leftNavButton sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] forState:UIControlStateNormal placeholderImage:nil];
+    [self.leftNavButton sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] forState:UIControlStateHighlighted placeholderImage:nil];
+    CGRect leftNavButtonFrame = self.leftNavButton.frame;
+    leftNavButtonFrame.size = CGSizeMake(30, 30);
+    leftNavButtonFrame.origin.y = (self.headerView.frameHeight - 30)/2 + 10;
+    leftNavButtonFrame.origin.x = 20;
+    self.leftNavButton.frame = leftNavButtonFrame;
+    self.leftNavButton.layer.cornerRadius = self.leftNavButton.frameWidth/2;
+    self.leftNavButton.layer.masksToBounds = YES;
+
     self.leftNavButton.hidden = NO;
     
     [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoBracelet"] forState:UIControlStateNormal];
@@ -58,6 +65,8 @@
     [self.view insertSubview:gradientView belowSubview:self.headerView];
     
     [self.view addSubview:_indicatorView];
+    
+    [self requestData];
     
     [self changeBannersHeaderContent:self.indicatorView];
     
@@ -206,6 +215,18 @@
     DeviceManagerViewController *vc = [[DeviceManagerViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+#pragma mark - Http Request
+-(void)requestData
+{
+    [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], stepsToday, @"", @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            
+            NSLog(@"%@",data);
+        }
+    } url:kRequestUrl(@"Health", @"stepsMonitor")];
+}
 @end
 
 
@@ -238,5 +259,4 @@
 {
     ((CAGradientLayer *)self.layer).colors = CGColors;
 }
-
 @end

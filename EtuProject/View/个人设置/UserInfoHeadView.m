@@ -20,6 +20,7 @@
         _headImageView.backgroundColor = [UIColor whiteColor];
         _headImageView.layer.cornerRadius = _headImageView.frameWidth/2;
         _headImageView.layer.masksToBounds = YES;
+        [_headImageView sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] placeholderImage:nil];
         [self addSubview:_headImageView];
         
         UIImageView *headBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, 10, 90, 90)];

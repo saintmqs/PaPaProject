@@ -27,6 +27,8 @@
     
     //记录位置
     NSInteger stepIndex;
+    
+    UILabel *stepLabel;
 }
 @end
 
@@ -83,6 +85,12 @@
                                                  (id)CURRENTCOLOR.CGColor ];
     [self.view addSubview:_stepPickerView];
     
+    stepLabel = [[UILabel alloc] initWithFrame:CGRectMake(_stepPickerView.frameWidth-10, _stepPickerView.frameHeight/2-10, 30, 20)];
+    stepLabel.text = @"步";
+    stepLabel.textColor = [UIColor whiteColor];
+    stepLabel.font = [UIFont systemFontOfSize:16];
+    [_stepPickerView addSubview:stepLabel];
+    
     [_stepPickerView setSelectedRow:[indexArray[0] integerValue] animated:NO];
 }
 
@@ -95,6 +103,7 @@
 {
     [super viewDidLayoutSubviews];
     _stepPickerView.frame = CGRectMake((mScreenWidth - 140)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 140, 430);
+    stepLabel.frame = CGRectMake(_stepPickerView.frameWidth-10, _stepPickerView.frameHeight/2-10, 30, 20);
 }
 
 #pragma mark - 初始化赋值操作
@@ -130,6 +139,8 @@
         title = [NSString stringWithFormat:@"%@000",stepArray[row]];
         stepIndex = row;
     }
+    
+    [UserDataManager shareInstance].registModel.targetStep = [NSString stringWithFormat:@"%@000",stepArray[row]];
     
     self.title = title;
 }
@@ -198,8 +209,42 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    UIButton *button = (UIButton *)sender;
+    button.userInteractionEnabled = NO; //避免重复点击
+    
+    showViewHUD;
+    //用户二次信息添加
+    [self startRequestWithDict:registerbase([APP_DELEGATE.userData.uid integerValue], [UserDataManager shareInstance].registModel.birthday, [[UserDataManager shareInstance].registModel.sex integerValue], [[UserDataManager shareInstance].registModel.height integerValue], [[UserDataManager shareInstance].registModel.weight integerValue], [[UserDataManager shareInstance].registModel.targetStep integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            double delayInSeconds = 1.0;
+            __block SelectStepsViewController* bself = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                button.userInteractionEnabled = YES;
+                
+                SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+                [bself.navigationController pushViewController:vc animated:YES];
+            });
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"User", @"registerbase")];
 }
 
 

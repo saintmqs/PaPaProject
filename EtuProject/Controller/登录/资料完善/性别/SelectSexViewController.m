@@ -50,6 +50,9 @@
     maleButton.layer.cornerRadius = 80;
     maleButton.layer.masksToBounds = YES;
     maleButton.layer.borderWidth = 1;
+    [maleButton setImage:[UIImage imageNamed:@"icoSex1"] forState:UIControlStateNormal];
+    [maleButton setImage:[UIImage imageNamed:@"icoSex1_Hover"] forState:UIControlStateHighlighted];
+    [maleButton setImage:[UIImage imageNamed:@"icoSex1_Hover"] forState:UIControlStateSelected];
     [maleButton addTarget:self action:@selector(onHoldAction:) forControlEvents:UIControlEventTouchDown];
     
     femaleButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -59,6 +62,9 @@
     femaleButton.layer.masksToBounds = YES;
     femaleButton.layer.borderWidth = 1;
     femaleButton.layer.borderColor = femaleBorderColor.CGColor;
+    [femaleButton setImage:[UIImage imageNamed:@"icoSex2"] forState:UIControlStateNormal];
+    [femaleButton setImage:[UIImage imageNamed:@"icoSex2_Hover"] forState:UIControlStateHighlighted];
+    [femaleButton setImage:[UIImage imageNamed:@"icoSex2_Hover"] forState:UIControlStateSelected];
     [femaleButton addTarget:self action:@selector(onHoldAction:) forControlEvents:UIControlEventTouchDown];
     [container addSubviews:maleButton, femaleButton, nil];
     
@@ -81,6 +87,7 @@
     addBtnAction(maleButton, @selector(onBtnAction:));
     addBtnAction(femaleButton, @selector(onBtnAction:));
     
+    [UserDataManager shareInstance].registModel.sex = @"1"; //默认男
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,11 +108,15 @@
     if (sender == maleButton) {
         maleButton.selected = YES;
         femaleButton.selected = NO;
+        
+        [UserDataManager shareInstance].registModel.sex = @"1";
     }
     else if (sender == femaleButton)
     {
         maleButton.selected = NO;
         femaleButton.selected = YES;
+        
+        [UserDataManager shareInstance].registModel.sex = @"2";
     }
 }
 

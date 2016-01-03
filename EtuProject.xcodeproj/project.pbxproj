@@ -17,6 +17,11 @@
 		A814024D1C242DCB00CFAB98 /* topIcoRevise@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A814024C1C242DCB00CFAB98 /* topIcoRevise@3x.png */; };
 		A81402511C242E3D00CFAB98 /* ClocksManagerTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402501C242E3D00CFAB98 /* ClocksManagerTableCell.m */; };
 		A81402551C282A6E00CFAB98 /* RecordDataTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402541C282A6E00CFAB98 /* RecordDataTableCell.m */; };
+		A81402591C29815000CFAB98 /* TrafficAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402581C29815000CFAB98 /* TrafficAccountViewController.m */; };
+		A814025D1C36A7BB00CFAB98 /* UserDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A814025C1C36A7BB00CFAB98 /* UserDataManager.m */; };
+		A81402601C36A9ED00CFAB98 /* RegistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A814025F1C36A9ED00CFAB98 /* RegistModel.m */; };
+		A81402641C38C58A00CFAB98 /* SystemStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402631C38C58A00CFAB98 /* SystemStateManager.m */; };
+		A81402681C38CB4600CFAB98 /* SelectBraceletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402671C38CB4600CFAB98 /* SelectBraceletViewController.m */; };
 		A82E33D81C1D1307006A6EE2 /* headBackground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33A51C1D1307006A6EE2 /* headBackground@3x.png */; };
 		A82E33E31C1D1307006A6EE2 /* icoSex1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33B01C1D1307006A6EE2 /* icoSex1@3x.png */; };
 		A82E33E41C1D1307006A6EE2 /* icoSex2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33B11C1D1307006A6EE2 /* icoSex2@3x.png */; };
@@ -46,8 +51,8 @@
 		A82E343D1C1FEB24006A6EE2 /* searchBtnBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E34171C1FEB24006A6EE2 /* searchBtnBackground.png */; };
 		A82E343E1C1FEB24006A6EE2 /* searchIco1.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E34181C1FEB24006A6EE2 /* searchIco1.png */; };
 		A82E343F1C1FEB24006A6EE2 /* searchIco2.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E34191C1FEB24006A6EE2 /* searchIco2.png */; };
-		A82E34401C1FEB24006A6EE2 /* searchIco3.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341A1C1FEB24006A6EE2 /* searchIco3.png */; };
-		A82E34411C1FEB24006A6EE2 /* searchIco4.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341B1C1FEB24006A6EE2 /* searchIco4.png */; };
+		A82E34401C1FEB24006A6EE2 /* searchIco3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341A1C1FEB24006A6EE2 /* searchIco3@3x.png */; };
+		A82E34411C1FEB24006A6EE2 /* searchIco4@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341B1C1FEB24006A6EE2 /* searchIco4@3x.png */; };
 		A82E34421C1FEB24006A6EE2 /* start1.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341C1C1FEB24006A6EE2 /* start1.png */; };
 		A82E34431C1FEB24006A6EE2 /* start2.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341D1C1FEB24006A6EE2 /* start2.png */; };
 		A82E34441C1FEB24006A6EE2 /* start3.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E341E1C1FEB24006A6EE2 /* start3.png */; };
@@ -308,6 +313,16 @@
 		A81402501C242E3D00CFAB98 /* ClocksManagerTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClocksManagerTableCell.m; sourceTree = "<group>"; };
 		A81402531C282A6E00CFAB98 /* RecordDataTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordDataTableCell.h; sourceTree = "<group>"; };
 		A81402541C282A6E00CFAB98 /* RecordDataTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordDataTableCell.m; sourceTree = "<group>"; };
+		A81402571C29815000CFAB98 /* TrafficAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrafficAccountViewController.h; sourceTree = "<group>"; };
+		A81402581C29815000CFAB98 /* TrafficAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrafficAccountViewController.m; sourceTree = "<group>"; };
+		A814025B1C36A7BB00CFAB98 /* UserDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDataManager.h; sourceTree = "<group>"; };
+		A814025C1C36A7BB00CFAB98 /* UserDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDataManager.m; sourceTree = "<group>"; };
+		A814025E1C36A9ED00CFAB98 /* RegistModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistModel.h; sourceTree = "<group>"; };
+		A814025F1C36A9ED00CFAB98 /* RegistModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistModel.m; sourceTree = "<group>"; };
+		A81402621C38C58A00CFAB98 /* SystemStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemStateManager.h; sourceTree = "<group>"; };
+		A81402631C38C58A00CFAB98 /* SystemStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemStateManager.m; sourceTree = "<group>"; };
+		A81402661C38CB4600CFAB98 /* SelectBraceletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectBraceletViewController.h; sourceTree = "<group>"; };
+		A81402671C38CB4600CFAB98 /* SelectBraceletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectBraceletViewController.m; sourceTree = "<group>"; };
 		A82E33A51C1D1307006A6EE2 /* headBackground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "headBackground@3x.png"; sourceTree = "<group>"; };
 		A82E33B01C1D1307006A6EE2 /* icoSex1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icoSex1@3x.png"; sourceTree = "<group>"; };
 		A82E33B11C1D1307006A6EE2 /* icoSex2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icoSex2@3x.png"; sourceTree = "<group>"; };
@@ -337,8 +352,8 @@
 		A82E34171C1FEB24006A6EE2 /* searchBtnBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchBtnBackground.png; sourceTree = "<group>"; };
 		A82E34181C1FEB24006A6EE2 /* searchIco1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIco1.png; sourceTree = "<group>"; };
 		A82E34191C1FEB24006A6EE2 /* searchIco2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIco2.png; sourceTree = "<group>"; };
-		A82E341A1C1FEB24006A6EE2 /* searchIco3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIco3.png; sourceTree = "<group>"; };
-		A82E341B1C1FEB24006A6EE2 /* searchIco4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIco4.png; sourceTree = "<group>"; };
+		A82E341A1C1FEB24006A6EE2 /* searchIco3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchIco3@3x.png"; sourceTree = "<group>"; };
+		A82E341B1C1FEB24006A6EE2 /* searchIco4@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchIco4@3x.png"; sourceTree = "<group>"; };
 		A82E341C1C1FEB24006A6EE2 /* start1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start1.png; sourceTree = "<group>"; };
 		A82E341D1C1FEB24006A6EE2 /* start2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start2.png; sourceTree = "<group>"; };
 		A82E341E1C1FEB24006A6EE2 /* start3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = start3.png; sourceTree = "<group>"; };
@@ -897,6 +912,42 @@
 			path = "运动记录";
 			sourceTree = "<group>";
 		};
+		A81402561C29811400CFAB98 /* 公交卡账户 */ = {
+			isa = PBXGroup;
+			children = (
+				A81402571C29815000CFAB98 /* TrafficAccountViewController.h */,
+				A81402581C29815000CFAB98 /* TrafficAccountViewController.m */,
+			);
+			path = "公交卡账户";
+			sourceTree = "<group>";
+		};
+		A814025A1C36A77100CFAB98 /* UserDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				A814025B1C36A7BB00CFAB98 /* UserDataManager.h */,
+				A814025C1C36A7BB00CFAB98 /* UserDataManager.m */,
+			);
+			path = UserDataManager;
+			sourceTree = "<group>";
+		};
+		A81402611C38C57600CFAB98 /* SystemStateManager */ = {
+			isa = PBXGroup;
+			children = (
+				A81402621C38C58A00CFAB98 /* SystemStateManager.h */,
+				A81402631C38C58A00CFAB98 /* SystemStateManager.m */,
+			);
+			path = SystemStateManager;
+			sourceTree = "<group>";
+		};
+		A81402651C38CB2800CFAB98 /* 选择设备 */ = {
+			isa = PBXGroup;
+			children = (
+				A81402661C38CB4600CFAB98 /* SelectBraceletViewController.h */,
+				A81402671C38CB4600CFAB98 /* SelectBraceletViewController.m */,
+			);
+			path = "选择设备";
+			sourceTree = "<group>";
+		};
 		A82E33931C1D1307006A6EE2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -932,8 +983,8 @@
 				A82E34171C1FEB24006A6EE2 /* searchBtnBackground.png */,
 				A82E34181C1FEB24006A6EE2 /* searchIco1.png */,
 				A82E34191C1FEB24006A6EE2 /* searchIco2.png */,
-				A82E341A1C1FEB24006A6EE2 /* searchIco3.png */,
-				A82E341B1C1FEB24006A6EE2 /* searchIco4.png */,
+				A82E341A1C1FEB24006A6EE2 /* searchIco3@3x.png */,
+				A82E341B1C1FEB24006A6EE2 /* searchIco4@3x.png */,
 				A82E341C1C1FEB24006A6EE2 /* start1.png */,
 				A82E341D1C1FEB24006A6EE2 /* start2.png */,
 				A82E341E1C1FEB24006A6EE2 /* start3.png */,
@@ -1979,6 +2030,8 @@
 				A8896E1B1BEB910F00ADEB77 /* BaseJSONModel.m */,
 				A8896E6B1BEE468700ADEB77 /* CustomPickerModel.h */,
 				A8896E6C1BEE468700ADEB77 /* CustomPickerModel.m */,
+				A814025E1C36A9ED00CFAB98 /* RegistModel.h */,
+				A814025F1C36A9ED00CFAB98 /* RegistModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2031,6 +2084,7 @@
 		A8896E071BEB8CC400ADEB77 /* 登录 */ = {
 			isa = PBXGroup;
 			children = (
+				A81402651C38CB2800CFAB98 /* 选择设备 */,
 				A89436801C01A3C500D160BD /* 搜索手环 */,
 				A8896E081BEB8CC400ADEB77 /* 注册 */,
 				A8896E091BEB8CC400ADEB77 /* 设置密码 */,
@@ -2072,6 +2126,7 @@
 		A8896E0B1BEB8CC400ADEB77 /* 钱包 */ = {
 			isa = PBXGroup;
 			children = (
+				A81402561C29811400CFAB98 /* 公交卡账户 */,
 				A814024B1C22F41C00CFAB98 /* 支付密码 */,
 				A8896E271BEBA30000ADEB77 /* WalletViewController.h */,
 				A8896E281BEBA30000ADEB77 /* WalletViewController.m */,
@@ -2387,6 +2442,8 @@
 				A8674E191BEA58C300F3FB44 /* View */,
 				A8674E151BEA58C300F3FB44 /* Controller */,
 				A8674E161BEA58C300F3FB44 /* HttpManager */,
+				A81402611C38C57600CFAB98 /* SystemStateManager */,
+				A814025A1C36A77100CFAB98 /* UserDataManager */,
 				A8674E181BEA58C300F3FB44 /* Resource */,
 				A8674B9A1BEA586400F3FB44 /* Util */,
 				A891D6A81BEA404900E2102F /* AppDelegate.h */,
@@ -2527,7 +2584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A891D6B01BEA404900E2102F /* Main.storyboard in Resources */,
-				A82E34411C1FEB24006A6EE2 /* searchIco4.png in Resources */,
+				A82E34411C1FEB24006A6EE2 /* searchIco4@3x.png in Resources */,
 				A8674DD01BEA586400F3FB44 /* Oxygen.bundle in Resources */,
 				A82E34421C1FEB24006A6EE2 /* start1.png in Resources */,
 				A82E34391C1FEB24006A6EE2 /* paymentIcoBack.png in Resources */,
@@ -2545,7 +2602,7 @@
 				A82E34361C1FEB24006A6EE2 /* paymentIco4.png in Resources */,
 				A82E342D1C1FEB24006A6EE2 /* bottomIco1B@3x.png in Resources */,
 				A82E33E41C1D1307006A6EE2 /* icoSex2@3x.png in Resources */,
-				A82E34401C1FEB24006A6EE2 /* searchIco3.png in Resources */,
+				A82E34401C1FEB24006A6EE2 /* searchIco3@3x.png in Resources */,
 				A82E342C1C1FEB24006A6EE2 /* bottomIco1B_Hover@3x.png in Resources */,
 				A82E342A1C1FEB24006A6EE2 /* bottomIco3A_Hover@3x.png in Resources */,
 				A8674DD11BEA586400F3FB44 /* MJRefresh.bundle in Resources */,
@@ -2607,6 +2664,7 @@
 				A88A86F41C0DE41500D7C6D2 /* SportRecordViewController.m in Sources */,
 				A8674DE71BEA586400F3FB44 /* UIImage+MultiFormat.m in Sources */,
 				A8674D6C1BEA586400F3FB44 /* ASIFormDataRequest.m in Sources */,
+				A81402681C38CB4600CFAB98 /* SelectBraceletViewController.m in Sources */,
 				A8674DDB1BEA586400F3FB44 /* RDVTabBarItem.m in Sources */,
 				A8674D8A1BEA586400F3FB44 /* IQNSArray+Sort.m in Sources */,
 				A8674DC01BEA586400F3FB44 /* UIButton+Oxygen.m in Sources */,
@@ -2623,6 +2681,7 @@
 				A8674DBD1BEA586400F3FB44 /* UIImage+Oxygen.m in Sources */,
 				A8674D851BEA586400F3FB44 /* EAIntroView.m in Sources */,
 				A88A86BC1C093BE900D7C6D2 /* PPPageControl.m in Sources */,
+				A81402641C38C58A00CFAB98 /* SystemStateManager.m in Sources */,
 				A8674D8B1BEA586400F3FB44 /* IQUIView+Hierarchy.m in Sources */,
 				A81402551C282A6E00CFAB98 /* RecordDataTableCell.m in Sources */,
 				A8674D981BEA586400F3FB44 /* IQAssetsCell.m in Sources */,
@@ -2657,6 +2716,7 @@
 				A8674D7F1BEA586400F3FB44 /* DAPageIndicatorView.m in Sources */,
 				A8674D751BEA586400F3FB44 /* ASICloudFilesObject.m in Sources */,
 				A8674DDC1BEA586400F3FB44 /* Reachability.m in Sources */,
+				A814025D1C36A7BB00CFAB98 /* UserDataManager.m in Sources */,
 				A88A86BA1C093BE900D7C6D2 /* PPAnimatedDotView.m in Sources */,
 				A89608B61BEF9ABC00BAC743 /* CSPickerView.m in Sources */,
 				A89608BF1BF242D700BAC743 /* SelectStepsViewController.m in Sources */,
@@ -2691,10 +2751,12 @@
 				A8674DD81BEA586400F3FB44 /* JZLocationConverter.m in Sources */,
 				A8896E291BEBA30000ADEB77 /* WalletViewController.m in Sources */,
 				A8896E431BEBABF700ADEB77 /* ClocksEditListViewController.m in Sources */,
+				A81402601C36A9ED00CFAB98 /* RegistModel.m in Sources */,
 				A8674D611BEA586400F3FB44 /* ActionSheetCustomPicker.m in Sources */,
 				A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */,
 				A8674E0D1BEA586400F3FB44 /* mask.c in Sources */,
 				A8674D971BEA586400F3FB44 /* IQAssetsAlbumViewCell.m in Sources */,
+				A81402591C29815000CFAB98 /* TrafficAccountViewController.m in Sources */,
 				A8674DB81BEA586400F3FB44 /* NSNumber+Oxygen.m in Sources */,
 				A8674DD91BEA586400F3FB44 /* RDVTabBar.m in Sources */,
 				A8674DA01BEA586400F3FB44 /* IQFileManager.m in Sources */,
@@ -2869,11 +2931,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -2907,11 +2970,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -2921,6 +2986,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EtuProject/PrefixHeader_etu.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2934,7 +3000,7 @@
 					"$(PROJECT_DIR)/EtuProject/Util/ZBarSDK",
 					"$(PROJECT_DIR)/EtuProject/Util/BLEManager",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.longhoo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -2945,6 +3011,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EtuProject/PrefixHeader_etu.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2958,7 +3025,7 @@
 					"$(PROJECT_DIR)/EtuProject/Util/ZBarSDK",
 					"$(PROJECT_DIR)/EtuProject/Util/BLEManager",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.longhoo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

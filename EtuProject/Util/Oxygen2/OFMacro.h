@@ -156,7 +156,7 @@
 	}
 
 // tip
-#define showTip(tip) [APP_DELEGATE.window makeToast : tip duration : 2 position : @"center"]
+#define showTip(tip) [APP_DELEGATE.window makeToast : tip duration : 1 position : @"center"]
 #define showError(error)		   \
 	{							   \
 		if (error) {			   \

@@ -27,6 +27,8 @@
     
     //记录位置
     NSInteger heightIndex;
+    
+    UILabel *cmLabel;
 }
 @end
 
@@ -84,6 +86,12 @@
     [self.view addSubview:_heightPickerView];
     
     [_heightPickerView setSelectedRow:[indexArray[0] integerValue] animated:NO];
+    
+    cmLabel = [[UILabel alloc] initWithFrame:CGRectMake(_heightPickerView.frameWidth-10, _heightPickerView.frameHeight/2-10, 30, 20)];
+    cmLabel.text = @"CM";
+    cmLabel.textColor = [UIColor whiteColor];
+    cmLabel.font = [UIFont systemFontOfSize:16];
+    [_heightPickerView addSubview:cmLabel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,6 +103,7 @@
 {
     [super viewDidLayoutSubviews];
     _heightPickerView.frame = CGRectMake((mScreenWidth - 100)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 100, 430);
+    cmLabel.frame = CGRectMake(_heightPickerView.frameWidth-10, _heightPickerView.frameHeight/2-10, 30, 20);
 }
 
 #pragma mark - 初始化赋值操作
@@ -129,6 +138,8 @@
     if (pickerView == _heightPickerView) {
         title = heightArray[row];
         heightIndex = row;
+        
+        [UserDataManager shareInstance].registModel.height = heightArray[row];
     }
     
     self.title = title;

@@ -1,4 +1,7 @@
 
+注：所有NSDictionary中的字段都值都是NSString类型，具体数据请参照数据结构文档。请结合头文件查看该文档。
+蓝牙连接过程：获取蓝牙管理器对象(第一次获取不要和扫描在一个函数里)->扫描->设置当前设备->连接当前设备->执行操作
+
 蓝牙消息代理协议类：BLEManagerDelegate 遵守协议：NSObject 接口如下：
 
 方法名：BLEManagerConnected
@@ -14,12 +17,40 @@
 返回值：空
 (void) BLEManagerDisconnected:(NSError *)error;
 
+方法名：BLEManagerDiscoverNewDevice
+功能描述：蓝牙发现新设备时该函数被调用
+参数：
+    peripheral：新外部设备对象
+返回值：空
+(void) BLEManagerDiscoverNewDevice:(CBPeripheral *)peripheral;
+
+方法名：BLEManagerSendDataFailed
+功能描述：蓝牙发送数据重发3次后仍然失败时该函数被调用
+参数：
+    error：错误信息
+返回值：空
+- (void) BLEManagerSendDataFailed:(NSError *)error;
+
+方法名：BLEManagerReceiveDataFailed
+功能描述：蓝牙接收数据失败时该函数被调用
+参数：
+    error：错误信息
+返回值：空
+(void) BLEManagerReceiveDataFailed:(NSError *)error;
+
+方法名：BLEManagerOperationFailed
+功能描述：手环报告处理数据失败时该函数被调用
+参数：
+    error：错误类型
+返回值：空
+(void) BLEManagerOperationFailed:(NSUInteger)errorNo;
+
 方法名：BLEManagerHasBalanceData
 功能描述：手环通过蓝牙返回钱包余额时该函数被调用
 参数：
-    balance：余额信息
+    balance：余额值，以分计
 返回值：空
-(void) BLEManagerHasBalanceData:(NSDictionary *)balance;
+(void) BLEManagerHasBalanceData:(NSUInteger)balance;
 
 方法名：BLEManagerHasExpensesRecord
 功能描述：手环通过蓝牙返回消费记录时该函数被调用
@@ -47,12 +78,26 @@
 返回值：空
 (void) BLEManagerHasStepData:(NSArray *)stepData;
 
+方法名：BLEManagerUpdateCurrentSteps
+功能描述：手环通过蓝牙返回今天的步数时该函数被调用
+参数：
+    steps：当前已运动的步数
+返回值：空
+(void) BLEManagerUpdateCurrentSteps:(NSUInteger)steps;
+
 方法名：BLEManagerHasSleepData
 功能描述：手环通过蓝牙返回睡眠信息时该函数被调用
 参数：
     sleepData：睡眠信息列表，每条记录以NSDictionary存储
 返回值：空
 (void) BLEManagerHasSleepData:(NSArray *)sleepData;
+
+方法名：BLEManagerHasSleepData
+功能描述：手环通过蓝牙返回今天的睡眠时间时该函数被调用
+参数：
+    mins：睡眠时间，包含浅睡眠和深睡眠秒数
+返回值：空
+(void) BLEManagerUpdateCurrentSleepData:(NSDictionary *)mins
 
 方法名：BLEManagerHasRemainingBatteryCapacity
 功能描述：手环通过蓝牙返回电池剩余电量时该函数被调用
@@ -61,12 +106,12 @@
 返回值：空
 (void) BLEManagerHasRemainingBatteryCapacity:(NSUInteger)level;
 
-方法名：BLEManagerHasFirmwareVersion
-功能描述：手环通过蓝牙返回固件版本时该函数被调用
+方法名：BLEManagerHasSystemInformation
+功能描述：手环通过蓝牙返回系统信息时该函数被调用
 参数：
-    version：手环固件版本
+    info：手环系统信息
 返回值：空
-(void) BLEManagerHasFirmwareVersion:(NSString *)version;//手环返回固件版本
+(void) BLEManagerHasSystemInformation:(NSDictionary *)info;
 
 *****************************************************************************************
 
@@ -91,12 +136,19 @@
 返回值：已搜索到的蓝牙外部设备列表，内部数据类型是 CBPeripheral *
 (NSMutableArray *) peripheralList;
 
-方法名：setCurrentPeriPheral
+方法名：setCurrentPeripheralWithIndex
 功能描述：设置当前想要连接的外部设备，deviceIndex是该设备在设备列表中的位置
 参数：
     deviceIndex:设备在设备列表中的位置
 返回值：ture表示设置成功
-(BOOL) setCurrentPeriPheral:(NSUInteger) deviceIndex;
+(BOOL) setCurrentPeripheralWithIndex:(NSUInteger) deviceIndex;
+
+方法名：setCurrentPeripheralWithObject
+功能描述：设置当前想要连接的外部设备，peripheral是设备对象
+参数：
+    peripheral:设备对象
+返回值：空
+(void) setCurrentPeripheralWithObject:(CBPeripheral *) peripheral;
 
 方法名：getCurrentConnectedPeripheral
 功能描述：获取当前正在连接的外部设备对象
@@ -128,6 +180,12 @@
 返回值：空
 (void) cancelConnect;
 
+方法名：blePoweredOn
+功能描述：获取当前蓝牙打开状态
+参数：无
+返回值：true表示已打开
+(BOOL) blePoweredOn;
+
 方法名：connected
 功能描述：获取当前蓝牙连接状态
 参数：无
@@ -136,10 +194,15 @@
 
 方法名：bindCurrentWristband
 功能描述：绑定当前已连接手环
-参数：
-    uuid:手机蓝牙的uuid
+参数：无
 返回值：空
-(void) bindCurrentWristband:(NSString *)uuid;
+(void) bindCurrentWristband;
+
+方法名：unbindCurrentWristband
+功能描述：绑定当前已连接手环
+参数：无
+返回值：空
+(void) unbindCurrentWristband;
 
 方法名：getRemainingBatteryCapacity
 功能描述：获取当前电池剩余电量
@@ -152,7 +215,7 @@
 参数：
     timestamp:目标时间戳
 返回值：空
-(void) setWristbandTime:(NSInteger) timestamp;
+(void) setWristbandTime:(int32_t) timestamp;
 
 方法名：getBalance
 功能描述：获取余额信息
@@ -169,22 +232,34 @@
 方法名：addBalance
 功能描述：增加余额
 参数：
-    value:余额的增加值
+    value:余额的增加值(以分计)
 返回值：空
-(void) addBalance: (float)value;
+(void) addBalance: (int32_t)value;
 
 方法名：setStepTarget
 功能描述：设置目标步数
 参数：
     steps:目标步数
 返回值：空
-(void) setStepTarget:(NSUInteger) steps;
+(void) setStepTarget:(int32_t) steps;
+
+方法名：getCurrentStepData
+功能描述：获取今天已有的计步信息
+参数：无
+返回值：空
+(void) getCurrentStepData;
 
 方法名：getStepData
 功能描述：获取步数信息
 参数：无
 返回值：空
 (void) getStepData;
+
+方法名：getCurrentSleepingData
+功能描述：获取今天已有的睡眠信息
+参数：无
+返回值：空
+(void) getCurrentSleepingData;
 
 方法名：getSleepingData
 功能描述：获取睡眠信息
@@ -217,28 +292,34 @@
 返回值：空
 (void) setAlarmClock:(NSDictionary *) alarm;
 
-方法名：timeSynchronization
-功能描述：蓝牙时间同步
-参数：无
-返回值：空
-(void) timeSynchronization;
-
 方法名：removeSyncedData
 功能描述：删除已同步数据
 参数：
-    type:数据类型(睡眠信息，计步信息等)，暂未定义
+    type:数据类型(睡眠信息，计步信息等)，具体如下
+    /*删除已同步数据的类型*/
+    typedef enum _deleteType {
+        DELETE_STEP_DATA,
+        DELETE_SLEEP_DATA,
+    } deleteType;
 返回值：当前正在连接的外部设备对象，没有则返回nil
 (void) removeSyncedData:(NSUInteger) type;
 
-方法名：getFirmwareVersion
-功能描述：获取固件版本
+方法名：getSystemInformation
+功能描述：获取手环系统信息
 参数：无
 返回值：空
-(void) getFirmwareVersion;
+(void) getSystemInformation;
 
 方法名：updateFirmware
 功能描述：固件升级
 参数：无
 返回值：空
-(void) updateFirmware;/
+(void) updateFirmware;
+
+方法名：changeBLEName
+功能描述：修改手环蓝牙名称
+参数：
+    name:蓝牙名称(最多15个字符)
+返回值：空
+(void) changeBLEName:(NSString *)name;
 

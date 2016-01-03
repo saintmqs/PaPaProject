@@ -6,6 +6,13 @@
 //  Copyright (c) 2015年 王家兴. All rights reserved.
 //
 
+typedef enum : NSUInteger {
+    stepsToday,
+    stepsDay,
+    stepsWeek,
+    stepsMonth,
+} stepType;
+
 #import <Foundation/Foundation.h>
 
 NSDictionary *init();
@@ -60,6 +67,24 @@ NSDictionary *checkPwdCode(NSString *phone, NSString *code);
 
 //20 找回密码
 NSDictionary *findPwd(NSString *phone, NSString *password, NSString *repassword, NSString *code);
+
+//21 手环绑定
+NSDictionary *bindingBand(NSInteger uid, NSString *bandid, NSString *cardno);
+
+//22 获取市民卡余额
+NSDictionary *getCitizencardBalance(NSInteger uid, NSString *cardno);
+
+//23 更新市民卡余额
+NSDictionary *updateCitizencardBalance(NSInteger uid, NSString *cardno, NSNumber *balance);
+
+//24 手环解除绑定
+NSDictionary *unbindingBand(NSInteger uid);
+
+//25 计步数据提交
+NSDictionary *stepsUpload(NSInteger uid, NSString *json);
+
+//26 计步数据获取
+NSDictionary *stepsMonitor(NSInteger uid, stepType type, NSString *date, NSString *style);
 
 @interface PckData : NSObject
 @end

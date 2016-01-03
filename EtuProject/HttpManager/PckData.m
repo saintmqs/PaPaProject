@@ -74,6 +74,236 @@ NSDictionary *registerbase(NSInteger uid, NSString *birthday, NSInteger sex, NSI
     return dict;
 }
 
+//9 修改性别
+NSDictionary *updateSex(NSInteger uid, NSInteger sex)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"sex", [NSNumber numberWithInteger:sex]);
+
+    return dict;
+}
+
+//10 修改生日
+NSDictionary *updateBirthday(NSInteger uid, NSString *birthday)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"birthday", birthday);
+    
+    return dict;
+}
+
+//11 修改昵称
+NSDictionary *updateNickname(NSInteger uid, NSString *nickname)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"nickname", nickname);
+    
+    return dict;
+}
+
+//12 修改密码
+NSDictionary *updatePwd(NSInteger uid, NSString *oldpassword, NSString *password, NSString *repassword)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"oldpassword", oldpassword);
+    addParam(@"password", password);
+    addParam(@"repassword", repassword);
+    
+    return dict;
+}
+
+//13 修改头像
+NSDictionary *updateAvater(NSInteger uid, NSString *avater)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"avater", avater);
+    
+    return dict;
+}
+
+//14 修改身高
+NSDictionary *healthUpdateHeight(NSInteger uid, NSInteger value)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"value", [NSNumber numberWithInteger:value]);
+    
+    return dict;
+}
+
+//15 修改体重
+NSDictionary *healthUpdateWeight(NSInteger uid, NSInteger value)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"value", [NSNumber numberWithInteger:value]);
+    
+    return dict;
+}
+
+//16 修改目标步数
+NSDictionary *healthUpdateStep(NSInteger uid, NSInteger value)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"value", [NSNumber numberWithInteger:value]);
+    
+    return dict;
+}
+
+//17 获取用户信息
+NSDictionary *getUserInfo(NSInteger uid)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    
+    return dict;
+}
+
+//18 找回密码发送验证码
+NSDictionary *sendPwdCode(NSString *phone)
+{
+    initDict();
+    
+    addParam(@"phone", phone);
+    
+    return dict;
+}
+
+//19 找回密码时验证验证码
+NSDictionary *checkPwdCode(NSString *phone, NSString *code)
+{
+    initDict();
+    
+    addParam(@"phone", phone);
+    addParam(@"code", code);
+    
+    return dict;
+}
+
+//20 找回密码
+NSDictionary *findPwd(NSString *phone, NSString *password, NSString *repassword, NSString *code)
+{
+    initDict();
+    
+    addParam(@"phone", phone);
+    addParam(@"password", password);
+    addParam(@"repassword", repassword);
+    addParam(@"code", code);
+    
+    return dict;
+}
+
+//21 手环绑定
+NSDictionary *bindingBand(NSInteger uid, NSString *bandid, NSString *cardno)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"bandid", bandid);
+    addParam(@"cardno", cardno);
+    
+    return dict;
+}
+
+//22 获取市民卡余额
+NSDictionary *getCitizencardBalance(NSInteger uid, NSString *cardno)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"cardno", cardno);
+    
+    return dict;
+}
+
+//23 更新市民卡余额
+NSDictionary *updateCitizencardBalance(NSInteger uid, NSString *cardno, NSNumber *balance)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"cardno", cardno);
+    addParam(@"balance", balance);
+    
+    return dict;
+}
+
+//24 手环解除绑定
+NSDictionary *unbindingBand(NSInteger uid)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    
+    return dict;
+}
+
+//25 计步数据提交
+NSDictionary *stepsUpload(NSInteger uid, NSString *json)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"json", json);
+    
+    return dict;
+}
+
+//26 计步数据获取
+NSDictionary *stepsMonitor(NSInteger uid, stepType type, NSString *date, NSString *style)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    
+    NSString *stepType;
+    switch (type) {
+        case stepsToday:
+        {
+            stepType = @"stepsToday";
+            date = @"";
+        }
+            break;
+        case stepsDay:
+        {
+            stepType = @"stepsDay";
+        }
+            break;
+        case stepsWeek:
+        {
+            stepType = @"stepsWeek";
+        }
+            break;
+        case stepsMonth:
+        {
+            stepType = @"stepsMonth";
+        }
+            break;
+        default:
+            break;
+    }
+    addParam(@"type", stepType);
+    addParam(@"date", date);
+    addParam(@"style", @"");
+    
+    return dict;
+}
+
 @implementation PckData
 
 @end

@@ -19,6 +19,7 @@
 #import "BaseViewController.h"
 #import "Oxygen2-Prefix.pch"
 #import "Macro.h"
+#import "BLEManager.h"
 
 #import <CoreBluetooth/CoreBluetooth.h>
 #endif

@@ -27,6 +27,8 @@
     
     //记录位置
     NSInteger weightIndex;
+    
+    UILabel *kgLabel;
 }
 @end
 
@@ -84,6 +86,12 @@
     [self.view addSubview:_weightPickerView];
     
     [_weightPickerView setSelectedRow:[indexArray[0] integerValue] animated:NO];
+    
+    kgLabel = [[UILabel alloc] initWithFrame:CGRectMake(_weightPickerView.frameWidth-20, _weightPickerView.frameHeight/2-10, 30, 20)];
+    kgLabel.text = @"KG";
+    kgLabel.textColor = [UIColor whiteColor];
+    kgLabel.font = [UIFont systemFontOfSize:16];
+    [_weightPickerView addSubview:kgLabel];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -95,6 +103,7 @@
 {
     [super viewDidLayoutSubviews];
     _weightPickerView.frame = CGRectMake((mScreenWidth - 100)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 100, 430);
+    kgLabel.frame = CGRectMake(_weightPickerView.frameWidth-20, _weightPickerView.frameHeight/2-10, 30, 20);
 }
 
 #pragma mark - 初始化赋值操作
@@ -129,6 +138,8 @@
     if (pickerView == _weightPickerView) {
         title = weightArray[row];
         weightIndex = row;
+        
+        [UserDataManager shareInstance].registModel.weight = weightArray[row];
     }
     
     self.title = title;

@@ -13,6 +13,11 @@
 
 #import "SleepingRecordViewController.h"
 #import "SportRecordViewController.h"
+#import "SearchBraceletViewController.h"
+#import "PPLoadingView.h"
+
+static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
+
 
 @interface AppDelegate ()<UINavigationControllerDelegate, RDVTabBarControllerDelegate>
 
@@ -31,6 +36,9 @@
     [self.window addSubview:splash];
     
     [self systemInit];
+    
+    _bleManager = [BLEManager sharedManager];
+    [_bleManager setBLEDelegate:self];
     
     [self.window makeKeyAndVisible];
     
@@ -226,7 +234,8 @@
         [self.record customizeTabBarForController:self.record];
     }
     
-    self.wallet     = [[WalletViewController alloc] init];
+    //self.wallet     = [[WalletViewController alloc] init];
+    self.traffic    = [[TrafficAccountViewController alloc] init];
     self.rootTabbarController		= [[RDVTabBarController alloc]init];
     self.rootTabbarController.view.backgroundColor = rgbColor(249, 249, 250);
     _rootTabbarController.delegate	= self;
@@ -236,7 +245,8 @@
     UINavigationController	*tab2	= [[UINavigationController alloc]initWithRootViewController:_home];
     [tab2 setNavigationBarHidden:YES];
     
-    UINavigationController	*tab3	= [[UINavigationController alloc]initWithRootViewController:_wallet];
+//    UINavigationController	*tab3	= [[UINavigationController alloc]initWithRootViewController:_wallet];
+    UINavigationController	*tab3	= [[UINavigationController alloc]initWithRootViewController:_traffic];
     [tab3 setNavigationBarHidden:YES];
     
     tab1.delegate	= self;
@@ -319,7 +329,7 @@
 {
     NSUInteger index = [tabBarController.viewControllers indexOfObject:viewController];
     
-    if (index == 0) {
+    if (index == 0 || index == 2) {
         self.rootTabbarController.tabBarHidden = YES;
         return YES;
     }
@@ -342,7 +352,7 @@
     if (navigationController.viewControllers.count == 1) {
         NSUInteger index = [self.rootTabbarController.viewControllers indexOfObject:navigationController];
         
-        if (index == 0) {
+        if (index == 0 || index == 2) {
             [APP_DELEGATE.rootTabbarController setTabBarHidden:YES animated:YES];
         }
         else
@@ -372,10 +382,25 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+     NSLog(@"- (void)applicationWillEnterForeground:(UIApplication *)application");
+    
+    id controller = [SystemStateManager shareInstance].activeController;
+    
+    if ([controller isKindOfClass:[SearchBraceletViewController class]]) {
+        
+        SearchBraceletViewController *vc = (SearchBraceletViewController*)controller;
+        
+        if ([[BLEManager sharedManager] blePoweredOn]) {
+            vc.searchView.hidden = NO;
+            vc.bleOffView.hidden = YES;
+            [vc startScan];
+        }
+    }    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     NSLog(@"- (void)applicationDidBecomeActive:(UIApplication *)application");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

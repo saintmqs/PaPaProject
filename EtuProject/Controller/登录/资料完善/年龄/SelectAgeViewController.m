@@ -33,6 +33,12 @@
     NSInteger yearIndex;
     NSInteger monthIndex;
     NSInteger dayIndex;
+    
+    UILabel *yearLabel;
+    UILabel *monthLabel;
+    UILabel *dayLabel;
+    
+    NSString *yearStr,*monthStr,*dayStr;
 }
 @end
 
@@ -95,6 +101,12 @@
                                 (id)CURRENTCOLOR.CGColor ];
     [self.view addSubview:_yearPickerView];
     
+    yearLabel = [[UILabel alloc] initWithFrame:CGRectMake(_yearPickerView.frameWidth-10, _yearPickerView.frameHeight/2-10, 30, 20)];
+    yearLabel.text = @"年";
+    yearLabel.textColor = [UIColor whiteColor];
+    yearLabel.font = [UIFont systemFontOfSize:16];
+    [_yearPickerView addSubview:yearLabel];
+    
     _monthPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake(_yearPickerView.frameRight + 30, self.headerView.bottom+100, 70, mScreenHeight - self.headerView.bottom)];
     _monthPickerView.dataSource = self;
     _monthPickerView.delegate = self;
@@ -104,6 +116,12 @@
                                                (id)CURRENTCOLOR.CGColor ];
     [self.view addSubview:_monthPickerView];
     
+    monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(_monthPickerView.frameWidth-10, _monthPickerView.frameHeight/2-10, 30, 20)];
+    monthLabel.text = @"月";
+    monthLabel.textColor = [UIColor whiteColor];
+    monthLabel.font = [UIFont systemFontOfSize:16];
+    [_monthPickerView addSubview:monthLabel];
+    
     _dayPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake(_monthPickerView.frameRight + 30, self.headerView.bottom+100, 70, mScreenHeight - self.headerView.bottom)];
     _dayPickerView.dataSource = self;
     _dayPickerView.delegate = self;
@@ -112,6 +130,12 @@
                                                (id)[CURRENTCOLOR colorWithAlphaComponent:0.0f].CGColor,
                                                (id)CURRENTCOLOR.CGColor ];
     [self.view addSubview:_dayPickerView];
+    
+    dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(_dayPickerView.frameWidth-10, _dayPickerView.frameHeight/2-10, 30, 20)];
+    dayLabel.text = @"日";
+    dayLabel.textColor = [UIColor whiteColor];
+    dayLabel.font = [UIFont systemFontOfSize:16];
+    [_dayPickerView addSubview:dayLabel];
     
     [_yearPickerView setSelectedRow:[indexArray[0] integerValue] animated:NO];
     [_monthPickerView setSelectedRow:[indexArray[1] integerValue] animated:NO];
@@ -129,6 +153,10 @@
     _yearPickerView.frame = CGRectMake(50, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 100, 430);
     _monthPickerView.frame = CGRectMake(_yearPickerView.frameRight+20, self.headerView.bottom +(mScreenHeight - self.headerView.bottom - 430)/3, 70,430);
     _dayPickerView.frame = CGRectMake(_monthPickerView.frameRight+20, self.headerView.bottom + (mScreenHeight - self.headerView.bottom - 430)/3, 70,430);
+    
+    yearLabel.frame = CGRectMake(_yearPickerView.frameWidth-10, _yearPickerView.frameHeight/2-10, 30, 20);
+    monthLabel.frame = CGRectMake(_monthPickerView.frameWidth-10, _monthPickerView.frameHeight/2-10, 30, 20);
+    dayLabel.frame = CGRectMake(_dayPickerView.frameWidth-10, _dayPickerView.frameHeight/2-10, 30, 20);
 }
 
 #pragma mark - 初始化赋值操作
@@ -259,17 +287,24 @@
      NSString *title;
     if (pickerView == _yearPickerView) {
         title = yearArray[row];
+        yearStr = yearArray[row];
         yearIndex = row;
     }
     else if (pickerView == _monthPickerView)
     {
         title = monthArray[row];
+        monthStr = monthArray[row];
         monthIndex = row;
     }
     else if (pickerView == _dayPickerView)
     {
         title = dayArray[row];
+        dayStr = dayArray[row];
         dayIndex = row;
+    }
+    
+    if (yearStr && monthStr && dayStr) {
+        [UserDataManager shareInstance].registModel.birthday = [NSString stringWithFormat:@"%@-%@-%@",yearStr,monthStr,dayStr];
     }
     
     if (pickerView == _yearPickerView || pickerView == _monthPickerView) {

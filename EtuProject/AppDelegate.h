@@ -13,11 +13,14 @@
 #import "HomeViewController.h"
 #import "RecordViewController.h"
 #import "WalletViewController.h"
+#import "TrafficAccountViewController.h"
 
 #import "LoginViewController.h"
 #import "Login.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "BLEManager.h"
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,BLEManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,strong) RDVTabBarController *rootTabbarController; //根tabbar
@@ -25,6 +28,9 @@
 @property (nonatomic,strong) HomeViewController *home;      //首页
 @property (nonatomic,strong) RecordViewController *record;  //记录
 @property (nonatomic,strong) WalletViewController *wallet;  //钱包
+@property (nonatomic,strong) TrafficAccountViewController *traffic; //公交卡账户
+
+@property (nonatomic,strong) BLEManager           *bleManager;
 
 @property (nonatomic,strong) Login *userData;
 @property (nonatomic, assign) BOOL isRootViewLaunched;

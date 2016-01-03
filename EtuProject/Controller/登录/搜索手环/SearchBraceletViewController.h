@@ -11,6 +11,12 @@
 
 @interface SearchBraceletViewController : BaseViewController
 
+@property (nonatomic, strong) UIView  *searchView;//搜索设备
+@property (nonatomic, strong) UIView  *bleOffView;//蓝牙未开启
+@property (nonatomic, strong) UIView  *noResultView;//未搜索到手环
+
 @property (nonatomic, strong) PPLoadingView *loadingView;
 @property (nonatomic, strong) PPGradientView *gradientView;
+
+-(void)startScan; //开始扫描附近的蓝牙设备
 @end
