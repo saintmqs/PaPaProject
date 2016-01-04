@@ -13,6 +13,8 @@
 #define kUD_LOGIN_PHONENUM			@"com.etuchina.login_phonenum"
 #define kUD_LOGIN_PASSWORD			@"com.etuchina.login_password"
 #define kUD_DEFAULT_AREA            @"com.etuchina.default_area"
+
+#define kUD_BIND_DEVICE             @"com.etuchina.bindingWristband"
 // keys
 #define kUSERNAME					@"username"
 #define kPASSWORD					@"password"

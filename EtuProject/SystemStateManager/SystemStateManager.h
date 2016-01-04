@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) BaseViewController *activeController; //当前活跃的controller, 应用后台挂起后做临时缓存
 
+@property (nonatomic, assign) BOOL  hasBindWristband;  //是否绑定了手环；
+
 +(SystemStateManager *)shareInstance;
 
 @end

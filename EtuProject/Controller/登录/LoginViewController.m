@@ -142,7 +142,14 @@
                 }
                 else
                 {
-                    [APP_DELEGATE loginSuccess];
+                    if ([APP_DELEGATE.userData.isall integerValue] == 1) {
+                        [APP_DELEGATE loginbyFixInfo];
+                    }
+                    else
+                    {
+                        [APP_DELEGATE loginSuccess];
+                    }
+                    
                 }
                 
             } else {

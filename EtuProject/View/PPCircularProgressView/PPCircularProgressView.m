@@ -85,7 +85,14 @@
     float sb=0;
     float eb=0;
     
-    UIColor *progressColor = [UIColor colorWithRed:(_progress*sr+(1-_progress)*er)/255. green:(_progress*sg+(1-_progress)*eg)/255. blue:(_progress*sb+(1-_progress)*eb)/255. alpha:1];
+    UIColor *progressColor;
+    if ([SystemStateManager shareInstance].hasBindWristband) {
+        progressColor = [UIColor colorWithRed:(_progress*sr+(1-_progress)*er)/255. green:(_progress*sg+(1-_progress)*eg)/255. blue:(_progress*sb+(1-_progress)*eb)/255. alpha:1];
+    }
+    else
+    {
+        progressColor = [UIColor clearColor];
+    }
     
     CGContextSetFillColorWithColor(context,progressColor.CGColor);
     CGContextSetStrokeColorWithColor(context, progressColor.CGColor);

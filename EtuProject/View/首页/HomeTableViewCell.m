@@ -62,13 +62,12 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self)
     {
-        _iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, (60 - 20)/2, 20, 20)];
-        _iconImageView.backgroundColor = [UIColor redColor];
-        [self addSubview:_iconImageView];
+//        _iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, (60 - 20)/2, 20, 20)];
+//        _iconImageView.backgroundColor = [UIColor redColor];
+//        [self addSubview:_iconImageView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_iconImageView.frameRight + 20, 10, mScreenWidth - _iconImageView.frameRight - 40 - 20, 40)];
-        _titleLabel.textColor = [UIColor blackColor];
-        _titleLabel.text = @"我的Q钱包";
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, mScreenWidth - 40 - 20, 40)];
+        _titleLabel.textColor = [UIColor grayColor];
         _titleLabel.font = [UIFont systemFontOfSize:18];
         [self addSubview:_titleLabel];
         

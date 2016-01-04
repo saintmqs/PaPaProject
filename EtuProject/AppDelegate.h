@@ -40,6 +40,7 @@
 - (BOOL)checkNeedLogin;
 - (void)logOut;
 - (void)loginSuccess;
+- (void)loginbyFixInfo;
 - (void)backToLastPage;
 @end
 

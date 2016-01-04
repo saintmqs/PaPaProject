@@ -64,7 +64,14 @@ static CGFloat const kAnimateDuration = 1;
 - (void)animateToActiveState
 {
     [UIView animateWithDuration:kAnimateDuration delay:0 usingSpringWithDamping:.5 initialSpringVelocity:-20 options:UIViewAnimationOptionCurveLinear animations:^{
-        self.backgroundColor = [UIColor yellowColor];
+        if ([SystemStateManager shareInstance].hasBindWristband) {
+             self.backgroundColor = [UIColor yellowColor];
+        }
+        else
+        {
+             self.backgroundColor = [UIColor whiteColor];
+        }
+       
         self.alpha = 0.8f;
         //        self.transform = CGAffineTransformConcat(CGAffineTransformMakeScale(1.4, 1.4), CGAffineTransformMakeRotation(M_PI)) ;
     } completion:nil];

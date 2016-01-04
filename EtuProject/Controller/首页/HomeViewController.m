@@ -12,6 +12,7 @@
 
 #import "UserInfoViewController.h"
 #import "DeviceManagerViewController.h"
+#import "SearchBraceletViewController.h"
 
 @interface HomeViewController ()
 {
@@ -56,21 +57,28 @@
     SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:@{@"image": @"",@"title":@""} tag:-1];
     
     _indicatorView = [[SGFocusImageFrame alloc] initWithFrame:CGRectMake(0, viewFrameY, mScreenWidth, viewFrameHeight) delegate:self imageItems:@[item] isAuto:NO];
-    
-    gradientView = [[HomeGradientView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, _indicatorView.frameBottom)];
-    gradientView.locations = @[ @0.0f, @1.f];
-    gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
-                                (id)rgbaColor(21, 88, 168, 1).CGColor ];
+
+     gradientView = [[HomeGradientView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, _indicatorView.frameBottom)];
     
     [self.view insertSubview:gradientView belowSubview:self.headerView];
     
     [self.view addSubview:_indicatorView];
     
-    [self requestData];
-    
     [self changeBannersHeaderContent:self.indicatorView];
     
     [self configTableUI];
+    
+    if ([SystemStateManager shareInstance].hasBindWristband) {
+        gradientView.locations = @[ @0.0f, @1.f];
+        gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
+                                    (id)rgbaColor(21, 88, 168, 1).CGColor ];
+        
+        [self requestData];
+    }
+    else
+    {
+        gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,22 +102,44 @@
     
     NSMutableArray *contentDataArr = [NSMutableArray array];
     
-    NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
-    [dataDict1 setObject:@"今日完成" forKey:@"title"];
-    [dataDict1 setObject:@"3000" forKey:@"content"];
-    [dataDict1 setObject:@"1公里 | 200千卡" forKey:@"detail"];
-    [dataDict1 setObject:@"0.4" forKey:@"progress"];
-    [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
-    [contentDataArr addObject:dataDict1];
-    
-    
-    NSMutableDictionary *dataDict2 = [NSMutableDictionary dictionary];
-    [dataDict2 setObject:@"昨日睡眠" forKey:@"title"];
-    [dataDict2 setObject:@"6小时" forKey:@"content"];
-    [dataDict2 setObject:@"深度睡眠5小时" forKey:@"detail"];
-    [dataDict2 setObject:@"0.3" forKey:@"progress"];
-    [dataDict2 setObject:[UIColor lightGrayColor] forKey:@"trackTintColor"];
-    [contentDataArr addObject:dataDict2];
+    if ([SystemStateManager shareInstance].hasBindWristband) {
+        NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
+        [dataDict1 setObject:@"今日完成" forKey:@"title"];
+        [dataDict1 setObject:@"3000" forKey:@"content"];
+        [dataDict1 setObject:@"1公里 | 200千卡" forKey:@"detail"];
+        [dataDict1 setObject:@"0.4" forKey:@"progress"];
+        [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
+        [contentDataArr addObject:dataDict1];
+        
+        
+        NSMutableDictionary *dataDict2 = [NSMutableDictionary dictionary];
+        [dataDict2 setObject:@"昨日睡眠" forKey:@"title"];
+        [dataDict2 setObject:@"6小时" forKey:@"content"];
+        [dataDict2 setObject:@"深度睡眠5小时" forKey:@"detail"];
+        [dataDict2 setObject:@"0.3" forKey:@"progress"];
+        [dataDict2 setObject:[UIColor lightGrayColor] forKey:@"trackTintColor"];
+        [contentDataArr addObject:dataDict2];
+    }
+    else
+    {
+        NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
+        [dataDict1 setObject:@"今日完成" forKey:@"title"];
+        [dataDict1 setObject:@"0000" forKey:@"content"];
+        [dataDict1 setObject:@"0公里 | 0千卡" forKey:@"detail"];
+        [dataDict1 setObject:@"0" forKey:@"progress"];
+        [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
+        [contentDataArr addObject:dataDict1];
+        
+        
+        NSMutableDictionary *dataDict2 = [NSMutableDictionary dictionary];
+        [dataDict2 setObject:@"昨日睡眠" forKey:@"title"];
+        [dataDict2 setObject:@"0小时" forKey:@"content"];
+        [dataDict2 setObject:@"深度睡眠0小时" forKey:@"detail"];
+        [dataDict2 setObject:@"0" forKey:@"progress"];
+        [dataDict2 setObject:[UIColor lightGrayColor] forKey:@"trackTintColor"];
+        [contentDataArr addObject:dataDict2];
+    }
+   
     
     if (length > 0) {
         NSMutableArray *itemArray = [NSMutableArray arrayWithCapacity:length+2];
@@ -143,39 +173,48 @@
 
 - (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(NSInteger)index
 {
+    //117,118,118
     NSLog(@"%ld",index);
-    switch (index) {
-        case 0:
-        {
-            gradientView.locations = @[ @0.0f, @1.f];
-            gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
-                                        (id)rgbaColor(21, 88, 168, 1).CGColor ];
+    
+    if ([SystemStateManager shareInstance].hasBindWristband) {
+        switch (index) {
+            case 0:
+            {
+                gradientView.locations = @[ @0.0f, @1.f];
+                gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
+                                            (id)rgbaColor(21, 88, 168, 1).CGColor ];
+            }
+                break;
+            case 1:
+            {
+                gradientView.locations = @[ @0.0f,@0.5f, @1.f];
+                gradientView.CGColors = @[  (id)rgbaColor(44, 21, 38, 1).CGColor,
+                                            (id)rgbaColor(55, 21, 42, 1).CGColor,
+                                            (id)rgbaColor(44, 21, 38, 1).CGColor ];
+            }
+                break;
+            default:
+                break;
         }
-            break;
-        case 1:
-        {
-            gradientView.locations = @[ @0.0f,@0.5f, @1.f];
-            gradientView.CGColors = @[  (id)rgbaColor(44, 21, 38, 1).CGColor,
-                                        (id)rgbaColor(55, 21, 42, 1).CGColor,
-                                        (id)rgbaColor(44, 21, 38, 1).CGColor ];
-        }
-            break;
-        default:
-            break;
     }
+    else
+    {
+        gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
+    }
+    
 }
 
 #pragma mark - UITableView DataSource & Delegate
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row != 0) {
+    if (![SystemStateManager shareInstance].hasBindWristband) {
         HomeTableViewCommonCell * cell = (HomeTableViewCommonCell *)[tableView dequeueReusableCellWithIdentifier:@"HomeTableViewCommonCell"];
         if (cell == nil) {
             cell = [[HomeTableViewCommonCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HomeTableViewCommonCell"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        
+        cell.titleLabel.text = @"还没有绑定手环，点击绑定吧";
         return cell;
     }
     
@@ -200,7 +239,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UIButton Action

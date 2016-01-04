@@ -7,8 +7,9 @@
 //
 
 #import "SelectBraceletViewController.h"
+#import "SelectBraceletCell.h"
 
-@interface SelectBraceletViewController()
+@interface SelectBraceletViewController()<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView *searchResultTable;
     
@@ -24,6 +25,10 @@
     
     self.view.backgroundColor = rgbaColor(51, 46, 53, 1);
     self.headerView.hidden = NO;
+    
+    UIImageView *seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.headerView.frameHeight - 1, mScreenWidth, 1)];
+    seperateLine.backgroundColor = rgbaColor(238, 240, 241, 0.1);
+    [self.headerView addSubview:seperateLine];
     
     self.titleLabel.text = @"选择设备";
     
@@ -46,6 +51,44 @@
 
 -(void)setupSearchResultTableView
 {
+    searchResultTable = [[UITableView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, mScreenHeight - self.headerView.frameBottom)];
+    searchResultTable.delegate = self;
+    searchResultTable.dataSource = self;
+    searchResultTable.backgroundColor = [UIColor clearColor];
+    searchResultTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:searchResultTable];
+}
+
+#pragma mark - UITableView DataSource & Delegate
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SelectBraceletCell * cell = (SelectBraceletCell *)[tableView dequeueReusableCellWithIdentifier:@"SelectBraceletCell"];
+    if (cell == nil) {
+        cell = [[SelectBraceletCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SelectBraceletCell"];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor = [UIColor clearColor];
+    }
     
+    return cell;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.searchResultArray.count;
+    return 3;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([[BLEManager sharedManager] setCurrentPeripheralWithIndex:indexPath.row]) {
+        [[BLEManager sharedManager] startConnect];
+    }
 }
 @end

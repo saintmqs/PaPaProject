@@ -14,6 +14,7 @@
 #import "SleepingRecordViewController.h"
 #import "SportRecordViewController.h"
 #import "SearchBraceletViewController.h"
+#import "SelectSexViewController.h"
 #import "PPLoadingView.h"
 
 static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
@@ -113,18 +114,19 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 - (void)loginSuccess
 {
+    [SystemStateManager shareInstance].hasBindWristband = YES;
     [self setupViewControllers];
     self.window.rootViewController = _rootTabbarController;
     
     [APP_DELEGATE.rootTabbarController setSelectedIndex:1];
-    // 新手指引
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
-    if (![[def stringForKey:kUD_INTRO_VERSION] isEqualToString:APP_VERSION]) {
-        [_rootTabbarController showBasicIntroWithBg];
-        [def setObject:APP_VERSION forKey:kUD_INTRO_VERSION];
-        [def synchronize];
-    }
+//    // 新手指引
+//    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+//    
+//    if (![[def stringForKey:kUD_INTRO_VERSION] isEqualToString:APP_VERSION]) {
+//        [_rootTabbarController showBasicIntroWithBg];
+//        [def setObject:APP_VERSION forKey:kUD_INTRO_VERSION];
+//        [def synchronize];
+//    }
     //
     //    NSString	*phoneNum	= [def stringForKey:kUD_LOGIN_PHONENUM];
     //    NSString	*pwd		= [def stringForKey:kUD_LOGIN_PASSWORD];
@@ -132,6 +134,17 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     //    if (![NSString isStringEmpty:phoneNum] && ![NSString isStringEmpty:pwd]) {
     //         [self doLoginWithPhonenum:phoneNum pwd:pwd block:nil];
     //    }
+}
+
+- (void)loginbyFixInfo
+{
+    [SystemStateManager shareInstance].hasBindWristband = YES;
+        
+    SelectSexViewController *vc = [[SelectSexViewController alloc] init];
+    
+    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+    
+    [nav pushViewController:vc animated:YES];
 }
 
 -(void)haveAlook
@@ -407,4 +420,22 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - BLEManager Delegate
+//蓝牙已连接
+- (void) BLEManagerConnected
+{
+
+}
+
+//蓝牙断开连接
+- (void) BLEManagerDisconnected:(NSError *)error
+{
+    showTip(@"蓝牙已断开连接");
+}
+
+//手环收到命令后操作失败
+- (void) BLEManagerOperationFailed:(NSUInteger)errorNo
+{
+    
+}
 @end
