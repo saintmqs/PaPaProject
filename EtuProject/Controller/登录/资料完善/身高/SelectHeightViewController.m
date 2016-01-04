@@ -61,9 +61,6 @@
             self.minLimitHeight = PICKER_MINHEIGHT;
             minHeightModel = [[CustomPickerModel alloc]initWithData:self.minLimitHeight type:Model_Height];
         }
-        
-        //获取平均身高
-        indexArray = [self getNormalHeight:self.ScrollToHeight];
     }
     return self;
 }
@@ -74,7 +71,20 @@
     self.titleLabel.text = @"您的身高";
     self.view.backgroundColor = CURRENTCOLOR;
     
+    if (self.isFromUserInfoSet) {
+        [self.rightNavButton setTitle:@"确认" forState:UIControlStateNormal];
+        self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.rightNavButton setTitle:nil forState:UIControlStateNormal];
+        [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
+    }
     self.rightNavButton.hidden = NO;
+    
+    //获取平均身高
+    indexArray = [self getNormalHeight:self.ScrollToHeight];
     
     _heightPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake((mScreenWidth - 100)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 100, 430)];
     _heightPickerView.dataSource = self;
@@ -119,7 +129,13 @@
 //获取平均身高
 - (NSArray *)getNormalHeight:(NSInteger)height
 {
-    height = 170;
+    if (self.isFromUserInfoSet) {
+        height = [APP_DELEGATE.userData.baseInfo.height integerValue];
+    }
+    else
+    {
+        height = 170;
+    }
     
     CustomPickerModel *model = [[CustomPickerModel alloc] initWithData:height type:Model_Height];
     
@@ -139,7 +155,9 @@
         title = heightArray[row];
         heightIndex = row;
         
-        [UserDataManager shareInstance].registModel.height = heightArray[row];
+        if (!self.isFromUserInfoSet) {
+            [UserDataManager shareInstance].registModel.height = heightArray[row];
+        }
     }
     
     self.title = title;
@@ -209,7 +227,49 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    SelectWeightViewController *vc = [[SelectWeightViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.isFromUserInfoSet) {
+        [self updateHeightRequest];
+    }
+    else
+    {
+        SelectWeightViewController *vc = [[SelectWeightViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+   
+}
+
+#pragma mark - Http Request
+-(void)updateHeightRequest
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:healthUpdateHeight([APP_DELEGATE.userData.uid integerValue], [heightArray[heightIndex] integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            double delayInSeconds = 1.0;
+            __block SelectHeightViewController* bself = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                APP_DELEGATE.userData.baseInfo.height = heightArray[heightIndex];
+                [bself.navigationController popViewControllerAnimated:YES];
+            });
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"health", @"healthUpdate_height")];
 }
 @end

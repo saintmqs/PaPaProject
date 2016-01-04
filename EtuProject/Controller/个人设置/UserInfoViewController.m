@@ -9,16 +9,54 @@
 #import "UserInfoViewController.h"
 #import "SettingsViewController.h"
 #import "UserInfoTableViewCell.h"
+#import "Login.h"
+
+#import "SelectSexViewController.h"
+#import "SelectHeightViewController.h"
+#import "SelectWeightViewController.h"
+#import "SelectAgeViewController.h"
+#import "SelectStepsViewController.h"
 
 @interface UserInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *userInfoTable;
     
     NSArray *titlesArray;
+    
+    NSArray *detailsArray;
 }
 @end
 
 @implementation UserInfoViewController
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (detailsArray) {
+        
+        BaseInfo *baseInfo = APP_DELEGATE.userData.baseInfo;
+        
+        NSString *sex = [baseInfo.sex integerValue] == 1 ? @"男" : @"女";
+        NSString *height = [NSString stringWithFormat:@"%@cm",baseInfo.height];
+        NSString *weight = [NSString stringWithFormat:@"%@kg",baseInfo.weight];
+        NSString *steps = [NSString stringWithFormat:@"%@步",baseInfo.step];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *date = [dateFormatter dateFromString:baseInfo.birthday];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy年MM月dd日"];
+        NSString *birthday = [formatter stringFromDate:date];
+        
+        NSArray *dataArray = [NSArray arrayWithObjects:@[baseInfo.nickname,baseInfo.phone], @[sex,height,weight,birthday,steps], nil];
+        
+        detailsArray = dataArray;
+        
+        [userInfoTable reloadData];
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,6 +79,9 @@
     userInfoTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     userInfoTable.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
     [self.view addSubview:userInfoTable];
+    
+    //获取用户基本信息
+    [self requestUserInfo];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,26 +142,24 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
+    NSArray *sectionTitles = [titlesArray objectAtIndex:indexPath.section];
+    NSArray *sectionDetails = [detailsArray objectAtIndex:indexPath.section];
+    cell.titleLabel.text = [sectionTitles objectAtIndex:indexPath.row];
+    cell.detailLabel.text = [sectionDetails objectAtIndex:indexPath.row];
+    
     switch (indexPath.section) {
         case 0:
         {
-            NSArray *sectionTitles = [titlesArray objectAtIndex:indexPath.section];
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.seperateLine.hidden = indexPath.row == 1;
-            cell.titleLabel.text = [sectionTitles objectAtIndex:indexPath.row];
-            cell.detailLabel.text = @"Saintmqs";
             cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 20, (60-30)/2, mScreenWidth/2, 30);
         }
             break;
         case 1:
         {
-            NSArray *sectionTitles = [titlesArray objectAtIndex:indexPath.section];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.seperateLine.hidden = indexPath.row == 4;
-            cell.titleLabel.text = [sectionTitles objectAtIndex:indexPath.row];
-            cell.detailLabel.text = @"女";
             cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
-
         }
             break;
         default:
@@ -128,5 +167,121 @@
     }
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                    
+                    break;
+                case 1:
+                    
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    //编辑性别
+                    SelectSexViewController *vc = [[SelectSexViewController alloc] init];
+                    vc.isFromUserInfoSet = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 1:
+                {
+                    //编辑身高
+                    SelectHeightViewController *vc = [[SelectHeightViewController alloc] init];
+                    vc.isFromUserInfoSet = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 2:
+                {
+                    //编辑体重
+                    SelectWeightViewController *vc = [[SelectWeightViewController alloc] init];
+                    vc.isFromUserInfoSet = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 3:
+                {
+                    //编辑生日
+                    SelectAgeViewController *vc = [[SelectAgeViewController alloc] init];
+                    vc.isFromUserInfoSet = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 4:
+                {
+                    //编辑步数
+                    SelectStepsViewController *vc = [[SelectStepsViewController alloc] init];
+                    vc.isFromUserInfoSet = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - Http Request
+-(void)requestUserInfo
+{
+    showViewHUD;
+    [self startRequestWithDict:getUserInfo([APP_DELEGATE.userData.uid integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            BaseInfo *baseInfo = [[BaseInfo alloc] initWithDictionary:[dict objectForKey:@"data"] error:nil];
+            APP_DELEGATE.userData.baseInfo = baseInfo;
+            
+            NSString *sex = [baseInfo.sex integerValue] == 1 ? @"男" : @"女";
+            NSString *height = [NSString stringWithFormat:@"%@cm",baseInfo.height];
+            NSString *weight = [NSString stringWithFormat:@"%@kg",baseInfo.weight];
+            NSString *steps = [NSString stringWithFormat:@"%@步",baseInfo.step];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            NSDate *date = [dateFormatter dateFromString:baseInfo.birthday];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy年MM月dd日"];
+            NSString *birthday = [formatter stringFromDate:date];
+            
+            NSArray *dataArray = [NSArray arrayWithObjects:@[baseInfo.nickname,baseInfo.phone], @[sex,height,weight,birthday,steps], nil];
+            
+            detailsArray = [NSArray arrayWithArray:dataArray];
+            [userInfoTable reloadData];
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"user", @"getUserInfo")];
 }
 @end

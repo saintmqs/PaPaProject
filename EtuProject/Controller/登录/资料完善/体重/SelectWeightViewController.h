@@ -11,6 +11,7 @@
 
 @interface SelectWeightViewController : BaseViewController<CSPickerViewDataSource, CSPickerViewDelegate>
 
+@property (nonatomic, assign) BOOL isFromUserInfoSet;
 @property (nonatomic, assign) NSInteger ScrollToWeight;//滚到指定体重
 @property (nonatomic, assign) NSInteger maxLimitWeight;//限制最大体重
 @property (nonatomic, assign) NSInteger minLimitWeight;//限制最小体重

@@ -11,6 +11,7 @@
 
 @interface SelectStepsViewController : BaseViewController<CSPickerViewDataSource, CSPickerViewDelegate>
 
+@property (nonatomic, assign) BOOL isFromUserInfoSet;
 @property (nonatomic, assign) NSInteger ScrollToStep;//滚到指定步数
 @property (nonatomic, assign) NSInteger maxLimitStep;//限制最大步数
 @property (nonatomic, assign) NSInteger minLimitStep;//限制最小步数

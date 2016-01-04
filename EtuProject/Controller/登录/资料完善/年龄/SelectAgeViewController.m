@@ -77,9 +77,6 @@
             self.minLimitDate = [self dateFromString:@"197001010000" withFormat:@"yyyyMMdd"];
             minDateModel = [[CustomPickerModel alloc]initWithDate:self.minLimitDate];
         }
-        
-        //获取当前日期，储存当前时间位置
-        indexArray = [self getNowDate:self.ScrollToDate];
     }
     return self;
 }
@@ -90,7 +87,20 @@
     self.titleLabel.text = @"您的年龄";
     self.view.backgroundColor = CURRENTCOLOR;
     
+    if (self.isFromUserInfoSet) {
+        [self.rightNavButton setTitle:@"确认" forState:UIControlStateNormal];
+        self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.rightNavButton setTitle:nil forState:UIControlStateNormal];
+        [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
+    }
     self.rightNavButton.hidden = NO;
+    
+    //获取当前日期，储存当前时间位置
+    indexArray = [self getNowDate:self.ScrollToDate];
     
     _yearPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake(50, self.headerView.bottom+100, 190, mScreenHeight - self.headerView.bottom)];
     _yearPickerView.dataSource = self;
@@ -173,10 +183,18 @@
 - (NSArray *)getNowDate:(NSDate *)date
 {
     NSDate *dateShow;
-    if (date) {
-        dateShow = date;
-    }else{
-        dateShow = [NSDate date];
+    if (self.isFromUserInfoSet) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        dateShow = [dateFormatter dateFromString:APP_DELEGATE.userData.baseInfo.birthday];
+    }
+    else
+    {
+        if (date) {
+            dateShow = date;
+        }else{
+            dateShow = [NSDate date];
+        }
     }
     
     CustomPickerModel *model = [[CustomPickerModel alloc]initWithDate:dateShow];
@@ -303,8 +321,10 @@
         dayIndex = row;
     }
     
-    if (yearStr && monthStr && dayStr) {
-        [UserDataManager shareInstance].registModel.birthday = [NSString stringWithFormat:@"%@-%@-%@",yearStr,monthStr,dayStr];
+    if (!self.isFromUserInfoSet) {
+        if (yearStr && monthStr && dayStr) {
+            [UserDataManager shareInstance].registModel.birthday = [NSString stringWithFormat:@"%@-%@-%@",yearStr,monthStr,dayStr];
+        }
     }
     
     if (pickerView == _yearPickerView || pickerView == _monthPickerView) {
@@ -400,7 +420,48 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    SelectStepsViewController *vc = [[SelectStepsViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.isFromUserInfoSet) {
+        [self updateAgeRequest];
+    }
+    else
+    {
+        SelectStepsViewController *vc = [[SelectStepsViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+#pragma mark - Http Request
+-(void)updateAgeRequest
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:updateBirthday([APP_DELEGATE.userData.uid integerValue], [NSString stringWithFormat:@"%@-%@-%@",yearStr,monthStr,dayStr]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            double delayInSeconds = 1.0;
+            __block SelectAgeViewController* bself = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                APP_DELEGATE.userData.baseInfo.birthday = [NSString stringWithFormat:@"%@-%@-%@",yearStr,monthStr,dayStr];
+                [bself.navigationController popViewControllerAnimated:YES];
+            });
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"user", @"updateBirthday")];
 }
 @end

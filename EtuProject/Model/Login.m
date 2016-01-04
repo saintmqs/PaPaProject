@@ -12,4 +12,7 @@
 
 @end
 
+@implementation BaseInfo
+
+@end
 

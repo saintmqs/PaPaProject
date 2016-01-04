@@ -68,6 +68,7 @@
     [_rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
     _rightNavButton.contentMode = UIViewContentModeScaleAspectFit;
     [_rightNavButton addTarget:self action:@selector(didTopRightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    _rightNavButton.exclusiveTouch = YES;
     
     if([[UIDevice currentDevice].systemVersion floatValue] >= 7.0)
     {

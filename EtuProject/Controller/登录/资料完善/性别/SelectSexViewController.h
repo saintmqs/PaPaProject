@@ -10,4 +10,5 @@
 
 @interface SelectSexViewController : BaseViewController
 
+@property (nonatomic, assign) BOOL isFromUserInfoSet;
 @end

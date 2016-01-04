@@ -38,8 +38,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     
     [self systemInit];
     
-    _bleManager = [BLEManager sharedManager];
-    [_bleManager setBLEDelegate:self];
+    [PaPaBLEManager shareInstance];
     
     [self.window makeKeyAndVisible];
     
@@ -418,24 +417,5 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-#pragma mark - BLEManager Delegate
-//蓝牙已连接
-- (void) BLEManagerConnected
-{
-
-}
-
-//蓝牙断开连接
-- (void) BLEManagerDisconnected:(NSError *)error
-{
-    showTip(@"蓝牙已断开连接");
-}
-
-//手环收到命令后操作失败
-- (void) BLEManagerOperationFailed:(NSUInteger)errorNo
-{
-    
 }
 @end

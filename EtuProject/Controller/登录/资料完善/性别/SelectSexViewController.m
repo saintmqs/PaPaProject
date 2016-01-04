@@ -24,6 +24,8 @@
 {
     UIButton *maleButton;
     UIButton *femaleButton;
+    
+    NSString *selectedSex;
 }
 @end
 
@@ -36,7 +38,19 @@
     self.titleLabel.text = @"您的性别";
     self.view.backgroundColor = maleColor;
     
-    self.leftNavButton.hidden = YES;
+    
+    if (self.isFromUserInfoSet) {
+        self.leftNavButton.hidden = NO;
+        [self.rightNavButton setTitle:@"确认" forState:UIControlStateNormal];
+        self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    }
+    else
+    {
+        self.leftNavButton.hidden = YES;
+        [self.rightNavButton setTitle:nil forState:UIControlStateNormal];
+        [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
+    }
     self.rightNavButton.hidden = NO;
     
     UIScrollView *container = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.headerView.bottom, mScreenWidth, mScreenHeight - self.headerView.bottom)];
@@ -46,7 +60,6 @@
     maleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat maleBtnFrameY = (mScreenHeight - self.headerView.bottom - 160*2)/3;
     maleButton.frame = CGRectMake((mScreenWidth - 160)/2, maleBtnFrameY, 160, 160);
-    maleButton.selected = YES; //默认男性选择
     maleButton.layer.cornerRadius = 80;
     maleButton.layer.masksToBounds = YES;
     maleButton.layer.borderWidth = 1;
@@ -68,12 +81,26 @@
     [femaleButton addTarget:self action:@selector(onHoldAction:) forControlEvents:UIControlEventTouchDown];
     [container addSubviews:maleButton, femaleButton, nil];
     
+    if (self.isFromUserInfoSet) {
+        maleButton.selected = [APP_DELEGATE.userData.baseInfo.sex isEqualToString:@"1"];
+        femaleButton.selected = !maleButton.selected;
+    }
+    else
+    {
+        maleButton.selected = YES; //默认男性选择
+        femaleButton.selected = NO;
+        
+        [UserDataManager shareInstance].registModel.sex = @"1"; //默认男
+    }
+    
     if (maleButton.selected) {
         maleButton.backgroundColor = maleSelectedColor;
         maleButton.layer.borderColor = maleBorderColor.CGColor;
         
         femaleButton.backgroundColor = maleNormalColor;
         femaleButton.layer.borderColor = maleBorderColor.CGColor;
+        
+        [self maleButtonStateTouchDown];
     }
     else
     {
@@ -82,12 +109,12 @@
         
         femaleButton.backgroundColor = femaleSelectedColor;
         femaleButton.layer.borderColor = femaleBorderColor.CGColor;
+        
+        [self femaleButtonStateTouchDown];
     }
     
     addBtnAction(maleButton, @selector(onBtnAction:));
     addBtnAction(femaleButton, @selector(onBtnAction:));
-    
-    [UserDataManager shareInstance].registModel.sex = @"1"; //默认男
 }
 
 - (void)didReceiveMemoryWarning {
@@ -98,8 +125,15 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    SelectHeightViewController *vc = [[SelectHeightViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.isFromUserInfoSet) {
+        [self updateSexRequest];
+    }
+    else
+    {
+        SelectHeightViewController *vc = [[SelectHeightViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 
 #pragma mark - 按钮点击事件
@@ -109,14 +143,26 @@
         maleButton.selected = YES;
         femaleButton.selected = NO;
         
-        [UserDataManager shareInstance].registModel.sex = @"1";
+        if (self.isFromUserInfoSet) {
+            selectedSex = @"1";
+        }
+        else
+        {
+            [UserDataManager shareInstance].registModel.sex = @"1";
+        }
     }
     else if (sender == femaleButton)
     {
         maleButton.selected = NO;
         femaleButton.selected = YES;
         
-        [UserDataManager shareInstance].registModel.sex = @"2";
+        if (self.isFromUserInfoSet) {
+            selectedSex = @"2";
+        }
+        else
+        {
+            [UserDataManager shareInstance].registModel.sex = @"2";
+        }
     }
 }
 
@@ -188,4 +234,38 @@
     femaleButton.backgroundColor = femaleSelectedColor;
 }
 
+#pragma mark - Http Request
+-(void)updateSexRequest
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:updateSex([APP_DELEGATE.userData.uid integerValue], [selectedSex integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            double delayInSeconds = 1.0;
+            __block SelectSexViewController* bself = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                APP_DELEGATE.userData.baseInfo.sex = selectedSex;
+                [bself.navigationController popViewControllerAnimated:YES];
+            });
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"user", @"updateSex")];
+}
 @end

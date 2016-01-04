@@ -18,9 +18,9 @@
 #import "LoginViewController.h"
 #import "Login.h"
 
-#import "BLEManager.h"
+#import "PaPaBLEManager.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,BLEManagerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,strong) RDVTabBarController *rootTabbarController; //根tabbar
@@ -29,8 +29,6 @@
 @property (nonatomic,strong) RecordViewController *record;  //记录
 @property (nonatomic,strong) WalletViewController *wallet;  //钱包
 @property (nonatomic,strong) TrafficAccountViewController *traffic; //公交卡账户
-
-@property (nonatomic,strong) BLEManager           *bleManager;
 
 @property (nonatomic,strong) Login *userData;
 @property (nonatomic, assign) BOOL isRootViewLaunched;

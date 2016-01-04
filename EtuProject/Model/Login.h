@@ -21,6 +21,8 @@
 @interface BaseInfo : BaseJSONModel
 
 @property (nonatomic, copy) NSString         *uid; //用户uid
+@property (nonatomic, copy) NSString         *nickname;//用户昵称
+@property (nonatomic, copy) NSString         *phone;//手机号
 @property (nonatomic, copy) NSString         *birthday;//生日 格式(1989-01-30)
 @property (nonatomic, copy) NSString         *sex;//1-男 2-女
 @property (nonatomic, copy) NSString         *height;//身高

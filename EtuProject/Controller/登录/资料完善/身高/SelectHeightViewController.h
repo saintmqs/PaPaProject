@@ -11,6 +11,7 @@
 
 @interface SelectHeightViewController : BaseViewController<CSPickerViewDataSource, CSPickerViewDelegate>
 
+@property (nonatomic, assign) BOOL isFromUserInfoSet;
 @property (nonatomic, assign) NSInteger ScrollToHeight;//滚到指定身高
 @property (nonatomic, assign) NSInteger maxLimitHeight;//限制最大年龄（没有设置默认2049）
 @property (nonatomic, assign) NSInteger minLimitHeight;//限制最小年龄（没有设置默认1970)

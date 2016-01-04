@@ -62,8 +62,7 @@
             minStepModel = [[CustomPickerModel alloc]initWithData:self.minLimitStep type:Model_Step];
         }
         
-        //获取平均体重
-        indexArray = [self getNormalStep:self.ScrollToStep];
+       
     }
     return self;
 }
@@ -74,7 +73,20 @@
     self.titleLabel.text = @"目标步数";
     self.view.backgroundColor = CURRENTCOLOR;
     
+    if (self.isFromUserInfoSet) {
+        [self.rightNavButton setTitle:@"确认" forState:UIControlStateNormal];
+        self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.rightNavButton setTitle:nil forState:UIControlStateNormal];
+        [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
+    }
     self.rightNavButton.hidden = NO;
+    
+    //获取平均步数
+    indexArray = [self getNormalStep:self.ScrollToStep];
     
     _stepPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake((mScreenWidth - 140)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 140, 430)];
     _stepPickerView.dataSource = self;
@@ -119,7 +131,13 @@
 //获取平均体重
 - (NSArray *)getNormalStep:(NSInteger)Step
 {
-    Step =10;
+    if (self.isFromUserInfoSet) {
+        Step = [APP_DELEGATE.userData.baseInfo.step integerValue]/1000;
+    }
+    else
+    {
+        Step =10;
+    }
     
     CustomPickerModel *model = [[CustomPickerModel alloc] initWithData:Step type:Model_Step];
     
@@ -209,12 +227,21 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    UIButton *button = (UIButton *)sender;
-    button.userInteractionEnabled = NO; //避免重复点击
-    
+    if (self.isFromUserInfoSet) {
+        [self updateStepRequest];
+    }
+    else
+    {
+        [self registBaseRequest];
+    }
+}
+
+#pragma mark - Http Request
+-(void)updateStepRequest
+{
     showViewHUD;
-    //用户二次信息添加
-    [self startRequestWithDict:registerbase([APP_DELEGATE.userData.uid integerValue], [UserDataManager shareInstance].registModel.birthday, [[UserDataManager shareInstance].registModel.sex integerValue], [[UserDataManager shareInstance].registModel.height integerValue], [[UserDataManager shareInstance].registModel.weight integerValue], [[UserDataManager shareInstance].registModel.targetStep integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+    
+    [self startRequestWithDict:healthUpdateStep([APP_DELEGATE.userData.uid integerValue], [stepArray[stepIndex] integerValue]*1000) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
         
         hideViewHUD;
         
@@ -226,10 +253,8 @@
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 
-                button.userInteractionEnabled = YES;
-                
-                SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
-                [bself.navigationController pushViewController:vc animated:YES];
+                APP_DELEGATE.userData.baseInfo.step = [NSString stringWithFormat:@"%@000",stepArray[stepIndex]];
+                [bself.navigationController popViewControllerAnimated:YES];
             });
         }
         else
@@ -243,9 +268,50 @@
                 showTip([error.userInfo objectForKey:@"msg"]);
             }
         }
-        
-    } url:kRequestUrl(@"User", @"registerbase")];
+    } url:kRequestUrl(@"health", @"healthUpdate_step")];
 }
 
-
+-(void)registBaseRequest
+{
+    self.rightNavButton.userInteractionEnabled = NO; //避免重复点击
+    showViewHUD;
+    //用户二次信息添加
+    [self startRequestWithDict:registerbase([APP_DELEGATE.userData.uid integerValue],
+                                            [UserDataManager shareInstance].registModel.birthday,
+                                            [[UserDataManager shareInstance].registModel.sex integerValue],
+                                            [[UserDataManager shareInstance].registModel.height integerValue],
+                                            [[UserDataManager shareInstance].registModel.weight integerValue],
+                                            [[UserDataManager shareInstance].registModel.targetStep integerValue])
+                 completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+                     
+                     hideViewHUD;
+                     
+                     if (!error) {
+                         showTip([dict objectForKey:@"msg"]);
+                         
+                         double delayInSeconds = 1.0;
+                         __block SelectStepsViewController* bself = self;
+                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                             
+                             self.rightNavButton.userInteractionEnabled = YES;
+                             
+                             SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+                             [bself.navigationController pushViewController:vc animated:YES];
+                         });
+                     }
+                     else
+                     {
+                         if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+                         {
+                             showTip(@"网络连接失败");
+                         }
+                         else
+                         {
+                             showTip([error.userInfo objectForKey:@"msg"]);
+                         }
+                     }
+                     
+                 } url:kRequestUrl(@"User", @"registerbase")];
+}
 @end

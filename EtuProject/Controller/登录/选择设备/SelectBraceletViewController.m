@@ -80,15 +80,15 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.searchResultArray.count;
+//    return self.searchResultArray.count;
     return 3;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([[BLEManager sharedManager] setCurrentPeripheralWithIndex:indexPath.row]) {
-        [[BLEManager sharedManager] startConnect];
+    if ([[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithIndex:indexPath.row]) {
+        [[PaPaBLEManager shareInstance].bleManager startConnect];
     }
 }
 @end

@@ -61,9 +61,6 @@
             self.minLimitWeight = PICKER_MINWEIGHT;
             minWeightModel = [[CustomPickerModel alloc]initWithData:self.minLimitWeight type:Model_Weight];
         }
-        
-        //获取平均体重
-        indexArray = [self getNormalWeight:self.ScrollToWeight];
     }
     return self;
 }
@@ -74,7 +71,20 @@
     self.titleLabel.text = @"您的体重";
     self.view.backgroundColor = CURRENTCOLOR;
     
+    if (self.isFromUserInfoSet) {
+        [self.rightNavButton setTitle:@"确认" forState:UIControlStateNormal];
+        self.rightNavButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.rightNavButton setImage:nil forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.rightNavButton setTitle:nil forState:UIControlStateNormal];
+        [self.rightNavButton setImage:[UIImage imageNamed:@"topIcoRightWrite"] forState:UIControlStateNormal];
+    }
     self.rightNavButton.hidden = NO;
+    
+    //获取平均体重
+    indexArray = [self getNormalWeight:self.ScrollToWeight];
     
     _weightPickerView = [[CSPickerView alloc] initWithFrame:CGRectMake((mScreenWidth - 100)/2, self.headerView.bottom+(mScreenHeight - self.headerView.bottom - 430)/3, 100, 430)];
     _weightPickerView.dataSource = self;
@@ -119,7 +129,13 @@
 //获取平均体重
 - (NSArray *)getNormalWeight:(NSInteger)weight
 {
-    weight =50;
+    if (self.isFromUserInfoSet) {
+        weight = [APP_DELEGATE.userData.baseInfo.weight integerValue];
+    }
+    else
+    {
+        weight =50;
+    }
     
     CustomPickerModel *model = [[CustomPickerModel alloc] initWithData:weight type:Model_Weight];
     
@@ -139,7 +155,9 @@
         title = weightArray[row];
         weightIndex = row;
         
-        [UserDataManager shareInstance].registModel.weight = weightArray[row];
+        if (!self.isFromUserInfoSet) {
+            [UserDataManager shareInstance].registModel.weight = weightArray[row];
+        }
     }
     
     self.title = title;
@@ -209,8 +227,48 @@
 #pragma mark - TopRightButton 点击事件
 -(void)didTopRightButtonClick:(UIButton *)sender
 {
-    SelectAgeViewController *vc = [[SelectAgeViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.isFromUserInfoSet) {
+        [self updateWeightRequest];
+    }
+    else
+    {
+        SelectAgeViewController *vc = [[SelectAgeViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
+#pragma mark - Http Request
+-(void)updateWeightRequest
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:healthUpdateWeight([APP_DELEGATE.userData.uid integerValue], [weightArray[weightIndex] integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            double delayInSeconds = 1.0;
+            __block SelectWeightViewController* bself = self;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                APP_DELEGATE.userData.baseInfo.weight = weightArray[weightIndex];
+                [bself.navigationController popViewControllerAnimated:YES];
+            });
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"health", @"healthUpdate_weight")];
+}
 @end
