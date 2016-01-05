@@ -29,7 +29,7 @@
     contentScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, mScreenHeight - self.headerView.frameBottom)];
     [self.view addSubview:contentScrollView];
     
-    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(0, 20, self.view.width, 180)];
+    UIView *container = [[UIView alloc]initWithFrame:CGRectMake(0, 40, self.view.width, 180)];
     container.backgroundColor = [UIColor whiteColor];
     container.layer.borderWidth = 0.5;
     container.layer.borderColor = rgbaColor(238, 238, 238, 1).CGColor;

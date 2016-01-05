@@ -11,6 +11,8 @@
 #import "UserInfoTableViewCell.h"
 #import "Login.h"
 
+#import "EditNickNameViewController.h"
+
 #import "SelectSexViewController.h"
 #import "SelectHeightViewController.h"
 #import "SelectWeightViewController.h"
@@ -150,9 +152,18 @@
     switch (indexPath.section) {
         case 0:
         {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.seperateLine.hidden = indexPath.row == 1;
-            cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 20, (60-30)/2, mScreenWidth/2, 30);
+            if (indexPath.row == 0) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.seperateLine.hidden = indexPath.row == 4;
+                cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
+            }
+            else
+            {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.seperateLine.hidden = indexPath.row == 1;
+                cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 20, (60-30)/2, mScreenWidth/2, 30);
+                cell.detailLabel.textColor = [UIColor lightGrayColor];
+            }
         }
             break;
         case 1:
@@ -178,7 +189,11 @@
         {
             switch (indexPath.row) {
                 case 0:
-                    
+                {
+                    //编辑昵称
+                    EditNickNameViewController *vc = [[EditNickNameViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
                     break;
                 case 1:
                     

@@ -24,9 +24,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.titleLabel.text = @"注册E手环账号";
+    self.titleLabel.text = @"注册啪啪手环账号";
     self.titleLabel.textColor = [UIColor grayColor];
     self.headerView.backgroundColor = rgbColor(242, 242, 242);
+    
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeft"] forState:UIControlStateNormal];
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeftWrite"] forState:UIControlStateHighlighted];
     
     UIView *container = [[UIView alloc]initWithFrame:CGRectMake(10, self.headerView.bottom + 20, self.view.width - 20, 100)];
     container.backgroundColor = [UIColor whiteColor];
@@ -36,7 +39,7 @@
     [self.view addSubview:container];
     
     self.phoneNum			= [UITextField textFieldWithFrame:CGRectMake(10, 10, container.width - 10*2, 30) font:0 label:@"手机号:    " labelTextColor:[UIColor blackColor]];
-    _phoneNum.maxLength		= 20;
+    _phoneNum.maxLength		= 11;
     //    _phoneNum.placeholder	= @"手机号";
     _phoneNum.textColor     = [UIColor blackColor];
     
@@ -67,6 +70,23 @@
     _btnRegister.layer.cornerRadius		= 10.f;
     
     [self.view addSubview:_btnRegister];
+    
+    UILabel *protocolLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.btnRegister.frameBottom + 20, mScreenWidth - 20, 20)];
+    protocolLabel.font = [UIFont systemFontOfSize:13];
+    protocolLabel.textAlignment = NSTextAlignmentCenter;
+    protocolLabel.textColor = [UIColor lightGrayColor];
+    protocolLabel.text = @"点击“注册”即您同意并接受啪啪手环的用户协议和隐私协议";
+    
+    NSMutableAttributedString *mutableStr = [[NSMutableAttributedString alloc] initWithString:protocolLabel.text];
+    
+    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"用户协议"]];
+    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"用户协议"]];
+
+    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"隐私协议"]];
+    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"隐私协议"]];
+
+    protocolLabel.attributedText = mutableStr;
+    [self.view addSubview:protocolLabel];
     
     addBtnAction(getVerifyCodeBtn, @selector(onBtnAction:));
     addBtnAction(_btnRegister, @selector(onBtnAction:));

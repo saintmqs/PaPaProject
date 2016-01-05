@@ -27,6 +27,9 @@
     self.titleLabel.textColor = [UIColor grayColor];
     self.headerView.backgroundColor = rgbColor(242, 242, 242);
     
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeft"] forState:UIControlStateNormal];
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeftWrite"] forState:UIControlStateHighlighted];
+    
     self.btnFinish			= [UIButton btnDefaultFrame:CGRectMake(mScreenWidth - 60 - 10, self.headerView.height- 25 - 5, 60, 25) title:@"完成" font:2];
     [_btnFinish setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_btnFinish setBackgroundImage:nil forState:UIControlStateNormal];
@@ -75,7 +78,7 @@
 //            showTip(@"请输入密码");
 //            return;
 //        }
-//        
+//
 //        //        if (![username validateMobile]) {
 //        //            showTip(@"请输入有效的手机号");
 //        //            return;
