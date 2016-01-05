@@ -46,4 +46,18 @@
     }
     return self;
 }
+
+-(id)initWithTime:(NSDate *)date
+{
+    self = [super init];
+    if (self) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"HH:mm"];
+        NSString *dateString = [formatter stringFromDate:date];
+        
+        self.hour     = [dateString substringWithRange:NSMakeRange(0, 2)];
+        self.minute    = [dateString substringWithRange:NSMakeRange(3, 2)];
+    }
+    return self;
+}
 @end

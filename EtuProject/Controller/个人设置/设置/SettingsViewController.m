@@ -10,6 +10,9 @@
 #import "UserInfoTableViewCell.h"
 
 #import "ChangePwdViewController.h"
+#import "SuggestionsViewController.h"
+#import "HelpViewController.h"
+#import "AboutUsViewController.h"
 
 @interface SettingsViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
@@ -31,7 +34,7 @@
     _infoHeadView = [[UserInfoHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 170)];
     [self.view addSubview:_infoHeadView];
 
-    titlesArray = [NSArray arrayWithObjects:@"登录密码",@"支付密码",@"意见反馈",@"使用帮助",@"关于我们", nil];
+    titlesArray = [NSArray arrayWithObjects:@"登录密码",@"意见反馈",@"使用帮助",@"关于我们", nil];
 
     settingsTable = [[UITableView alloc] initWithFrame:CGRectMake(0, _infoHeadView.frameBottom, mScreenWidth, mScreenHeight-_infoHeadView.frameBottom)];
     settingsTable.dataSource = self;
@@ -106,7 +109,7 @@
         case 0:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.seperateLine.hidden = indexPath.row == 4;
+            cell.seperateLine.hidden = indexPath.row == 3;
             cell.titleLabel.text = [titlesArray objectAtIndex:indexPath.row];
             cell.titleLabel.textColor = [UIColor blackColor];
             cell.detailLabel.hidden = YES;
@@ -143,7 +146,24 @@
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
-                    
+                case 1:
+                {
+                    SuggestionsViewController *vc = [[SuggestionsViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 2:
+                {
+                    HelpViewController *vc = [[HelpViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 3:
+                {
+                    AboutUsViewController *vc = [[AboutUsViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
                 default:
                     break;
             }

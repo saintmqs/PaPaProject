@@ -7,7 +7,10 @@
 //
 
 #import "BaseViewController.h"
+#import "GCPlaceholderTextView.h"
 
 @interface SuggestionsViewController : BaseViewController
 
+@property (nonatomic, strong) GCPlaceholderTextView *suggestionTextView;
+@property (nonatomic, strong) UIButton *btnFinish;
 @end

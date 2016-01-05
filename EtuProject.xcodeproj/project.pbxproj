@@ -25,6 +25,7 @@
 		A814026C1C3A031900CFAB98 /* SelectBraceletCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A814026B1C3A031900CFAB98 /* SelectBraceletCell.m */; };
 		A81402701C3A49C100CFAB98 /* PaPaBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A814026F1C3A49C100CFAB98 /* PaPaBLEManager.m */; };
 		A81402741C3B8C4700CFAB98 /* EditNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402731C3B8C4700CFAB98 /* EditNickNameViewController.m */; };
+		A81402771C3C07D400CFAB98 /* ClockSettingTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402761C3C07D400CFAB98 /* ClockSettingTableCell.m */; };
 		A82E33D81C1D1307006A6EE2 /* headBackground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33A51C1D1307006A6EE2 /* headBackground@3x.png */; };
 		A82E33E31C1D1307006A6EE2 /* icoSex1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33B01C1D1307006A6EE2 /* icoSex1@3x.png */; };
 		A82E33E41C1D1307006A6EE2 /* icoSex2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A82E33B11C1D1307006A6EE2 /* icoSex2@3x.png */; };
@@ -332,6 +333,8 @@
 		A814026F1C3A49C100CFAB98 /* PaPaBLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaPaBLEManager.m; sourceTree = "<group>"; };
 		A81402721C3B8C4700CFAB98 /* EditNickNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditNickNameViewController.h; sourceTree = "<group>"; };
 		A81402731C3B8C4700CFAB98 /* EditNickNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditNickNameViewController.m; sourceTree = "<group>"; };
+		A81402751C3C07D400CFAB98 /* ClockSettingTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockSettingTableCell.h; sourceTree = "<group>"; };
+		A81402761C3C07D400CFAB98 /* ClockSettingTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClockSettingTableCell.m; sourceTree = "<group>"; };
 		A82E33A51C1D1307006A6EE2 /* headBackground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "headBackground@3x.png"; sourceTree = "<group>"; };
 		A82E33B01C1D1307006A6EE2 /* icoSex1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icoSex1@3x.png"; sourceTree = "<group>"; };
 		A82E33B11C1D1307006A6EE2 /* icoSex2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icoSex2@3x.png"; sourceTree = "<group>"; };
@@ -908,6 +911,8 @@
 			children = (
 				A814024F1C242E3D00CFAB98 /* ClocksManagerTableCell.h */,
 				A81402501C242E3D00CFAB98 /* ClocksManagerTableCell.m */,
+				A81402751C3C07D400CFAB98 /* ClockSettingTableCell.h */,
+				A81402761C3C07D400CFAB98 /* ClockSettingTableCell.m */,
 			);
 			path = "闹钟";
 			sourceTree = "<group>";
@@ -2731,6 +2736,7 @@
 				A8674D881BEA586400F3FB44 /* WZRefreshTableHeaderView.m in Sources */,
 				A8674DE11BEA586400F3FB44 /* SDWebImageDownloader.m in Sources */,
 				A8674D921BEA586400F3FB44 /* IQTitleBarButtonItem.m in Sources */,
+				A81402771C3C07D400CFAB98 /* ClockSettingTableCell.m in Sources */,
 				A8674DB21BEA586400F3FB44 /* JSONKeyMapper.m in Sources */,
 				A8896E371BEBAAE400ADEB77 /* DeviceManagerViewController.m in Sources */,
 				A8674DCE1BEA586400F3FB44 /* OFSlideView.m in Sources */,

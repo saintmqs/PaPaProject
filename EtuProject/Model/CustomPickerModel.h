@@ -20,10 +20,14 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSString *month;
 @property (nonatomic, strong) NSString *day;
 
+@property (nonatomic, strong) NSString *hour;
+@property (nonatomic, strong) NSString *minute;
+
 @property (nonatomic, strong) NSString *heightData;
 @property (nonatomic, strong) NSString *weightData;
 @property (nonatomic, strong) NSString *stepData;
 
 - (id)initWithDate:(NSDate *)date;
 - (id)initWithData:(NSInteger)data type:(ModelType)type;
+- (id)initWithTime:(NSDate *)date;
 @end
