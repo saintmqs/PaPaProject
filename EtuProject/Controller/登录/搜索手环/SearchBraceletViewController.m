@@ -12,7 +12,7 @@
 
 static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
-@interface SearchBraceletViewController ()<CBCentralManagerDelegate,BLEManagerDelegate>
+@interface SearchBraceletViewController ()<CBCentralManagerDelegate,PaPaBLEManagerDelegate>
 {
     UIButton *setBleButton;   //开启蓝牙按钮
     
@@ -36,6 +36,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     self = [super init];
     if (self) {
         [SystemStateManager shareInstance].activeController = self;
+        [PaPaBLEManager shareInstance].delegate = self;
     }
     return self;
 }
@@ -63,7 +64,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     //初始化无搜索结果提示View
     [self setupNoResultView];
     
-    if ([[BLEManager sharedManager] blePoweredOn]) {
+    if ([[PaPaBLEManager shareInstance] blePoweredOn]) {
         searchView.hidden = NO;
         [_loadingView startAnimation];
         bleOffView.hidden = YES;
@@ -212,41 +213,39 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 #pragma mark - Scanning
 -(void)startScan
 {
-    if ([[BLEManager sharedManager] blePoweredOn]) {
-        [[BLEManager sharedManager] startScan];
+    [[PaPaBLEManager shareInstance].bleManager startScan];
+    
+    PPLoadingView *loopView = objc_getAssociatedObject(self, (const void *)CFBridgingRetain(LOOP_ITEM_ASS_KEY));
+    [loopView startAnimation];
+    
+    [self bleScanning:^{
+        [[PaPaBLEManager shareInstance].bleManager stopScan];
+        [loopView stopAnimation];
         
-        PPLoadingView *loopView = objc_getAssociatedObject(self, (const void *)CFBridgingRetain(LOOP_ITEM_ASS_KEY));
-        [loopView startAnimation];
+        if ([[PaPaBLEManager shareInstance].bleManager peripheralList].count != 0) {
+            
+            searchView.hidden = NO;
+            noResultView.hidden = YES;
+            
+            SelectBraceletViewController *vc = [[SelectBraceletViewController alloc] init];
+            vc.searchResultArray = [[PaPaBLEManager shareInstance].bleManager peripheralList];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            noResultView.hidden = NO;
+            searchView.hidden = YES;
+        }
         
-        [self bleScanning:^{
-            [[BLEManager sharedManager] stopScan];
-            [loopView stopAnimation];
-            
-            if ([[BLEManager sharedManager] peripheralList].count == 0) {
-                
-                searchView.hidden = NO;
-                noResultView.hidden = YES;
-                
-                SelectBraceletViewController *vc = [[SelectBraceletViewController alloc] init];
-                vc.searchResultArray = [[BLEManager sharedManager] peripheralList];
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-            else
-            {
-                noResultView.hidden = NO;
-                searchView.hidden = YES;
-            }
-            
-        } blockNo:^(id time) {
-            
-        }];
-    }
+    } blockNo:^(id time) {
+        
+    }];
 }
 
 #pragma mark - 侦测蓝牙
 //蓝牙扫描计时block
 - (void)bleScanning:(void(^)())blockYes blockNo:(void(^)(id time))blockNo {
-    __block int timeout=10; //倒计时时间
+    __block int timeout=3; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
     dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
@@ -291,7 +290,9 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 {
     [SystemStateManager shareInstance].hasBindWristband = NO;
     
-    dispatch_source_cancel(_timer);
+    if (_timer) {
+        dispatch_source_cancel(_timer);
+    }
     
     [APP_DELEGATE loginSuccess];
 }
@@ -303,6 +304,33 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     noResultView.hidden = YES;
     
     [self startScan];
+}
+
+#pragma mark - PaPaBLEManager Delegate
+-(void)getBLEStatusToDoNext:(CBCentralManagerState)state
+{
+    NSString *message;
+    switch (state) {
+        case CBCentralManagerStateUnsupported:
+            message = @"The platform/hardware doesn't support Bluetooth Low Energy.";
+            break;
+        case CBCentralManagerStateUnauthorized:
+            message = @"The app is not authorized to use Bluetooth Low Energy.";
+            break;
+        case CBCentralManagerStatePoweredOff:
+            message = @"Bluetooth is currently powered off.";
+            break;
+        case CBCentralManagerStatePoweredOn:
+        {
+            message = @"work";
+            [self startScan];
+        }
+            break;
+        case CBCentralManagerStateUnknown:
+            break;
+        default:
+            break;
+    }
 }
 
 //开启蓝牙
@@ -327,7 +355,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         case CBCentralManagerStatePoweredOn:
         {
             message = @"work";
-            [_centralManager scanForPeripheralsWithServices:nil options:nil];
         }
             break;
         case CBCentralManagerStateUnknown:

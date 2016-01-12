@@ -9,7 +9,7 @@
 #import "SelectBraceletViewController.h"
 #import "SelectBraceletCell.h"
 
-@interface SelectBraceletViewController()<UITableViewDataSource, UITableViewDelegate>
+@interface SelectBraceletViewController()<UITableViewDataSource, UITableViewDelegate,PaPaBLEManagerDelegate>
 {
     UITableView *searchResultTable;
     
@@ -42,6 +42,7 @@
     [self.view addSubview:cancelButton];
     
 //    [self setupGradientView];
+    [[PaPaBLEManager shareInstance] setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,6 +71,18 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    
+    NSString *bindIdentifier = [def objectForKey:kUD_BIND_DEVICE];// [def setObject:peripheral.RSSI forKey:kUD_BIND_DEVICE];
+    
+    CBPeripheral *peripheral = [self.searchResultArray objectAtIndex:indexPath.row];
+    
+    if ([peripheral.identifier.UUIDString isEqualToString:bindIdentifier]) {
+        cell.bindLabel.text = @"已绑定";
+    }
+    
+    cell.titleLabel.text = peripheral.name;
+    
     return cell;
 }
 
@@ -80,15 +93,50 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    return self.searchResultArray.count;
-    return 3;
+    return self.searchResultArray.count;
+//    return 3;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithIndex:indexPath.row]) {
+    
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    
+    NSString *bindIdentifier = [def objectForKey:kUD_BIND_DEVICE];
+    
+    CBPeripheral *peripheral = [self.searchResultArray objectAtIndex:indexPath.row];
+    
+    if ([peripheral.identifier.UUIDString isEqualToString:bindIdentifier]) {
+        [[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithObject:peripheral];
         [[PaPaBLEManager shareInstance].bleManager startConnect];
     }
+    else
+    {
+        if ([[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithIndex:indexPath.row]) {
+            
+            [[PaPaBLEManager shareInstance].bleManager startConnect];
+        }
+    }
+    
+    showViewHUD;
+}
+
+#pragma mark - PaPaBLEManagerConnected
+//蓝牙已连接
+-(void)PaPaBLEManagerConnected
+{
+    hideViewHUD;
+    
+    [searchResultTable reloadData];
+    
+    [APP_DELEGATE loginSuccess];
+}
+
+//蓝牙断开连接
+- (void) PaPaBLEManagerDisconnected:(NSError *)error
+{
+    hideViewHUD;
+    showError(error);
 }
 @end

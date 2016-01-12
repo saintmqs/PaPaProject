@@ -113,7 +113,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 - (void)loginSuccess
 {
-    [SystemStateManager shareInstance].hasBindWristband = YES;
     [self setupViewControllers];
     self.window.rootViewController = _rootTabbarController;
     
@@ -402,12 +401,12 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         
         SearchBraceletViewController *vc = (SearchBraceletViewController*)controller;
         
-        if ([[BLEManager sharedManager] blePoweredOn]) {
+        if ([[PaPaBLEManager shareInstance] blePoweredOn]) {
             vc.searchView.hidden = NO;
             vc.bleOffView.hidden = YES;
             [vc startScan];
         }
-    }    
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

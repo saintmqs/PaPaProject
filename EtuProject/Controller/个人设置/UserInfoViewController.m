@@ -19,7 +19,9 @@
 #import "SelectAgeViewController.h"
 #import "SelectStepsViewController.h"
 
-@interface UserInfoViewController ()<UITableViewDataSource,UITableViewDelegate>
+#import "JGActionSheet.h"
+
+@interface UserInfoViewController ()<UITableViewDataSource,UITableViewDelegate,JGActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UITableView *userInfoTable;
     
@@ -70,6 +72,7 @@
     self.rightNavButton.hidden = NO;
     
     _infoHeadView = [[UserInfoHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 170)];
+    _infoHeadView.delegate = self;
     [self.view addSubview:_infoHeadView];
     
     titlesArray = [NSArray arrayWithObjects:@[@"昵    称：",@"手    机："], @[@"性    别：",@"身    高：",@"体    重：",@"生    日：",@"目    标："], nil];
@@ -254,6 +257,40 @@
         default:
             break;
     }
+}
+
+#pragma mark - UserInfoHeadView Delegate
+- (void)editHeadImage
+{
+    JGActionSheetSection *section = [JGActionSheetSection sectionWithTitle:nil message:nil buttonTitles:@[@"拍照", @"从手机相册选择"] buttonStyle:JGActionSheetButtonStyleDefault];
+    
+    NSArray *sections = @[section, [JGActionSheetSection sectionWithTitle:nil message:nil buttonTitles:@[@"取消"] buttonStyle:JGActionSheetButtonStyleCancel]];
+    JGActionSheet* actionSheet = [[JGActionSheet alloc] initWithSections:sections];
+    actionSheet.delegate = self;
+    
+    weakObj(self);
+    [actionSheet setButtonPressedBlock:^(JGActionSheet *sheet, NSIndexPath *indexPath) {
+        
+        if (indexPath.section == 0)
+        {
+            NSLog(@"row: %ld", (long)indexPath.row);
+            UIImagePickerController *  imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.delegate = bself;
+            imagePickerController.allowsEditing = YES;
+            if(indexPath.row == 0)
+            {
+                imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            }
+            else
+            {
+                imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            }
+            [bself presentViewController:imagePickerController animated:YES completion:nil];
+        }
+        [sheet dismissAnimated:YES];
+    }];
+    
+    [actionSheet showInView:self.navigationController.view animated:YES];
 }
 
 #pragma mark - Http Request

@@ -10,7 +10,7 @@
 #import "UserInfoHeadView.h"
 
 
-@interface UserInfoViewController : BaseViewController
+@interface UserInfoViewController : BaseViewController<UserInfoHeadViewDelegate>
 
 @property (nonatomic, strong) UserInfoHeadView *infoHeadView;
 

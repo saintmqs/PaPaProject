@@ -8,10 +8,12 @@
 
 #import "BaseViewController.h"
 #import "SGFocusImageFrame.h"
+#import "PaPaSynchronousDataView.h"
 
 @interface HomeViewController : BaseViewController<SGFocusImageFrameDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) SGFocusImageFrame *indicatorView;
+@property (nonatomic,strong) PaPaSynchronousDataView *synDataView;
 @property (nonatomic,strong) UITableView       *detailTableView;
 
 @end

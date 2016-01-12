@@ -8,9 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol UserInfoHeadViewDelegate <NSObject>
+
+-(void)editHeadImage;
+
+@end
+
 @interface UserInfoHeadView : UIView
 
-@property (nonatomic, strong) UIImageView *headImageView;
+@property (nonatomic, assign) id<UserInfoHeadViewDelegate> delegate;
+@property (nonatomic, strong) UIButton *headImageView;
 @property (nonatomic, strong) UILabel     *stepLabel;
 @property (nonatomic, strong) UILabel     *dayLabel;
 @property (nonatomic, strong) UILabel     *distanceLabel;

@@ -16,11 +16,12 @@
     if (self) {
         self.backgroundColor = rgbaColor(0, 155, 232, 1);
         
-        _headImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 78)/2, 20, 78, 78)];
+        _headImageView = [[UIButton alloc] initWithFrame:CGRectMake((mScreenWidth - 78)/2, 20, 78, 78)];
         _headImageView.backgroundColor = [UIColor whiteColor];
         _headImageView.layer.cornerRadius = _headImageView.frameWidth/2;
         _headImageView.layer.masksToBounds = YES;
-        [_headImageView sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] placeholderImage:nil];
+        [_headImageView sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] forState:UIControlStateNormal placeholderImage:nil];
+        addBtnAction(_headImageView, @selector(changeHeadImage));
         [self addSubview:_headImageView];
         
         UIImageView *headBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, 10, 90, 90)];
@@ -92,4 +93,11 @@
     return self;
 }
 
+#pragma mark - UIButton Action
+-(void)changeHeadImage
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(editHeadImage)]) {
+        [_delegate editHeadImage];
+    }
+}
 @end

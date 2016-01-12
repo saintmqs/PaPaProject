@@ -30,7 +30,7 @@
         _ElectricalVoltage.textAlignment = NSTextAlignmentCenter;
         [self addSubview:_ElectricalVoltage];
         
-        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:@"98%"];
+        NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:@"00%"];
         [attrStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(2, 1)];
         _ElectricalVoltage.attributedText = attrStr;
         

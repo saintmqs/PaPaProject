@@ -14,13 +14,19 @@
 #import "DeviceManagerViewController.h"
 #import "SearchBraceletViewController.h"
 
-@interface HomeViewController ()
+@interface HomeViewController ()<PaPaBLEManagerDelegate>
 {
     HomeGradientView *gradientView;
 }
 @end
 
 @implementation HomeViewController
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[PaPaBLEManager shareInstance] setDelegate:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -66,6 +72,8 @@
     
     [self changeBannersHeaderContent:self.indicatorView];
     
+    [self configSynDataView];
+    
     [self configTableUI];
     
     if ([SystemStateManager shareInstance].hasBindWristband) {
@@ -86,6 +94,14 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)configSynDataView
+{
+    _synDataView = [[PaPaSynchronousDataView alloc] initWithFrame:CGRectMake(0, _indicatorView.frameBottom-70, mScreenWidth, 70)];
+    _synDataView.alpha = 0;
+    _synDataView.hidden = YES;
+    [self.view addSubview:_synDataView];
+}
+
 -(void)configTableUI
 {
     _detailTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _indicatorView.frameBottom, mScreenWidth, mScreenHeight - _indicatorView.frameBottom - mTabBarHeight)];
@@ -93,7 +109,15 @@
     _detailTableView.dataSource = self;
     _detailTableView.backgroundColor = [UIColor clearColor];
     _detailTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _detailTableView.bounces = NO;
     [self.view addSubview:_detailTableView];
+    
+//    self.detailTableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//        // 进入刷新状态后会自动调用这个block
+//    }];
+//    或
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+//    self.detailTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshCardBalance)];
 }
 
 #pragma mark 改变上面滚动栏的内容
@@ -266,6 +290,72 @@
             NSLog(@"%@",data);
         }
     } url:kRequestUrl(@"Health", @"stepsMonitor")];
+}
+
+//刷新余额
+-(void)refreshCardBalance
+{
+    // 马上进入刷新状态
+//    [self.detailTableView.header beginRefreshing];
+    
+    [self startRequestWithDict:getCitizencardBalance([APP_DELEGATE.userData.uid integerValue], @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+//        [self.detailTableView.header endRefreshing];
+        
+        if (!error) {
+            
+        }
+        
+    } url:kRequestUrl(@"Citizencard", @"getCitizencardBalance")];
+}
+
+#pragma mark - PaPaBLEManager Delegate
+-(void)PaPaOnDFUStarted
+{
+    _synDataView.hidden = NO;
+    [UIView animateWithDuration:0.5f animations:^{
+        _synDataView.alpha = 1.f;
+        CGRect frame = _synDataView.frame;
+        frame.origin.y = _indicatorView.frameBottom;
+        _synDataView.frame = frame;
+        
+        CGRect tableFrame = _detailTableView.frame;
+        tableFrame.origin.y = _synDataView.frameBottom;
+        tableFrame.size.height = tableFrame.size.height - _synDataView.frameHeight;
+        _detailTableView.frame = tableFrame;
+        
+        [_synDataView.progressIndicator startAnimating];
+    }];
+}
+
+-(void)PaPaOnTransferPercentage:(int)percentage
+{
+    _synDataView.progressLabel.text = [NSString stringWithFormat:@"%d%%",percentage];
+}
+
+-(void)PaPaOnSuccessfulFileTranferred
+{
+    [UIView animateWithDuration:0.5f animations:^{
+        _synDataView.alpha = 0;
+        CGRect frame = _synDataView.frame;
+        frame.origin.y = _indicatorView.frameBottom - _synDataView.frameHeight;
+        _synDataView.frame = frame;
+        
+        CGRect tableFrame = _detailTableView.frame;
+        tableFrame.origin.y = _synDataView.frameBottom;
+        tableFrame.size.height = tableFrame.size.height + _synDataView.frameHeight;
+        _detailTableView.frame = tableFrame;
+        
+        [_synDataView.progressIndicator stopAnimating];
+    } completion:^(BOOL finished) {
+        _synDataView.hidden = YES;
+    }];
+}
+
+-(void)PaPaOnDeviceDisconnected:(CBPeripheral *)peripheral
+{
+    [SystemStateManager shareInstance].hasBindWristband = NO;
+    [APP_DELEGATE loginSuccess];
 }
 @end
 

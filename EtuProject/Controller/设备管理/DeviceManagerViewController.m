@@ -7,10 +7,10 @@
 //
 
 #import "DeviceManagerViewController.h"
-#import "UserInfoTableViewCell.h"
+#import "DeviceManagerCell.h"
 #import "ClocksManagerViewController.h"
 
-@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,PaPaBLEManagerDelegate>
 {
     UITableView *deviceManagerTable;
     
@@ -20,16 +20,25 @@
 
 @implementation DeviceManagerViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[PaPaBLEManager shareInstance] setDelegate:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.titleLabel.text = @"设备管理";
     self.headerView.backgroundColor = rgbaColor(0, 155, 232, 1);
     
+    [[PaPaBLEManager shareInstance].bleManager getRemainingBatteryCapacity];
+    [[PaPaBLEManager shareInstance].bleManager getSystemInformation];
+    
     _deviceHeadView = [[DeviceManagerHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 220)];
     [self.view addSubview:_deviceHeadView];
     
-    titlesArray = [NSArray arrayWithObjects:@"闹        钟",@"清除数据",@"解除绑定",@"固件版本号", nil];
+    titlesArray = [NSArray arrayWithObjects:@"闹        钟",@"来电提醒",@"解除绑定",@"固件版本号", nil];
     
     deviceManagerTable = [[UITableView alloc] initWithFrame:CGRectMake(0, _deviceHeadView.frameBottom, mScreenWidth, mScreenHeight-_deviceHeadView.frameBottom)];
     deviceManagerTable.dataSource = self;
@@ -59,21 +68,58 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"UITableViewCell";
-    UserInfoTableViewCell *cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    static NSString *identifier = @"DeviceManagerCell";
+    DeviceManagerCell *cell = (DeviceManagerCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[UserInfoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[DeviceManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.backgroundColor = [UIColor whiteColor];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.seperateLine.hidden = indexPath.row == 3;
-    cell.titleLabel.text = [titlesArray objectAtIndex:indexPath.row];
-    cell.titleLabel.textColor = [UIColor blackColor];
-    cell.detailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
+    cell.seperateLine.hidden = indexPath.row == [titlesArray count] - 1;
+    cell.managerTitleLabel.text = [titlesArray objectAtIndex:indexPath.row];
     
-    if (indexPath.row == 3) {
-        cell.detailLabel.text = @"1.0.11.6";
+    switch (indexPath.row) {
+        case 1:
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.cellType = SWITCH_TYPE;
+        }
+            break;
+        case 2:
+        {
+            
+            cell.cellType = DETAIL_TYPE;
+            if ([SystemStateManager shareInstance].hasBindWristband) {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;;
+                cell.managerDetailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
+                CBPeripheral *peripheral = [[PaPaBLEManager shareInstance].bleManager getCurrentConnectedPeripheral];
+                cell.managerDetailLabel.text = peripheral.name;
+            }
+            else
+            {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.managerDetailLabel.frame = CGRectMake(mScreenWidth/2 - 20, (60-30)/2, mScreenWidth/2, 30);
+                cell.managerDetailLabel.text = @"尚未绑定";
+            }
+        }
+            break;
+        case 3:
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.cellType = DETAIL_TYPE;
+            if ([SystemStateManager shareInstance].hasBindWristband) {
+                
+                cell.managerDetailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
+                cell.managerDetailLabel.text = [[PaPaBLEManager shareInstance].firmwareInfo objectForKey:@"f"];
+            }
+        }
+            break;
+        default:
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.cellType = NORMAL_TYPE;
+        }
+            break;
     }
     
     return cell;
@@ -90,10 +136,48 @@
             [self.navigationController pushViewController:vc animated:YES];
         }
             break;
-            
+        case 2:
+        {
+            if ([SystemStateManager shareInstance].hasBindWristband) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"opps!真的确定要解除么？我会难过的！" delegate:self cancelButtonTitle:@"好吧不解了~" otherButtonTitles:@"残忍的解绑", nil];
+                [alertView show];
+            }
+        }
+            break;
+        case 3:
+        {
+           
+        }
+            break;
         default:
             break;
     }
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [[PaPaBLEManager shareInstance].bleManager unbindCurrentWristband];
+        
+        [SystemStateManager shareInstance].hasBindWristband = NO;
+        //本地缓存绑定手环
+        NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+        
+        [def setObject:@"" forKey:kUD_BIND_DEVICE];
+        [def synchronize];
+    }
+}
+
+#pragma mark - PaPaBLEManager Delegate
+-(void)PaPaBLEManagerHasRemainingBatteryCapacity:(NSUInteger)level
+{
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%%",level]];
+    [attrStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(2, 1)];
+    _deviceHeadView.ElectricalVoltage.attributedText = attrStr;
+}
+
+-(void)PaPaBLEManagerHasSystemInformation:(NSDictionary *)info
+{
+    [deviceManagerTable reloadData];
+}
 @end
