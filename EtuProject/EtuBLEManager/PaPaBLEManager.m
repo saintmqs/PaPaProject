@@ -28,6 +28,8 @@ static PaPaBLEManager *papaBLEManager;
     if (self) {
         bleManager = [BLEManager sharedManager];
         [bleManager setBLEDelegate:self];
+        
+        self.balance = @"0.00元";
     }
     return self;
 }
@@ -68,26 +70,26 @@ static PaPaBLEManager *papaBLEManager;
     }
 }
 
-- (void) BLEManagerConnected//蓝牙已连接
+- (void) BLEManagerConnected//蓝牙已连接(此时还不能进行读写操作)
 {
     showTip(@"蓝牙已连接");
     
-    double delayInSeconds = 1.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [bleManager getSystemInformation];
-        [bleManager getCardID];
-    });
-    
     
 //    NSURL *updateUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"product_test" ofType:@"zip"]];
-//    
+//
 //    [bleManager setDFUDelegate:self];
 //    [bleManager updateFirmware:updateUrl];
-
+    
+//    double delayInSeconds = 1.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        [bleManager getSystemInformation]; //获取系统信息
+//        [bleManager getBalance]; //获取余额
+//        [bleManager getCardID]; //获取公交卡号
+//    });
+//
     [bleManager bindCurrentWristband]; //绑定当前手环
     [SystemStateManager shareInstance].hasBindWristband = YES;
-    
     //本地缓存绑定手环
     CBPeripheral *peripheral = [bleManager getCurrentConnectedPeripheral];
     
@@ -96,163 +98,356 @@ static PaPaBLEManager *papaBLEManager;
     [def setObject:[NSString stringWithFormat:@"%@",peripheral.identifier.UUIDString] forKey:kUD_BIND_DEVICE];
     [def synchronize];
     
+    [SystemStateManager shareInstance].bindUUID = peripheral.identifier.UUIDString;
+    
     //代理
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerConnected)]) {
         [_delegate PaPaBLEManagerConnected];
     }
 }
 
+- (void) BLEManagerReadyToReadAndWrite//蓝牙可进行读写操作
+{
+    [bleManager getSystemInformation]; //获取系统信息
+    [bleManager getBalance]; //获取余额
+    [bleManager getCardID]; //获取公交卡号
+}
+
 - (void) BLEManagerDisconnected:(NSError *)error//蓝牙断开连接
 {
     showError(error);
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerDisconnected:)]) {
+        [_delegate PaPaBLEManagerDisconnected:error];
+    }
+    
+    //发起重连扫描
+    if ([SystemStateManager shareInstance].hasBindWristband) {
+        [bleManager startScan];
+    }
 }
 
-- (void) BLEManagerDiscoverNewDevice:(CBPeripheral *)peripheral RSSI:(NSNumber *)RSSI;//发现新设备
+- (void) BLEManagerDiscoverNewDevice:(CBPeripheral *)peripheral RSSI:(NSNumber *)RSSI//发现新设备
 {
+    //发现新设备若和绑定手环Idenifier匹配一致自动连接手环
     
+    if ([peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
+        [bleManager setCurrentPeripheralWithObject:peripheral];
+        [bleManager startConnect];
+    }
+}
+
+- (void) BLEManagerFirmwaerInBootloaderMode//手环处于bootloader模式，此时只能升级，无法获取信息。
+{
+//    NSURL *updateUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"product_test" ofType:@"zip"]];
+//    
+//    [bleManager setDFUDelegate:self];
+//    [bleManager updateFirmware:updateUrl];
 }
 
 - (void) BLEManagerSendDataFailed:(NSError *)error//数据重发3次后仍然失败
 {
-    
+    showError(error);
 }
 
 - (void) BLEManagerReceiveDataFailed:(NSError *)error//接收数据失败
 {
-    
+    showError(error);
 }
 
-- (void) BLEManagerOperationFailed:(NSUInteger)errorNo//手环收到命令后操作失败
+- (void) BLEManagerOperationSucceed:(NSUInteger)cmdNo//手环收到命令后操作成功
 {
-    NSString *errorMsg = [NSString stringWithFormat:@"%ld",errorNo];
-    switch (errorNo) {
-        case WALLET_GET_BALANCE_FAILED: //获取余额失败
+    switch (cmdNo) {
+        case COMMAND_NULL:
         {
-            errorMsg = @"获取余额失败";
+            
         }
             break;
-        case WALLET_GET_EXPENSES_FAILED://获取消费记录失败
+            
+            //电子钱包命令，还未完善
+        case WALLET_GET_BALANCE://获取余额
         {
-            errorMsg = @"获取消费记录失败";
+            
         }
             break;
-        case WALLET_ADD_BALANCE_FAILED://增加余额
+        case WALLET_GET_EXPENSES://获取消费记录
         {
-            errorMsg = @"增加余额";
+            
+        }
+            break;
+        case WALLET_ADD_BALANCE://增加余额
+        {
+            
         }
             break;
             
             //运动相关
-        case SPORTS_SET_STEPS_FAILED://设置目标步数失败
+        case SPORTS_SET_STEPS://设置目标步数
         {
-            errorMsg = @"设置目标步数失败";
+            
         }
             break;
-        case SPORTS_GET_DATA_FAILED://获取计步信息失败
+        case SPORTS_GET_DATA://获取计步信息
         {
-            errorMsg = @"获取计步信息失败";
+            
         }
             break;
-        case SPORTS_GET_CURRENT_FAILED://获取今天步数失败
+        case SPORTS_GET_CURRENT://获取今天步数
         {
-            errorMsg = @"获取今天步数失败";
+            
         }
             break;
-        case SPROTS_DELETE_DATA_FAILED://删除计步信息失败
+        case SPROTS_DELETE_DATA://删除计步信息
         {
-            errorMsg = @"删除计步信息失败";
+            
         }
             break;
             
             //睡眠相关
-        case SLEEP_GET_DATA_FAILED://获取睡眠信息失败
+        case SLEEP_GET_DATA://获取睡眠信息
         {
-            errorMsg = @"获取睡眠信息失败";
+            
         }
             break;
-        case SLEEP_GET_CURRENT_FAILED://获取今天睡眠时间失败
+        case SLEEP_GET_CURRENT://获取今天睡眠时间
         {
-            errorMsg = @"获取今天睡眠时间失败";
+            
         }
             break;
-        case SLEEP_DELETE_DATA_FAILED://删除睡眠信息失败
+        case SLEEP_DELETE_DATA://删除睡眠信息
         {
-            errorMsg = @"删除睡眠信息失败";
+            
         }
             break;
             
             //来电和短信
-        case PHONE_RING_SHOCK_FAILED://来电手环震动失败
+        case PHONE_RING_SHOCK://来电手环震动
         {
-            errorMsg = @"来电手环震动失败";
+            
         }
             break;
-        case PHONE_RING_SHOCK_STOP_FAILED://接电话停止震动失败
+        case PHONE_RING_SHOCK_STOP://接电话停止震动
         {
-            errorMsg = @"接电话停止震动失败";
+            
         }
             break;
-        case PHONE_MESSAGE_SHOCK_FAILED://短信手环震动失败
+        case PHONE_MESSAGE_SHOCK://短信手环震动
         {
-            errorMsg = @"短信手环震动失败";
+            
         }
             break;
             
             //时间
-        case WRISTBAND_SET_TIME_FAILED://设置手环时间失败
+        case WRISTBAND_SET_TIME://设置手环时间
         {
-            errorMsg = @"设置手环时间失败";
+            
         }
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK_FAILED://设置手环闹钟失败
+        case WRISTBAND_ALARM_CLOCK://设置手环闹钟
         {
-            errorMsg = @"设置手环闹钟失败";
+            
         }
             break;
             
             //电池
-        case BATTERTY_REMAINING_CAPACITY_FAILED://获取电池剩余电量失败
+        case BATTERTY_REMAINING_CAPACITY://获取电池剩余电量
         {
-            errorMsg = @"获取电池剩余电量失败";
+            
         }
             break;
             
             //绑定和解绑
-        case WRISTBAND_BIND_FAILED://绑定手环失败
+        case WRISTBAND_BIND://绑定手环
         {
-            errorMsg = @"绑定手环失败";
-            [SystemStateManager shareInstance].hasBindWristband = NO;
+            
         }
             break;
-        case WRISTBAND_UNBUND_FAILED://解绑手环失败
+        case WRISTBAND_UNBUND://解绑手环
         {
-            errorMsg = @"解绑手环失败";
-            [SystemStateManager shareInstance].hasBindWristband = YES;
+            [SystemStateManager shareInstance].hasBindWristband = NO;
+            //本地缓存绑定手环
+            NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+            
+            [def setObject:@"" forKey:kUD_BIND_DEVICE];
+            [def synchronize];
+            
+            [SystemStateManager shareInstance].bindUUID = @"";
+            
+            //断开连接
+            [bleManager cancelConnect];
+            
         }
+            break;
+            
             
             //系统相关
-        case WRISTBAND_UPDATE_FIRMWARE_FAILED://蓝牙通讯固件升级失败
+        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
         {
-            errorMsg = @"蓝牙通讯固件升级失败";
+            
         }
             break;
-        case WRISTBAND_GET_SYSTEM_INFO_FAILED://获取系统信息失败
+        case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
         {
-            errorMsg = @"修改蓝牙名称失败";
+            
         }
             break;
-        case WRISTBAND_CHANGE_BLE_NAME_FAILED://修改蓝牙名称失败
+        case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
         {
-            errorMsg = @"修改蓝牙名称失败";
+            
         }
             break;
             
             //卡号
-        case WRISTBAND_GET_CARD_ID_FAILED://获取卡号失败
+        case WRISTBAND_GET_CARD_ID://获取卡号
         {
-            errorMsg = @"获取卡号失败";
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void) BLEManagerOperationFailed:(NSUInteger)cmdNo//手环收到命令后操作失败
+{
+    NSString *errorMsg;
+    switch (cmdNo) {
+        case COMMAND_NULL:
+        {
+            
+        }
+            break;
+            
+            //电子钱包命令，还未完善
+        case WALLET_GET_BALANCE://获取余额
+        {
+            
+        }
+            break;
+        case WALLET_GET_EXPENSES://获取消费记录
+        {
+            
+        }
+            break;
+        case WALLET_ADD_BALANCE://增加余额
+        {
+            
+        }
+            break;
+            
+            //运动相关
+        case SPORTS_SET_STEPS://设置目标步数
+        {
+            
+        }
+            break;
+        case SPORTS_GET_DATA://获取计步信息
+        {
+            
+        }
+            break;
+        case SPORTS_GET_CURRENT://获取今天步数
+        {
+            
+        }
+            break;
+        case SPROTS_DELETE_DATA://删除计步信息
+        {
+            
+        }
+            break;
+            
+            //睡眠相关
+        case SLEEP_GET_DATA://获取睡眠信息
+        {
+            
+        }
+            break;
+        case SLEEP_GET_CURRENT://获取今天睡眠时间
+        {
+            
+        }
+            break;
+        case SLEEP_DELETE_DATA://删除睡眠信息
+        {
+            
+        }
+            break;
+            
+            //来电和短信
+        case PHONE_RING_SHOCK://来电手环震动
+        {
+            
+        }
+            break;
+        case PHONE_RING_SHOCK_STOP://接电话停止震动
+        {
+            
+        }
+            break;
+        case PHONE_MESSAGE_SHOCK://短信手环震动
+        {
+            
+        }
+            break;
+            
+            //时间
+        case WRISTBAND_SET_TIME://设置手环时间
+        {
+            
+        }
+            break;
+            
+            //闹钟
+        case WRISTBAND_ALARM_CLOCK://设置手环闹钟
+        {
+            
+        }
+            break;
+            
+            //电池
+        case BATTERTY_REMAINING_CAPACITY://获取电池剩余电量
+        {
+            
+        }
+            break;
+            
+            //绑定和解绑
+        case WRISTBAND_BIND://绑定手环
+        {
+            
+        }
+            break;
+        case WRISTBAND_UNBUND://解绑手环
+        {
+            
+        }
+            break;
+            
+            
+            //系统相关
+        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
+        {
+            
+        }
+            break;
+        case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
+        {
+            
+        }
+            break;
+        case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
+        {
+            
+        }
+            break;
+            
+            //卡号
+        case WRISTBAND_GET_CARD_ID://获取卡号
+        {
+            
         }
             break;
         default:
@@ -262,14 +457,56 @@ static PaPaBLEManager *papaBLEManager;
     showTip(errorMsg);
 }
 
-//- (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
-//- (void) BLEManagerHasExpensesRecord:(NSArray *)record;//蓝牙返回消费记录，每个记录以NSDictionary存储
-//- (void) BLEManagerStepTargetAchieved;//达到目标步数消息
-//- (void) BLEManagerAlarmClockStopped;//手环闹钟触摸后停止震动
-//- (void) BLEManagerHasStepData:(NSArray *)stepData;//蓝牙返回计步信息，每个记录以NSDictionary存储
-//- (void) BLEManagerUpdateCurrentSteps:(NSUInteger)steps;//蓝牙返回今天的步数
-//- (void) BLEManagerHasSleepData:(NSArray *)sleepData;//蓝牙返回睡眠信息，每个记录以NSDictionary存储
-//- (void) BLEManagerUpdateCurrentSleepData:(NSDictionary *)mins;//蓝牙返回今天的睡眠信息
+- (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
+{
+    self.balance = [NSString stringWithFormat:@"%.2f元",(float)balance/100];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasBalanceData:)]) {
+        [_delegate PaPaBLEManagerHasBalanceData:balance];
+    }
+}
+
+- (void) BLEManagerHasExpensesRecord:(NSArray *)record;//蓝牙返回消费记录，每个记录以NSDictionary存储
+{
+    
+}
+
+- (void) BLEManagerStepTargetAchieved//达到目标步数消息
+{
+    
+}
+
+- (void) BLEManagerAlarmClockStopped//手环闹钟触摸后停止震动
+{
+    
+}
+
+- (void) BLEManagerHasStepData:(NSArray *)stepData//蓝牙返回计步信息，每个记录以NSDictionary存储
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasStepData:)]) {
+        [_delegate PaPaBLEManagerHasStepData:stepData];
+    }
+}
+
+- (void) BLEManagerUpdateCurrentSteps:(NSUInteger)steps//蓝牙返回今天的步数
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerUpdateCurrentSteps:)]) {
+        [_delegate PaPaBLEManagerUpdateCurrentSteps:steps];
+    }
+}
+
+- (void) BLEManagerHasSleepData:(NSArray *)sleepData//蓝牙返回睡眠信息，每个记录以NSDictionary存储
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasSleepData:)]) {
+        [_delegate PaPaBLEManagerHasStepData:sleepData];
+    }}
+
+- (void) BLEManagerUpdateCurrentSleepData:(NSDictionary *)mins//蓝牙返回今天的睡眠信息
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerUpdateCurrentSleepData:)]) {
+        [_delegate PaPaBLEManagerUpdateCurrentSleepData:mins];
+    }
+}
 
 - (void) BLEManagerHasRemainingBatteryCapacity:(NSUInteger)level//手环返回电量，暂定返回百分比数值
 {
@@ -278,7 +515,7 @@ static PaPaBLEManager *papaBLEManager;
     }
 }
 
-- (void) BLEManagerHasSystemInformation:(NSDictionary *)info //手环系统信息
+- (void) BLEManagerHasSystemInformation:(NSDictionary *)info//手环系统信息
 {
     self.firmwareInfo = info;
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasSystemInformation:)]) {
@@ -286,10 +523,11 @@ static PaPaBLEManager *papaBLEManager;
     }
 }
 
-- (void) BLEManagerHasCardID:(NSString *)cardId//卡号
+- (void) BLEManagerHasCardID:(NSString *)cardID//卡号
 {
-    self.cardId = cardId;
+    self.cardId = cardID;
 }
+
 
 #pragma mark - DFU Delegate 
 -(void)onDeviceConnected:(CBPeripheral *)peripheral//升级时连接蓝牙成功

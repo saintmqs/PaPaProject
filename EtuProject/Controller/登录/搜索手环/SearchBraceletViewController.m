@@ -12,15 +12,13 @@
 
 static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
-@interface SearchBraceletViewController ()<CBCentralManagerDelegate,PaPaBLEManagerDelegate>
+@interface SearchBraceletViewController ()<CBCentralManagerDelegate>
 {
     UIButton *setBleButton;   //开启蓝牙按钮
     
     UIButton *reSearchButton; //重新搜索按钮
     
     UIButton *cancelButton;   //暂不绑定按钮
-    
-    dispatch_source_t _timer;
 }
 
 @property (nonatomic, strong) CBCentralManager *centralManager;
@@ -36,7 +34,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     self = [super init];
     if (self) {
         [SystemStateManager shareInstance].activeController = self;
-        [PaPaBLEManager shareInstance].delegate = self;
     }
     return self;
 }
@@ -44,8 +41,10 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self startScan];
+        
+    if ([[PaPaBLEManager shareInstance] blePoweredOn]) {
+        [self startScan];
+    }
 }
 
 - (void)viewDidLoad {
@@ -272,20 +271,8 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     dispatch_resume(_timer);
 }
 
-- (void) BLEManagerConnected//蓝牙已连接
-{
-    NSLog(@"蓝牙已连接");
-    showTip(@"蓝牙已连接");
-}
-
-- (void) BLEManagerDisconnected:(NSError *)error//蓝牙断开连接
-{
-    NSLog(@"%@",error.localizedDescription);
-    showTip(error.localizedDescription);
-}
-
 #pragma mark - ButtonAction
-//暂时不绑定
+//暂时不绑定 代表尚未连接手环
 -(void)cancelBind
 {
     [SystemStateManager shareInstance].hasBindWristband = NO;
@@ -363,5 +350,24 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
             break;
     }
 
+}
+
+#pragma mark - PaPaBLEManager Delegate
+-(void)PaPaBLEManagerConnected
+{
+    [SystemStateManager shareInstance].hasBindWristband = YES;
+    
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        if (_timer) {
+            dispatch_source_cancel(_timer);
+        }
+        
+        [APP_DELEGATE loginSuccess];
+    });
+    
+    
 }
 @end

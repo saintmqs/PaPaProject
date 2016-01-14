@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "BLEManager.h"
 
 typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
@@ -20,6 +21,16 @@ typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
 //蓝牙断开连接
 - (void) PaPaBLEManagerDisconnected:(NSError *)error;
 
+//蓝牙返回计步信息，每个记录以NSDictionary存储
+- (void) PaPaBLEManagerHasStepData:(NSArray *)stepData;
+//蓝牙返回今天的步数
+- (void) PaPaBLEManagerUpdateCurrentSteps:(NSUInteger)steps;
+//蓝牙返回睡眠信息，每个记录以NSDictionary存储
+- (void) PaPaBLEManagerHasSleepData:(NSArray *)sleepData;
+//蓝牙返回今天的睡眠信息
+- (void) PaPaBLEManagerUpdateCurrentSleepData:(NSDictionary *)mins;
+//蓝牙返回钱包余额(以分记)
+- (void) PaPaBLEManagerHasBalanceData:(NSUInteger)balance;
 //剩余电量
 - (void) PaPaBLEManagerHasRemainingBatteryCapacity:(NSUInteger)level;
 //获取系统信息
@@ -42,10 +53,10 @@ typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
 
 @property (nonatomic, strong) BLEManager *bleManager;
 
-@property (nonatomic, assign) BOOL blePoweredOn;            //蓝牙是否打开
+@property (nonatomic, assign) BOOL blePoweredOn;            //手机蓝牙是否打开
 
 @property (nonatomic, strong) NSDictionary *firmwareInfo;   //系统信息
-
+@property (nonatomic, strong) NSString     *balance;
 @property (nonatomic, strong) NSString     *cardId;
 
 +(PaPaBLEManager *)shareInstance;

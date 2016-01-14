@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol HomeTableViewCellDelegate <NSObject>
+
+-(void)updateBalace;
+
+@end
+
 @interface HomeTableViewCell : UITableViewCell
 
+@property (nonatomic,strong) id<HomeTableViewCellDelegate> delegate;
 @property (nonatomic,strong) UIImageView *iconImageView;
 @property (nonatomic,strong) UILabel     *moneyLabel;
 @property (nonatomic,strong) UILabel     *updateTimeLabel;

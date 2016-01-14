@@ -30,4 +30,7 @@
 - (void)didTopRightButtonClick:(UIButton *)sender;
 
 - (void)didTopLeftButtonClick:(UIButton *)sender;
+
+-(void)connetedViewRefreshing;
+-(void)disConnetedViewRefreshing:(NSError *)error;
 @end

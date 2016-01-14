@@ -18,5 +18,7 @@
 @property (nonatomic, strong) PPLoadingView *loadingView;
 @property (nonatomic, strong) PPGradientView *gradientView;
 
+@property (nonatomic, strong) dispatch_source_t timer;
+
 -(void)startScan; //开始扫描附近的蓝牙设备
 @end

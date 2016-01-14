@@ -9,7 +9,7 @@
 #import "SelectBraceletViewController.h"
 #import "SelectBraceletCell.h"
 
-@interface SelectBraceletViewController()<UITableViewDataSource, UITableViewDelegate,PaPaBLEManagerDelegate>
+@interface SelectBraceletViewController()<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView *searchResultTable;
     
@@ -42,7 +42,6 @@
     [self.view addSubview:cancelButton];
     
 //    [self setupGradientView];
-    [[PaPaBLEManager shareInstance] setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -71,13 +70,9 @@
         cell.backgroundColor = [UIColor clearColor];
     }
     
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
-    NSString *bindIdentifier = [def objectForKey:kUD_BIND_DEVICE];// [def setObject:peripheral.RSSI forKey:kUD_BIND_DEVICE];
-    
     CBPeripheral *peripheral = [self.searchResultArray objectAtIndex:indexPath.row];
     
-    if ([peripheral.identifier.UUIDString isEqualToString:bindIdentifier]) {
+    if ([peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
         cell.bindLabel.text = @"已绑定";
     }
     
@@ -101,13 +96,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    
-    NSString *bindIdentifier = [def objectForKey:kUD_BIND_DEVICE];
-    
     CBPeripheral *peripheral = [self.searchResultArray objectAtIndex:indexPath.row];
     
-    if ([peripheral.identifier.UUIDString isEqualToString:bindIdentifier]) {
+    if ([peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
         [[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithObject:peripheral];
         [[PaPaBLEManager shareInstance].bleManager startConnect];
     }
@@ -122,9 +113,9 @@
     showViewHUD;
 }
 
-#pragma mark - PaPaBLEManagerConnected
+#pragma mark - 
 //蓝牙已连接
--(void)PaPaBLEManagerConnected
+-(void)connetedViewRefreshing
 {
     hideViewHUD;
     
@@ -134,7 +125,7 @@
 }
 
 //蓝牙断开连接
-- (void) PaPaBLEManagerDisconnected:(NSError *)error
+- (void)disConnetedViewRefreshing:(NSError *)error
 {
     hideViewHUD;
     showError(error);

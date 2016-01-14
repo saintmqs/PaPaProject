@@ -10,7 +10,7 @@
 #import "DeviceManagerCell.h"
 #import "ClocksManagerViewController.h"
 
-@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,PaPaBLEManagerDelegate>
+@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UITableView *deviceManagerTable;
     
@@ -19,12 +19,6 @@
 @end
 
 @implementation DeviceManagerViewController
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[PaPaBLEManager shareInstance] setDelegate:self];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -158,13 +152,6 @@
 {
     if (buttonIndex == 1) {
         [[PaPaBLEManager shareInstance].bleManager unbindCurrentWristband];
-        
-        [SystemStateManager shareInstance].hasBindWristband = NO;
-        //本地缓存绑定手环
-        NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-        
-        [def setObject:@"" forKey:kUD_BIND_DEVICE];
-        [def synchronize];
     }
 }
 
@@ -179,5 +166,18 @@
 -(void)PaPaBLEManagerHasSystemInformation:(NSDictionary *)info
 {
     [deviceManagerTable reloadData];
+}
+
+
+#pragma mark - 
+-(void)connetedViewRefreshing
+{
+    
+}
+
+-(void)disConnetedViewRefreshing:(NSError *)error
+{
+    //首页未绑定模式展示
+    [APP_DELEGATE loginSuccess];
 }
 @end

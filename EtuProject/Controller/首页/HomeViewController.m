@@ -14,7 +14,7 @@
 #import "DeviceManagerViewController.h"
 #import "SearchBraceletViewController.h"
 
-@interface HomeViewController ()<PaPaBLEManagerDelegate>
+@interface HomeViewController ()<HomeTableViewCellDelegate>
 {
     HomeGradientView *gradientView;
 }
@@ -26,6 +26,8 @@
 {
     [super viewWillAppear:animated];
     [[PaPaBLEManager shareInstance] setDelegate:self];
+    [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
+    [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
 }
 
 - (void)viewDidLoad {
@@ -245,8 +247,10 @@
     HomeTableViewCell * cell = (HomeTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"HomeTableViewCell"];
     if (cell == nil) {
         cell = [[HomeTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HomeTableViewCell"];
+        cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+     cell.moneyLabel.text = [PaPaBLEManager shareInstance].balance;
     
     return cell;
 }
@@ -263,8 +267,22 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (![SystemStateManager shareInstance].hasBindWristband) {
+        SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+#pragma mark - HomeTableViewCell Delegate
+-(void)updateBalace
+{
+    if ([[PaPaBLEManager shareInstance].bleManager connected]) {
+        [[PaPaBLEManager shareInstance].bleManager getBalance];
+    }
+    else
+    {
+//        showTip(@"")
+    }
 }
 
 #pragma mark - UIButton Action
@@ -352,10 +370,44 @@
     }];
 }
 
--(void)PaPaOnDeviceDisconnected:(CBPeripheral *)peripheral
+-(void)PaPaBLEManagerHasBalanceData:(NSUInteger)balance
 {
-    [SystemStateManager shareInstance].hasBindWristband = NO;
-    [APP_DELEGATE loginSuccess];
+    [_detailTableView reloadData];
+}
+
+//蓝牙返回计步信息，每个记录以NSDictionary存储
+- (void) PaPaBLEManagerHasStepData:(NSArray *)stepData
+{
+    NSLog(@"stepData %@",stepData);
+}
+
+//蓝牙返回今天的步数
+- (void) PaPaBLEManagerUpdateCurrentSteps:(NSUInteger)steps
+{
+    NSLog(@"steps = %ld",steps);
+}
+
+//蓝牙返回睡眠信息，每个记录以NSDictionary存储
+- (void) PaPaBLEManagerHasSleepData:(NSArray *)sleepData
+{
+    NSLog(@"sleepData = %@",sleepData);
+}
+
+//蓝牙返回今天的睡眠信息
+- (void) PaPaBLEManagerUpdateCurrentSleepData:(NSDictionary *)mins
+{
+    NSLog(@"min %@",mins);
+}
+
+#pragma mark - ParentViewController Method
+-(void)connetedViewRefreshing
+{
+    NSLog(@"connetedViewRefreshing");
+}
+
+-(void)disConnetedViewRefreshing:(NSError *)error
+{
+    NSLog(@"disConnetedViewRefreshing");
 }
 @end
 

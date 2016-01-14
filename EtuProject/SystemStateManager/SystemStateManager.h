@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+@import CoreTelephony;
 
 @interface SystemStateManager : NSObject
 
 @property (nonatomic, strong) BaseViewController *activeController; //当前活跃的controller, 应用后台挂起后做临时缓存
 
 @property (nonatomic, assign) BOOL  hasBindWristband;  //是否绑定了手环；
+
+@property (nonatomic, strong) NSString *bindUUID;
+
+@property (nonatomic, strong) CTCallCenter *callCenter;
 
 +(SystemStateManager *)shareInstance;
 

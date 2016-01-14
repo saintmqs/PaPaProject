@@ -38,6 +38,8 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     
     [self systemInit];
     
+    [SystemStateManager shareInstance];
+    
     [PaPaBLEManager shareInstance];
     
     [self.window makeKeyAndVisible];
@@ -113,6 +115,17 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 - (void)loginSuccess
 {
+    if (![[PaPaBLEManager shareInstance].bleManager connected] && [SystemStateManager shareInstance].hasBindWristband) {
+        SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+        if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+            
+            [nav pushViewController:vc animated:YES];
+        }
+        
+        return;
+    }
+    
     [self setupViewControllers];
     self.window.rootViewController = _rootTabbarController;
     
@@ -135,9 +148,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 }
 
 - (void)loginbyFixInfo
-{
-    [SystemStateManager shareInstance].hasBindWristband = YES;
-        
+{        
     SelectSexViewController *vc = [[SelectSexViewController alloc] init];
     
     UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
@@ -404,6 +415,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         if ([[PaPaBLEManager shareInstance] blePoweredOn]) {
             vc.searchView.hidden = NO;
             vc.bleOffView.hidden = YES;
+            vc.noResultView.hidden = YES;
             [vc startScan];
         }
     }

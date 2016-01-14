@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface BaseViewController ()
+@interface BaseViewController ()<PaPaBLEManagerDelegate>
 
 @end
 
@@ -20,6 +20,7 @@
     
     if (self) {
         [self registerRequestManagerObserver];
+        [[PaPaBLEManager shareInstance] setDelegate:self];
     }
     
     return self;
@@ -230,4 +231,14 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - PaPaBLEManager Delegate 
+-(void)PaPaBLEManagerConnected
+{
+    [self connetedViewRefreshing];
+}
+
+-(void)PaPaBLEManagerDisconnected:(NSError *)error
+{
+    [self disConnetedViewRefreshing:error];
+}
 @end
