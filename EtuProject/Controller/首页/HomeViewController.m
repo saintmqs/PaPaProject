@@ -17,18 +17,21 @@
 @interface HomeViewController ()<HomeTableViewCellDelegate>
 {
     HomeGradientView *gradientView;
+    
+    NSString *stepCount;
+    NSString *distance;
+    NSString *calorie;
+    
+    NSInteger deepsleepSec;
+    NSInteger slightsleepSec;
+    NSInteger totalSleepSec;
+    
+    BOOL currentStepDataFinish;
+    BOOL currentSleepDataFinish;
 }
 @end
 
 @implementation HomeViewController
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[PaPaBLEManager shareInstance] setDelegate:self];
-    [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
-    [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,6 +65,7 @@
         viewFrameHeight = 280;
     }
     // Do any additional setup after loading the view.
+    //运动睡眠进度环
     SGFocusImageItem *item = [[SGFocusImageItem alloc] initWithDict:@{@"image": @"",@"title":@""} tag:-1];
     
     _indicatorView = [[SGFocusImageFrame alloc] initWithFrame:CGRectMake(0, viewFrameY, mScreenWidth, viewFrameHeight) delegate:self imageItems:@[item] isAuto:NO];
@@ -72,10 +76,12 @@
     
     [self.view addSubview:_indicatorView];
     
-    [self changeBannersHeaderContent:self.indicatorView];
+    [self getBandData];
     
+    //同步数据转子
     [self configSynDataView];
     
+    //余额列表
     [self configTableUI];
     
     if ([SystemStateManager shareInstance].hasBindWristband) {
@@ -94,6 +100,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)getBandData
+{
+    [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
+    
+    [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
+    [[PaPaBLEManager shareInstance].bleManager getSleepingData];
+    
+    [self changeBannersHeaderContent:self.indicatorView];
 }
 
 -(void)configSynDataView
@@ -128,21 +144,48 @@
     
     NSMutableArray *contentDataArr = [NSMutableArray array];
     
-    if ([SystemStateManager shareInstance].hasBindWristband) {
+    if ([SystemStateManager shareInstance].hasBindWristband && currentStepDataFinish && currentSleepDataFinish) {
+        
         NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
-        [dataDict1 setObject:@"3000" forKey:@"content"];
-        [dataDict1 setObject:@"1公里 | 200千卡" forKey:@"detail"];
-        [dataDict1 setObject:@"0.4" forKey:@"progress"];
+        [dataDict1 setObject:strFormat(@"%@",stepCount)  forKey:@"content"];
+        [dataDict1 setObject:strFormat(@"%@公里 | %@千卡",distance,calorie) forKey:@"detail"];
+        float progress = [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue] >=1? 1.0 : [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue];
+        [dataDict1 setObject:strFormat(@"%f",progress) forKey:@"progress"];
         [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
         [contentDataArr addObject:dataDict1];
         
-        
         NSMutableDictionary *dataDict2 = [NSMutableDictionary dictionary];
         [dataDict2 setObject:@"昨日睡眠" forKey:@"title"];
-        [dataDict2 setObject:@"6小时" forKey:@"content"];
-        [dataDict2 setObject:@"深度睡眠5小时" forKey:@"detail"];
-        [dataDict2 setObject:@"0.3" forKey:@"progress"];
+        
+        NSString *totalSleepTimeStr;
+        if (totalSleepSec/3600 >=1) {
+            totalSleepTimeStr = strFormat(@"%ld小时",totalSleepSec/3600);
+        }
+        else if (totalSleepSec/60 >= 1)
+        {
+            totalSleepTimeStr = strFormat(@"%ld分钟",totalSleepSec/60);
+        }
+        else
+        {
+            totalSleepTimeStr = strFormat(@"%ld秒",totalSleepSec);
+        }
+        [dataDict2 setObject:totalSleepTimeStr forKey:@"content"];
+        
+        NSString *deepSleepTimeStr;
+        if (deepsleepSec/3600 >=1) {
+            deepSleepTimeStr = strFormat(@"深度睡眠%ld小时",deepsleepSec/3600);
+        }
+        else if (deepsleepSec/60 >= 1)
+        {
+            deepSleepTimeStr = strFormat(@"深度睡眠%ld分钟",deepsleepSec/60);
+        }
+        else
+        {
+            deepSleepTimeStr = strFormat(@"深度睡眠%ld秒",deepsleepSec);
+        }
+        [dataDict2 setObject:deepSleepTimeStr  forKey:@"detail"];
+        [dataDict2 setObject:strFormat(@"%f", (float)deepsleepSec/(float)totalSleepSec) forKey:@"progress"];
         [dataDict2 setObject:[UIColor lightGrayColor] forKey:@"trackTintColor"];
         [contentDataArr addObject:dataDict2];
     }
@@ -191,10 +234,8 @@
             [itemArray addObject:item];
         }
         
-        //    SGFocusImageFrame *vFocusFrame = (SGFocusImageFrame *)aTableContent.table.tableHeaderView;
         [vFocusFrame changeImageViewsContent:itemArray];
     }
-    
 }
 
 - (void)foucusImageFrame:(SGFocusImageFrame *)imageFrame currentItem:(NSInteger)index
@@ -250,7 +291,7 @@
         cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-     cell.moneyLabel.text = [PaPaBLEManager shareInstance].balance;
+    cell.moneyLabel.text = [PaPaBLEManager shareInstance].balance;
     
     return cell;
 }
@@ -281,7 +322,7 @@
     }
     else
     {
-//        showTip(@"")
+        showTip(@"请先连接绑定手环");
     }
 }
 
@@ -298,37 +339,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - Http Request
--(void)requestData
-{
-    [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], stepsToday, @"", @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        if (!error) {
-            NSDictionary *data = [dict objectForKey:@"data"];
-            
-            NSLog(@"%@",data);
-        }
-    } url:kRequestUrl(@"Health", @"stepsMonitor")];
-}
-
-//刷新余额
--(void)refreshCardBalance
-{
-    // 马上进入刷新状态
-//    [self.detailTableView.header beginRefreshing];
-    
-    [self startRequestWithDict:getCitizencardBalance([APP_DELEGATE.userData.uid integerValue], @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        
-//        [self.detailTableView.header endRefreshing];
-        
-        if (!error) {
-            
-        }
-        
-    } url:kRequestUrl(@"Citizencard", @"getCitizencardBalance")];
-}
-
-#pragma mark - PaPaBLEManager Delegate
--(void)PaPaOnDFUStarted
+-(void)startSynData
 {
     _synDataView.hidden = NO;
     [UIView animateWithDuration:0.5f animations:^{
@@ -346,12 +357,7 @@
     }];
 }
 
--(void)PaPaOnTransferPercentage:(int)percentage
-{
-    _synDataView.progressLabel.text = [NSString stringWithFormat:@"%d%%",percentage];
-}
-
--(void)PaPaOnSuccessfulFileTranferred
+-(void)endSynData
 {
     [UIView animateWithDuration:0.5f animations:^{
         _synDataView.alpha = 0;
@@ -370,6 +376,128 @@
     }];
 }
 
+#pragma mark - Http Request
+-(void)requestData
+{
+    [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], stepsToday, @"", @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            
+            NSLog(@"%@",data);
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"Health", @"stepsMonitor")];
+}
+
+//刷新余额
+-(void)refreshCardBalance
+{
+    // 马上进入刷新状态
+//    [self.detailTableView.header beginRefreshing];
+    
+    showViewHUD;
+    
+    [self startRequestWithDict:getCitizencardBalance([APP_DELEGATE.userData.uid integerValue], @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+//        [self.detailTableView.header endRefreshing];
+        
+        hideViewHUD;
+        
+        if (!error) {
+            
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"Citizencard", @"getCitizencardBalance")];
+}
+
+-(void)uploadStepsData:(NSString *)json
+{
+    [self startRequestWithDict:stepsUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        if (!error) {
+            
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"Health", @"stepsUpload")];
+}
+
+-(void)uploadSleepData:(NSString *)json
+{
+    [self startRequestWithDict:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        if (!error) {
+            
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    } url:kRequestUrl(@"Health", @"sleepUpload")];
+}
+
+#pragma mark - PaPaBLEManager Delegate
+//固件升级开始
+-(void)PaPaOnDFUStarted
+{
+    [self startSynData];
+}
+
+//升级进度百分比
+-(void)PaPaOnTransferPercentage:(int)percentage
+{
+    _synDataView.progressLabel.text = [NSString stringWithFormat:@"%d%%",percentage];
+}
+
+//升级完成
+-(void)PaPaOnSuccessfulFileTranferred
+{
+    [self endSynData];
+}
+
+//获取系统信息
+- (void) PaPaBLEManagerHasSystemInformation:(NSDictionary *)info
+{
+    [[PaPaBLEManager shareInstance] updateFirmware:info];
+}
+
+//蓝牙返回余额
 -(void)PaPaBLEManagerHasBalanceData:(NSUInteger)balance
 {
     [_detailTableView reloadData];
@@ -379,24 +507,90 @@
 - (void) PaPaBLEManagerHasStepData:(NSArray *)stepData
 {
     NSLog(@"stepData %@",stepData);
+    
+    NSString *currentStep = [stepData[0] objectForKey:@"s"];
+    
+    [self startRequestWithDict:sport([APP_DELEGATE.userData.uid integerValue], [currentStep integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            distance = [data objectForKey:@"l"];
+            calorie = [data objectForKey:@"c"];
+            stepCount = currentStep;
+            
+            currentStepDataFinish = YES;
+            
+            [self changeBannersHeaderContent:_indicatorView];
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"health", @"sport")];
+    
+    [self uploadStepsData:[stepData JSONString]];
 }
 
 //蓝牙返回今天的步数
 - (void) PaPaBLEManagerUpdateCurrentSteps:(NSUInteger)steps
 {
     NSLog(@"steps = %ld",steps);
+    
+    [self startRequestWithDict:sport([APP_DELEGATE.userData.uid integerValue], steps) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            distance = [data objectForKey:@"l"];
+            calorie = [data objectForKey:@"c"];
+            stepCount = strFormat(@"%ld",steps);
+            
+            currentStepDataFinish = YES;
+            
+            [self changeBannersHeaderContent:_indicatorView];
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"health", @"sport")];
 }
 
 //蓝牙返回睡眠信息，每个记录以NSDictionary存储
 - (void) PaPaBLEManagerHasSleepData:(NSArray *)sleepData
 {
     NSLog(@"sleepData = %@",sleepData);
+    [self uploadSleepData:[sleepData JSONString]];
 }
 
 //蓝牙返回今天的睡眠信息
 - (void) PaPaBLEManagerUpdateCurrentSleepData:(NSDictionary *)mins
 {
     NSLog(@"min %@",mins);
+    
+    deepsleepSec = [[mins objectForKey:@"d"] integerValue];
+    slightsleepSec = [[mins objectForKey:@"s"] integerValue];
+    
+    totalSleepSec = deepsleepSec + slightsleepSec;
+    
+    currentSleepDataFinish = YES;
+    
+    [self changeBannersHeaderContent:_indicatorView];
 }
 
 #pragma mark - ParentViewController Method
@@ -413,7 +607,7 @@
 
 
 #pragma mark - Gradient View
-
+//渐变蒙版图层
 @implementation HomeGradientView
 
 - (id)initWithFrame:(CGRect)frame

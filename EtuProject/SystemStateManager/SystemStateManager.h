@@ -19,6 +19,8 @@
 
 @property (nonatomic, strong) CTCallCenter *callCenter;
 
+@property (nonatomic, assign) BOOL isSyningData;    //正在同步数据
+
 +(SystemStateManager *)shareInstance;
 
 @end

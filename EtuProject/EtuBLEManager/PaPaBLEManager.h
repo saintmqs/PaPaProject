@@ -11,6 +11,8 @@
 #import "BLEManager.h"
 
 typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
+typedef void(^PaPaBLEUploadDownloadSuccessBlock)(NSDictionary *data);
+typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
 
 @protocol PaPaBLEManagerDelegate <NSObject>
 
@@ -63,4 +65,8 @@ typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
 
 -(BOOL)blePoweredOn;
 
+-(void)updateFirmware:(NSDictionary *)info;
+
+-(void)getUpDateFirmwareFromServer:(PaPaBLEUploadDownloadSuccessBlock)successBlock
+                            failed:(PaPaBLEUploadDownloadFailedBlock)failedBlock;
 @end

@@ -304,6 +304,93 @@ NSDictionary *stepsMonitor(NSInteger uid, stepType type, NSString *date, NSStrin
     return dict;
 }
 
+//27 睡眠数据提交
+NSDictionary *sleepUpload(NSInteger uid, NSString *json)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"json", json);
+    return dict;
+}
+
+//28 睡眠数据获取
+NSDictionary *sleepMonitor(NSInteger uid, sleepType type)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    
+    NSString *sleepType;
+    switch (type) {
+        case sleepToday:
+        {
+            sleepType = @"sleepToday";
+        }
+            break;
+        case sleepDay:
+        {
+            sleepType = @"sleepDay";
+        }
+            break;
+        case sleepWeek:
+        {
+            sleepType = @"sleepWeek";
+        }
+            break;
+        case sleepMonth:
+        {
+            sleepType = @"sleepMonth";
+        }
+            break;
+        default:
+            break;
+    }
+    addParam(@"type", sleepType);
+    
+    return dict;
+}
+
+//29 客户端版本更新接口
+NSDictionary *appversion()
+{
+    initDict();
+    
+    return dict;
+}
+
+//30 手环固件版本更新接口
+NSDictionary *bandversion()
+{
+    initDict();
+    
+    return dict;
+}
+
+//31 运动和睡眠第三方分享
+NSDictionary *share(NSInteger uid, NSInteger datetype, NSInteger type)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"detetype", [NSNumber numberWithInteger:datetype]);
+    addParam(@"type", [NSNumber numberWithInteger:type]);
+    
+    return dict;
+}
+
+//32 运动和睡眠第三方分享
+NSDictionary *sport(NSInteger uid, NSInteger step)
+{
+    initDict();
+    
+    addParam(@"uid", [NSNumber numberWithInteger:uid]);
+    addParam(@"steps", [NSNumber numberWithInteger:step]);
+    
+    return dict;
+}
+
+
 @implementation PckData
 
 @end

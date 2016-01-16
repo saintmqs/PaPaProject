@@ -29,15 +29,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 @synthesize searchView,bleOffView,noResultView;
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        [SystemStateManager shareInstance].activeController = self;
-    }
-    return self;
-}
-
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

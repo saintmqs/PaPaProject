@@ -27,6 +27,6 @@
 @property (nonatomic, copy) NSString         *sex;//1-男 2-女
 @property (nonatomic, copy) NSString         *height;//身高
 @property (nonatomic, copy) NSString         *weight;//身高
-@property (nonatomic, copy) NSString         *step;//身高
+@property (nonatomic, copy) NSString         *step;//步数
 
 @end

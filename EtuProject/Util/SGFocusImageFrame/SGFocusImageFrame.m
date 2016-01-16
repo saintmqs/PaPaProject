@@ -139,8 +139,22 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
         
         itemView.innerView.titleLabel.text = item.title;
         itemView.innerView.contentLabel.text = item.content;
+        
+        UIFont *font = itemView.innerView.detailLabel.font;
+        CGSize size = CGSizeMake(itemView.innerView.detailLabel.frameWidth, itemView.innerView.detailLabel.height*2);
+        NSDictionary * tdic = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName,nil];
+        CGSize detailStrSize = [item.detail boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin |NSStringDrawingUsesFontLeading attributes:tdic context:nil].size;
+        
+        if (detailStrSize.height > itemView.innerView.detailLabel.frameHeight) {
+            item.detail = [item.detail stringByReplacingOccurrencesOfString:@" | " withString:@"\n"];
+        }
+        
+        CGRect detailLabelFrame = itemView.innerView.detailLabel.frame;
+        detailLabelFrame.size.height = detailStrSize.height;
+        itemView.innerView.detailLabel.frame = detailLabelFrame;
+        
         itemView.innerView.detailLabel.text = item.detail;
-
+        
         [_scrollView addSubview:itemView];
         [itemView release];
     }

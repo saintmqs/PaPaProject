@@ -13,6 +13,13 @@ typedef enum : NSUInteger {
     stepsMonth,
 } stepType;
 
+typedef enum : NSUInteger {
+    sleepToday,
+    sleepDay,
+    sleepWeek,
+    sleepMonth,
+} sleepType;
+
 #import <Foundation/Foundation.h>
 
 NSDictionary *init();
@@ -85,6 +92,24 @@ NSDictionary *stepsUpload(NSInteger uid, NSString *json);
 
 //26 计步数据获取
 NSDictionary *stepsMonitor(NSInteger uid, stepType type, NSString *date, NSString *style);
+
+//27 睡眠数据提交
+NSDictionary *sleepUpload(NSInteger uid, NSString *json);
+
+//28 睡眠数据获取
+NSDictionary *sleepMonitor(NSInteger uid, sleepType type);
+
+//29 客户端版本更新接口
+NSDictionary *appversion();
+
+//30 手环固件版本更新接口
+NSDictionary *bandversion();
+
+//31 运动和睡眠第三方分享
+NSDictionary *share(NSInteger uid, NSInteger datetype, NSInteger type);
+
+//32 运动和睡眠第三方分享
+NSDictionary *sport(NSInteger uid, NSInteger step);
 
 @interface PckData : NSObject
 @end

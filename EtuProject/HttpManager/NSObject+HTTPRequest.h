@@ -10,6 +10,8 @@
 #import <ASIHTTPRequest.h>
 #import <ASIFormDataRequest.h>
 #import "HttpRequestManager.h"
+#import "AFNetworking.h"
+#import "AFHTTPRequestOperation.h"
 
 typedef void (^ RequestCompleteBlock)(ASIHTTPRequest *request, NSDictionary *dict, NSError *error);
 
@@ -34,5 +36,12 @@ typedef void (^ RequestCompleteBlock)(ASIHTTPRequest *request, NSDictionary *dic
 - (void)request:(ASIHTTPRequest *)request failedWithError:(NSError *)error;
 - (void)request:(ASIHTTPRequest *)request successedWithDictionary:(NSDictionary *)dict;
 
+//Download
+- (void)downloadFileWithOption:(NSDictionary *)paramDic
+                 withInferface:(NSString*)requestURL
+                     savedPath:(NSString*)savedPath
+               downloadSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+               downloadFailure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                      progress:(void (^)(float progress))progress;
 @end
 

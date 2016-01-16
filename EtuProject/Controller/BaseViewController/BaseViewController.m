@@ -20,7 +20,7 @@
     
     if (self) {
         [self registerRequestManagerObserver];
-        [[PaPaBLEManager shareInstance] setDelegate:self];
+        [SystemStateManager shareInstance].activeController = self;
     }
     
     return self;
@@ -29,7 +29,14 @@
 - (void)dealloc
 {
     [self unregisterRequestManagerObserver];
+    [SystemStateManager shareInstance].activeController = nil;
     removeSelfNofificationObservers;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[PaPaBLEManager shareInstance] setDelegate:self];
 }
 
 - (void)viewDidLoad
@@ -230,6 +237,17 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+-(void)connetedViewRefreshing
+{
+    
+}
+
+-(void)disConnetedViewRefreshing:(NSError *)error
+{
+    
+}
+
 
 #pragma mark - PaPaBLEManager Delegate 
 -(void)PaPaBLEManagerConnected

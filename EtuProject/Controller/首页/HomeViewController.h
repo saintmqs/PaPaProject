@@ -16,6 +16,8 @@
 @property (nonatomic,strong) PaPaSynchronousDataView *synDataView;
 @property (nonatomic,strong) UITableView       *detailTableView;
 
+-(void)startSynData;
+-(void)endSynData;
 @end
 
 #pragma mark - Gradient View

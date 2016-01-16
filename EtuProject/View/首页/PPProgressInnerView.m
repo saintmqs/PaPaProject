@@ -41,6 +41,8 @@
         _detailLabel.textColor = [UIColor whiteColor];
         _detailLabel.font = [UIFont systemFontOfSize:14];
         _detailLabel.textAlignment = NSTextAlignmentCenter;
+        _detailLabel.numberOfLines = 2;
+        _detailLabel.lineBreakMode = NSLineBreakByCharWrapping;
         [self addSubview:_detailLabel];
         
     }

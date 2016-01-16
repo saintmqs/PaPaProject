@@ -204,5 +204,59 @@ static NSString * ControllerInstanceUUID;
 
 - (void)request:(ASIHTTPRequest *)request successedWithDictionary:(NSDictionary *)dict {}
 
+- (void)downloadFileWithOption:(NSDictionary *)paramDic
+                 withInferface:(NSString*)requestURL
+                     savedPath:(NSString*)savedPath
+               downloadSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+               downloadFailure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+                      progress:(void (^)(float progress))progress
+{
+    //沙盒路径    //NSString *savedPath = [NSHomeDirectory() stringByAppendingString:@"/Documents/xxx.zip"];
+    
+    NSArray *docs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    // 指定文件保存路径，将文件保存在沙盒中
+    AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
+    NSMutableURLRequest *request =[serializer requestWithMethod:@"GET" URLString:requestURL parameters:paramDic error:nil];
+    
+    //以下是手动创建request方法 AFQueryStringFromParametersWithEncoding有时候会保存
+    //    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:requestURL]];
+    //   NSMutableURLRequest *request =[[[AFHTTPRequestOperationManager manager]requestSerializer]requestWithMethod:@"POST" URLString:requestURL parameters:paramaterDic error:nil];
+    //
+    //    NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    //
+    //    [request setValue:[NSString stringWithFormat:@"application/x-www-form-urlencoded; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
+    //    [request setHTTPMethod:@"POST"];
+    //
+    //    [request setHTTPBody:[AFQueryStringFromParametersWithEncoding(paramaterDic, NSASCIIStringEncoding) dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc]initWithRequest:request];
+    [operation setOutputStream:[NSOutputStream outputStreamToFileAtPath:savedPath append:NO]];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        float p = (float)totalBytesRead / totalBytesExpectedToRead;
+        progress(p);
+        NSLog(@"download：%f", (float)totalBytesRead / totalBytesExpectedToRead);
+        
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // 也可以检查文件是否存在
+//        [[NSFileManager defaultManager] removeItemAtPath:savedPath error:nil];
+        
+        // 下一步可以进行进一步处理，或者发送通知给用户。
+        NSLog(@"下载成功");
+        
+        success(operation,responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        success(operation,error);
+        
+        NSLog(@"下载失败");
+        
+    }];
+    
+    [operation start];
+
+}
 @end
 
