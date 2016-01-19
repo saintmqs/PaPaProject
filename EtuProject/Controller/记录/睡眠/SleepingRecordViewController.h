@@ -10,11 +10,13 @@
 #import "RecordViewControllerDelegate.h"
 #import "PPChart.h"
 
-@interface SleepingRecordViewController : BaseViewController<PPChartDataSource>
+@interface SleepingRecordViewController : BaseViewController<PPChartDataSource,PPChartDelegate>
 
 @property (nonatomic, assign) id<RecordViewControllerDelegate> delegate;
 
 @property (nonatomic, strong) PPChart *chartView;
+
+@property (nonatomic, strong) NSMutableArray *currentDataArr;
 
 @end
 

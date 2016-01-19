@@ -10,10 +10,6 @@
 
 @interface PPChart ()
 
-@property (strong, nonatomic) PPLineChart * lineChart;
-
-@property (strong, nonatomic) PPBarChart * barChart;
-
 @property (assign, nonatomic) id<PPChartDataSource> dataSource;
 
 @end
@@ -41,7 +37,9 @@
 	if (self.chartStyle == PPChartLineStyle) {
         if(!_lineChart){
             _lineChart = [[PPLineChart alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height+10)];
+            _lineChart.delegate = self;
             _lineChart.rows = self.rows;
+            _lineChart.chartType = self.lineChartStyle;
             [self addSubview:_lineChart];
         }
         //选择标记范围
@@ -87,7 +85,6 @@
         
         [_lineChart setXLabels:[self.dataSource PPChart_xLableArray:self]];
 		[_lineChart setYValues:[self.dataSource PPChart_yValueArray:self]];
-		
         
 		[_lineChart strokeChart];
         [_lineChart coordinatesCorrection];
@@ -128,6 +125,20 @@
     [self.lineChart coordinatesCorrection];
 }
 
+#pragma mark - PPLineChart Delegate
+-(void)PPLineChartLoadNext
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PPChartLoadNextPageData)]) {
+        [_delegate PPChartLoadNextPageData];
+    }
+}
+
+-(void)PPLineSelectPointAtIndex:(NSInteger)index
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PPChartSelectPointAtIndex:)]) {
+        [_delegate PPChartSelectPointAtIndex:index];
+    }
+}
 @end
 
 #pragma mark - Gradient View

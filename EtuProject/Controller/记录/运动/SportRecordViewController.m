@@ -9,6 +9,7 @@
 #import "SportRecordViewController.h"
 #import "RFSegmentView.h"
 #import "RecordDataTableCell.h"
+#import "SportChartModel.h"
 
 @interface SportRecordViewController ()<RFSegmentViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -19,6 +20,14 @@
     RFSegmentView* segmentView;
     
     UITableView *dataTable;
+    
+    NSMutableArray *dayStepDataArr;
+    NSMutableArray *weekStepDataArr;
+    NSMutableArray *monthStepDataArr;
+    
+    stepType steptype;
+    
+    NSMutableArray *selectPointDataArray;
 }
 @end
 
@@ -47,11 +56,17 @@
     bgView.backgroundColor = rgbaColor(0, 156, 233, 1);
     [self.view insertSubview:bgView belowSubview:self.headerView];
     
+    [self initData];
+    
     [self configSegment];
     
-    [self configChartView];
+//    [self configChartView];
 
     [self configTable];
+    
+    steptype = stepsDay;
+    
+    [self requestStepsMonitor:steptype Date:@""];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,6 +88,16 @@
         [_chartView coordinatesCorrection];
     }
 }
+
+-(void)initData
+{
+    dayStepDataArr = [NSMutableArray array];
+    weekStepDataArr = [NSMutableArray array];
+    monthStepDataArr = [NSMutableArray array];
+    
+    selectPointDataArray = [NSMutableArray array];
+}
+
 
 - (void)configSegment
 {
@@ -97,6 +122,7 @@
     _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
                                               withSource:self
                                                withStyle:PPChartLineStyle];
+    _chartView.delegate = self;
     _chartView.rows = (chartHeight - 20) / 44;
     
     _chartView.backgroundColor = [UIColor clearColor];
@@ -128,10 +154,19 @@
 {
     NSMutableArray *xTitles = [NSMutableArray array];
     for (int i=0; i<num; i++) {
-        NSString * str = [NSString stringWithFormat:@"R-%d",i];
-        [xTitles addObject:str];
+        SportChartModel *chartmodel = self.currentDataArr[i];
+        if (chartmodel) {
+            NSString * str = [NSString stringWithFormat:@"%@",chartmodel.t];
+            if ([str rangeOfString:@"-"].location != NSNotFound) {
+                str = [str stringByReplacingOccurrencesOfString:@"-" withString:@"-\n"];
+            }
+            [xTitles addObject:str];
+        }
+        //        NSString * str = [NSString stringWithFormat:@"R-%d",i];
+        //        [xTitles addObject:str];
     }
     return xTitles;
+
 }
 
 #pragma mark - @required
@@ -139,15 +174,20 @@
 - (NSArray *)PPChart_xLableArray:(PPChart *)chart
 {
     
-    return [self getXTitles:30];
+    return [self getXTitles:(int)self.currentDataArr.count];
     //    return [self getXTitles:20];
 }
 //数值多重数组
 - (NSArray *)PPChart_yValueArray:(PPChart *)chart
 {
-    NSArray *ary = @[@"1",@"2.4",@"5.2",@"3.1",@"7",@"10",@"12.5",@"9",@"0",@"",@"3"];
+    NSMutableArray *array = [NSMutableArray array];
+    for (int i=0; i<self.currentDataArr.count; i++) {
+        SportChartModel *chartmodel = self.currentDataArr[i];
+        [array addObject:chartmodel.s];
+    }
+//    NSArray *ary = @[@"1",@"2.4",@"5.2",@"3.1",@"7",@"10",@"12.5",@"9",@"0",@"",@"3"];
     
-    return @[ary];
+    return @[array];
 }
 
 #pragma mark - @optional
@@ -183,10 +223,79 @@
     return YES;
 }
 
+#pragma mark - PPChart Delegate
+-(void)PPChartLoadNextPageData
+{
+    SportChartModel *model;
+    switch (steptype) {
+        case stepsDay:
+        {
+            model = [dayStepDataArr lastObject];
+        }
+            break;
+        case stepsWeek:
+        {
+            model = [weekStepDataArr lastObject];
+        }
+            break;
+        case stepsMonth:
+        {
+            model = [monthStepDataArr lastObject];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self requestStepsMonitor:steptype Date:model.p];
+}
+
+-(void)PPChartSelectPointAtIndex:(NSInteger)index
+{
+    [selectPointDataArray removeAllObjects];
+    
+    SportChartModel *model;
+    switch (steptype) {
+        case sleepDay:
+        {
+            model = dayStepDataArr[index];
+        }
+            break;
+        case sleepWeek:
+        {
+            model = weekStepDataArr[index];
+        }
+            break;
+        case sleepMonth:
+        {
+            model = monthStepDataArr[index];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSString *distance = strFormat(@"%ld公里",(NSInteger)[model.b integerValue]);
+    NSString *steps = strFormat(@"%ld",(NSInteger)[model.s integerValue]);
+    NSString *calorie = strFormat(@"%ld千卡",(NSInteger)[model.c integerValue]);
+    
+    [selectPointDataArray addObjectsFromArray:@[distance,steps,calorie]];
+    [dataTable reloadData];
+}
+
 #pragma mark - Segment Delegate Method
 -(void)segmentViewDidSelected:(NSUInteger)index
 {
+    [dayStepDataArr removeAllObjects];
+    [weekStepDataArr removeAllObjects];
+    [monthStepDataArr removeAllObjects];
     
+    steptype = (stepType)(index+1);
+    
+    [self requestStepsMonitor:steptype Date:@""];
+
 }
 
 #pragma mark - UITableView DataSource & Delegate
@@ -209,9 +318,87 @@
         cell.backgroundColor = [UIColor whiteColor];
         cell.titlesArray = @[@"全天里程",@"全天步数",@"全天消耗"];
     }
-    cell.dataArray = @[@"1公里",@"3000",@"24千卡"];
+    cell.dataArray = selectPointDataArray;//@[@"1公里",@"3000",@"24千卡"];
     
     return cell;
+}
+
+#pragma mark - Http Request
+-(void)requestStepsMonitor:(stepType)type Date:(NSString *)date
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], type, date ,@"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            NSArray *sportChartData = [data objectForKey:@"chartData"];
+            switch (type) {
+                case sleepDay:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sportChartData.count; i++) {
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SportChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [dayStepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = dayStepDataArr;
+                    
+                }
+                    break;
+                case sleepWeek:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sportChartData.count; i++) {
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SportChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [weekStepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = weekStepDataArr;
+                }
+                    break;
+                case sleepMonth:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sportChartData.count; i++) {
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SportChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [monthStepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = monthStepDataArr;
+                }
+                    break;
+                default:
+                    break;
+            }
+            //            [_chartView strokeChart];
+            if (_chartView) {
+                [_chartView removeFromSuperview];
+            }
+            [self configChartView];
+        }
+        else
+        {
+            
+        }
+    } url:kRequestUrl(@"Health", @"stepsMonitor")];
 }
 @end
 

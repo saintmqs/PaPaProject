@@ -13,6 +13,12 @@
 
 @implementation PPLineChart {
     NSHashTable *_chartLabelsForX;
+    
+    NSInteger lineYCount;
+    NSInteger lineXCount;
+    
+    NSInteger selectTag;
+    NSMutableArray *allpoints;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -22,21 +28,27 @@
         // Initialization code
         self.clipsToBounds = YES;
         
-        _yLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(-10, 0, 50, self.bounds.size.height - PPLabelHeight-10)];
+        allpoints = [NSMutableArray array];
+        
+        _yLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 50, self.bounds.size.height - PPLabelHeight)];
         _yLabelsScrollView.delegate = self;
         _yLabelsScrollView.transform = CGAffineTransformMakeRotation(M_PI);
         [self addSubview:_yLabelsScrollView];
         
-        _chartScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, 0, self.bounds.size.width - 60, self.bounds.size.height - PPLabelHeight - 10)];
+        _chartScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, 0, self.bounds.size.width - 60, self.bounds.size.height - PPLabelHeight)];
         _chartScrollView.delegate = self;
         _chartScrollView.transform = CGAffineTransformMakeRotation(M_PI);
         _chartScrollView.showsHorizontalScrollIndicator = NO;
         _chartScrollView.showsVerticalScrollIndicator = NO;
+        _chartScrollView.pagingEnabled = YES;
+        
+        _chartScrollView.mj_footer = [MJRefreshBackFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
         [self addSubview:_chartScrollView];
         
-        _xLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, _chartScrollView.frame.size.height, self.bounds.size.width - 60 , PPLabelHeight+10)];
+        _xLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, _chartScrollView.frame.size.height +5, self.bounds.size.width - 60 , PPLabelHeight)];
         _xLabelsScrollView.delegate = self;
         _xLabelsScrollView.userInteractionEnabled = NO;
+        _xLabelsScrollView.transform = CGAffineTransformMakeRotation(M_PI);
         [self addSubview:_xLabelsScrollView];
     }
     return self;
@@ -83,12 +95,38 @@
     CGFloat chartCavanHeight = self.frame.size.height - PPLabelHeight*self.rows/3;
     CGFloat levelHeight = 44;// chartCavanHeight /7.0;
 
-    _yLabelsScrollView.contentSize =CGSizeMake(50, 30*levelHeight+5);
+    
+    switch (self.chartType) {
+        case SPORT_TYPE:
+            lineYCount = 30;
+            break;
+        case SLEEP_TYPE:
+            lineYCount = 24;
+            break;
+        default:
+            break;
+    }
+    _yLabelsScrollView.contentSize =CGSizeMake(50, lineYCount*levelHeight+5);
 
-    for (int i=0; i<31; i++) {
+    for (int i=0; i<lineYCount+1; i++) {
         PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake(0.0,_yLabelsScrollView.contentSize.height - i*levelHeight, PPYLabelwidth, PPLabelHeight)];
 //        label.backgroundColor = [UIColor yellowColor];
-		label.text = [NSString stringWithFormat:@"%.2f",(level * (30 - i)+_yValueMin)];
+        switch (self.chartType) {
+            case SPORT_TYPE:
+            {
+                label.text = strFormat(@"%d",(int)(level * (lineYCount - i)+_yValueMin)*1000);
+            }
+                break;
+            case SLEEP_TYPE:
+            {
+                label.text = strFormat(@"%d小时",(int)(level * (lineYCount - i)+_yValueMin));
+            }
+                break;
+            default:
+                break;
+        }
+
+//		label.text = [NSString stringWithFormat:@"%.2f"];
         label.transform = CGAffineTransformMakeRotation(M_PI);
 		[_yLabelsScrollView addSubview:label];
     }
@@ -100,13 +138,13 @@
     }
 
     //画横线
-    for (int i=0; i<31; i++) {
+    for (int i=0; i<lineYCount + 1; i++) {
         if ([_ShowHorizonLine[i] integerValue]>0) {
             
             CAShapeLayer *shapeLayer = [CAShapeLayer layer];
             UIBezierPath *path = [UIBezierPath bezierPath];
             [path moveToPoint:CGPointMake(-200,PPLabelHeight + i*levelHeight)];
-            [path addLineToPoint:CGPointMake(10+_xLabels.count*_xLabelWidth+200,PPLabelHeight + i*levelHeight)];
+            [path addLineToPoint:CGPointMake(10+_xLabels.count*_xLabelWidth+mScreenWidth,PPLabelHeight + i*levelHeight)];
             [path closePath];
             shapeLayer.path = path.CGPath;
             shapeLayer.strokeColor = [[[UIColor whiteColor] colorWithAlphaComponent:0.2] CGColor];
@@ -136,7 +174,10 @@
     
     for (int i=0; i<xLabels.count; i++) {
         NSString *labelText = xLabels[i];
-        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake((i+7) * _xLabelWidth - 10 - _xLabels.count *_xLabelWidth, 10, _xLabelWidth, PPLabelHeight)];
+        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake(i * _xLabelWidth, 0, _xLabelWidth, PPLabelHeight)];
+        label.numberOfLines = 0;
+        label.lineBreakMode = NSLineBreakByCharWrapping;
+        label.transform = CGAffineTransformMakeRotation(M_PI);
         label.text = labelText;
         [_xLabelsScrollView addSubview:label];
         
@@ -147,7 +188,7 @@
     }
     
     //画竖线
-    for (int i=0; i<xLabels.count+10; i++) {
+    for (int i=0; i<xLabels.count+15; i++) {
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         UIBezierPath *path = [UIBezierPath bezierPath];
         [path moveToPoint:CGPointMake(-88+20+i*_xLabelWidth,0)];
@@ -184,6 +225,7 @@
 
 -(void)strokeChart
 {
+    [allpoints removeAllObjects];
     for (int i=0; i<_yValues.count; i++) {
         NSArray *childAry = _yValues[i];
         if (childAry.count==0) {
@@ -192,8 +234,8 @@
         //获取最大最小位置
         CGFloat max = [childAry[0] floatValue];
         CGFloat min = [childAry[0] floatValue];
-        NSInteger max_i;
-        NSInteger min_i;
+        NSInteger max_i = 0;
+        NSInteger min_i = 0;
         
         for (int j=0; j<childAry.count; j++){
             CGFloat num = [childAry[j] floatValue];
@@ -218,12 +260,13 @@
         
         UIBezierPath *progressline = [UIBezierPath bezierPath];
         CGFloat firstValue = [[childAry objectAtIndex:0] floatValue];
-        CGFloat xPosition = 20 + _xLabels.count*_xLabelWidth - _xLabelWidth;
+        CGFloat xPosition = 20;//_xLabels.count*_xLabelWidth - _xLabelWidth;
         CGFloat chartCavanHeight =  self.frame.size.height - PPLabelHeight*self.rows/3;
         
         float grade = ((float)firstValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
         NSLog(@"grade = %f",grade);
-       
+        
+        NSInteger index = 0;
         //第一个点
         BOOL isShowMaxAndMinPoint = YES;
         if (self.ShowMaxMinArray) {
@@ -234,6 +277,7 @@
             }
         }
         [self addPoint:CGPointMake(xPosition,  grade * chartCavanHeight + PPLabelHeight)
+                   tag:index
                  index:i
                 isShow:NO
                  value:firstValue];
@@ -243,7 +287,6 @@
         [progressline setLineWidth:1.0];
         [progressline setLineCapStyle:kCGLineCapRound];
         [progressline setLineJoinStyle:kCGLineJoinRound];
-        NSInteger index = 0;
         for (NSString * valueString in childAry) {
             
             float grade =([valueString floatValue]-_yValueMin) / ((float)_yValueMax-_yValueMin);
@@ -251,7 +294,7 @@
 
             if (index != 0) {
                 
-                CGPoint point = CGPointMake(xPosition-index*_xLabelWidth,   grade * chartCavanHeight + PPLabelHeight);
+                CGPoint point = CGPointMake(xPosition+index*_xLabelWidth,   grade * chartCavanHeight + PPLabelHeight);
                 [progressline addLineToPoint:point];
                 
                 BOOL isShowMaxAndMinPoint = YES;
@@ -263,7 +306,7 @@
                     }
                 }
                 [progressline moveToPoint:point];
-                [self addPoint:point
+                [self addPoint:point tag:index
                          index:i
                         isShow:NO
                          value:[valueString floatValue]];
@@ -280,7 +323,7 @@
             _chartLine.strokeColor = [PPGreen CGColor];
         }
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathAnimation.duration = childAry.count*0.4;
+        pathAnimation.duration = childAry.count*0;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
         pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
@@ -289,26 +332,43 @@
         
         _chartLine.strokeEnd = 1.0;
         
-        _chartScrollView.contentSize = CGSizeMake(10+_xLabels.count*_xLabelWidth, 31*44);
-        _chartScrollView.contentOffset = CGPointMake(10+_xLabels.count*_xLabelWidth - _chartScrollView.frame.size.width, grade * chartCavanHeight -10);
+        CGFloat contentWidth = 10+_xLabels.count*_xLabelWidth;
+        if (contentWidth < _chartScrollView.frameWidth) {
+            contentWidth = _chartScrollView.frameWidth + 10;
+        }
+        
+        CGFloat offsetX = contentWidth - _chartScrollView.frameWidth;
+        if (offsetX < 0) {
+            offsetX = 15;
+        }
+        
+        _chartScrollView.contentSize = CGSizeMake(contentWidth, (lineYCount+1)*44);
+        _chartScrollView.contentOffset = CGPointMake(offsetX, grade * chartCavanHeight -10);
     }
 }
 
-- (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
+- (void)addPoint:(CGPoint)point tag:(NSInteger)tag index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 8, 8)];
+    UIButton *view = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 13, 13)];
+    
+    view.tag = 1000+tag;
     view.center = point;
     view.layer.masksToBounds = YES;
-    view.layer.cornerRadius = 4;
-    view.layer.borderWidth = 1;
-    view.layer.borderColor = [UIColor whiteColor].CGColor;//[[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:PPGreen.CGColor;
+//    view.layer.cornerRadius = 4;
+//    view.layer.borderWidth = 1;
+//    view.layer.borderColor = [UIColor whiteColor].CGColor;//[[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:PPGreen.CGColor;
+    [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
+    [view setImage:[UIImage imageNamed:@"point_select"] forState:UIControlStateSelected];
+    addBtnAction(view, @selector(selectPoint:));
     
     if (isHollow) {
-        view.backgroundColor = [UIColor whiteColor];
+//        view.backgroundColor = [UIColor whiteColor];
+        [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
     }else{
-        view.backgroundColor = [_colors objectAtIndex:index]?[_colors objectAtIndex:index]:PPGreen;
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-PPTagLabelwidth/2.0, point.y+PPLabelHeight*2 < 0 ? point.y+PPLabelHeight : point.y+PPLabelHeight*2, PPTagLabelwidth, PPLabelHeight)];
-        label.layer.cornerRadius = PPLabelHeight/2;
+        [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
+//        view.backgroundColor = [_colors objectAtIndex:index]?[_colors objectAtIndex:index]:PPGreen;
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-PPTagLabelwidth/2.0, point.y+12*2 < 0 ? point.y+12 : point.y+12*2, PPTagLabelwidth, 12)];
+        label.layer.cornerRadius = 12/2;
         label.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.5].CGColor;
         label.layer.borderWidth = 2.0f;
         label.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
@@ -317,11 +377,14 @@
         label.textColor = [UIColor whiteColor];
         label.text = [NSString stringWithFormat:@"%.2f",value];
         label.transform = CGAffineTransformMakeRotation(M_PI);
+        label.layer.masksToBounds = YES;
 
         [_chartScrollView addSubview:label];
     }
     
     [_chartScrollView addSubview:view];
+    
+    [allpoints addObject:view];
 }
 
 - (NSArray *)chartLabelsForX
@@ -331,22 +394,46 @@
 
 -(void)coordinatesCorrection
 {
-    _xLabelsScrollView.contentOffset = CGPointMake(-_chartScrollView.contentOffset.x, 0);
+//    _xLabelsScrollView.contentOffset = CGPointMake(-_chartScrollView.contentOffset.x, 0);
+}
+
+-(void)loadMoreData
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(PPLineChartLoadNext)]) {
+        [_delegate PPLineChartLoadNext];
+    }
+}
+
+-(void)selectPoint:(UIButton *)pointButton
+{
+    pointButton.selected = YES;
+    selectTag = pointButton.tag;
+    
+    for (UIButton *button in allpoints) {
+        if (button.tag != selectTag) {
+            button.selected = NO;
+        }
+    }
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(PPLineSelectPointAtIndex:)]) {
+        [_delegate PPLineSelectPointAtIndex:pointButton.tag - 1000];
+    }
 }
 
 #pragma mark - UIScrollView Delegate
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView == _chartScrollView) {
-        _xLabelsScrollView.contentOffset = CGPointMake(-scrollView.contentOffset.x, 0);
+        
+        _xLabelsScrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
         _yLabelsScrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y);
     }
-    
-    if (scrollView == _xLabelsScrollView) {
-        _xLabelsScrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
-//        _chartScrollView.contentOffset = CGPointMake(-_xLabelsScrollView.contentOffset.x, _chartScrollView.contentOffset.y);
-    }
-    
+//
+//    if (scrollView == _xLabelsScrollView) {
+//        _xLabelsScrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
+////        _chartScrollView.contentOffset = CGPointMake(-_xLabelsScrollView.contentOffset.x, _chartScrollView.contentOffset.y);
+//    }
+//    
     if (scrollView == _yLabelsScrollView) {
         _chartScrollView.contentOffset = CGPointMake(_chartScrollView.contentOffset.x,  _yLabelsScrollView.contentOffset.y);
     }

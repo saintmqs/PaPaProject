@@ -581,7 +581,7 @@ static PaPaBLEManager *papaBLEManager;
 - (void) BLEManagerHasSleepData:(NSArray *)sleepData//蓝牙返回睡眠信息，每个记录以NSDictionary存储
 {
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasSleepData:)]) {
-        [_delegate PaPaBLEManagerHasStepData:sleepData];
+        [_delegate PaPaBLEManagerHasSleepData:sleepData];
     }
 }
 

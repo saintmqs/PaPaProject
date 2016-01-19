@@ -258,5 +258,41 @@ static NSString * ControllerInstanceUUID;
     [operation start];
 
 }
+
+
+-(void)asynchronousGetRequest:(NSString*)url parameters:(NSDictionary *)parameters successBlock:(void (^)(BOOL success,id data,NSString* msg))successBlock failureBlock:(void (^)(NSString* description))failureBlock{
+    NSString *paramsUrl = url;
+    if(parameters)
+    {
+        NSString *paramsStr = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:parameters options:NSJSONWritingPrettyPrinted error: nil] encoding:NSUTF8StringEncoding];
+        
+        paramsUrl = [[[[NSString stringWithFormat:@"%@&jsonRequest=%@",url,paramsStr] stringByReplacingOccurrencesOfString:@"\n" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:paramsUrl]];
+    AFJSONResponseSerializer *responseSerializer =[[AFJSONResponseSerializer alloc] init];
+    responseSerializer.acceptableContentTypes =[NSSet setWithObjects:@"text/html", nil];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer =responseSerializer;
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if (responseObject){
+                successBlock(YES,responseObject,@"");
+            }else{
+                successBlock(NO,nil,@"no res");
+            }
+        }
+        
+        [operation cancel];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [operation cancel];
+        failureBlock(error.localizedDescription);
+        
+    }];
+    [operation start];
+    
+}
 @end
 

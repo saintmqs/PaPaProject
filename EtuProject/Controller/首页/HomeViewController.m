@@ -105,7 +105,7 @@
 -(void)getBandData
 {
     [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
-    
+    [[PaPaBLEManager shareInstance].bleManager getStepData];
     [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
     [[PaPaBLEManager shareInstance].bleManager getSleepingData];
     
@@ -291,8 +291,8 @@
         cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.moneyLabel.text = [PaPaBLEManager shareInstance].balance;
-    
+    cell.moneyLabel.text = [PaPaBLEManager shareInstance].balance;    
+    cell.updateTimeLabel.text = strFormat(@"同步时间 %@",date2StringFormatMDHM([NSDate date]));
     return cell;
 }
 
@@ -381,9 +381,9 @@
 {
     [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], stepsToday, @"", @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
         if (!error) {
-            NSDictionary *data = [dict objectForKey:@"data"];
-            
-            NSLog(@"%@",data);
+//            NSDictionary *data = [dict objectForKey:@"data"];
+//            
+//            showTip([data objectForKey:@"msg"]);
         }
         else
         {
@@ -414,7 +414,8 @@
         hideViewHUD;
         
         if (!error) {
-            
+//            NSDictionary *data = [dict objectForKey:@"data"];
+//            showTip([data objectForKey:@"msg"]);
         }
         else
         {
@@ -433,43 +434,64 @@
 
 -(void)uploadStepsData:(NSString *)json
 {
-    [self startRequestWithDict:stepsUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        if (!error) {
-            
-        }
-        else
-        {
-            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-            {
-                showTip(@"网络连接失败");
-            }
-            else
-            {
-                showTip([error.userInfo objectForKey:@"msg"]);
-            }
-        }
+    [self asynchronousGetRequest:kRequestUrl(@"Health", @"stepsUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
-    } url:kRequestUrl(@"Health", @"stepsUpload")];
+//        NSDictionary *dict = [data objectForKey:@"data"];
+        if ([data objectForKey:@"data"]) {
+            showTip([data objectForKey:@"data"]);
+        }
+    } failureBlock:^(NSString *description) {
+        
+    }];
+//    [self startRequestWithDict:stepsUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+//        if (!error) {
+//            NSDictionary *data = [dict objectForKey:@"data"];
+//            showTip([data objectForKey:@"msg"]);
+//        }
+//        else
+//        {
+//            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+//            {
+//                showTip(@"网络连接失败");
+//            }
+//            else
+//            {
+//                showTip([error.userInfo objectForKey:@"msg"]);
+//            }
+//        }
+//        
+//    } url:kRequestUrl(@"Health", @"stepsUpload")];
 }
 
 -(void)uploadSleepData:(NSString *)json
 {
-    [self startRequestWithDict:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        if (!error) {
-            
+    [self asynchronousGetRequest:kRequestUrl(@"Health", @"sleepUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
+        
+//        NSDictionary *dict = [data objectForKey:@"data"];
+        if ([data objectForKey:@"data"]) {
+            showTip([data objectForKey:@"data"]);
         }
-        else
-        {
-            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-            {
-                showTip(@"网络连接失败");
-            }
-            else
-            {
-                showTip([error.userInfo objectForKey:@"msg"]);
-            }
-        }
-    } url:kRequestUrl(@"Health", @"sleepUpload")];
+    } failureBlock:^(NSString *description) {
+        
+    }];
+    
+//    [self startRequestWithDict:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+//        if (!error) {
+//            NSDictionary *data = [dict objectForKey:@"data"];
+//            showTip([data objectForKey:@"msg"]);
+//        }
+//        else
+//        {
+//            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+//            {
+//                showTip(@"网络连接失败");
+//            }
+//            else
+//            {
+//                showTip([error.userInfo objectForKey:@"msg"]);
+//            }
+//        }
+//    } url:kRequestUrl(@"Health", @"sleepUpload")];
 }
 
 #pragma mark - PaPaBLEManager Delegate
@@ -507,34 +529,6 @@
 - (void) PaPaBLEManagerHasStepData:(NSArray *)stepData
 {
     NSLog(@"stepData %@",stepData);
-    
-    NSString *currentStep = [stepData[0] objectForKey:@"s"];
-    
-    [self startRequestWithDict:sport([APP_DELEGATE.userData.uid integerValue], [currentStep integerValue]) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        
-        if (!error) {
-            NSDictionary *data = [dict objectForKey:@"data"];
-            distance = [data objectForKey:@"l"];
-            calorie = [data objectForKey:@"c"];
-            stepCount = currentStep;
-            
-            currentStepDataFinish = YES;
-            
-            [self changeBannersHeaderContent:_indicatorView];
-        }
-        else
-        {
-            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-            {
-                showTip(@"网络连接失败");
-            }
-            else
-            {
-                showTip([error.userInfo objectForKey:@"msg"]);
-            }
-        }
-        
-    } url:kRequestUrl(@"health", @"sport")];
     
     [self uploadStepsData:[stepData JSONString]];
 }
@@ -575,6 +569,7 @@
 - (void) PaPaBLEManagerHasSleepData:(NSArray *)sleepData
 {
     NSLog(@"sleepData = %@",sleepData);
+    
     [self uploadSleepData:[sleepData JSONString]];
 }
 

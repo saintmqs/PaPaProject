@@ -44,15 +44,32 @@ typedef enum {
 
 //判断显示最大最小值
 - (BOOL)PPChart:(PPChart *)chart ShowMaxMinAtIndex:(NSInteger)index;
+
+@end
+
+@protocol PPChartDelegate <NSObject>
+
+-(void)PPChartLoadNextPageData;
+
+-(void)PPChartSelectPointAtIndex:(NSInteger)index;
+
 @end
 
 
-@interface PPChart : UIView
+@interface PPChart : UIView<PPLineChartDelegate>
 
 //是否自动显示范围
 @property (nonatomic, assign) BOOL showRange;
 
+@property (nonatomic, assign) id<PPChartDelegate> delegate;
+
+@property (strong, nonatomic) PPLineChart * lineChart;
+
+@property (strong, nonatomic) PPBarChart * barChart;
+
 @property (assign) PPChartStyle chartStyle;
+
+@property (assign) LineChartType lineChartStyle;
 
 @property (assign) CGFloat rows;
 

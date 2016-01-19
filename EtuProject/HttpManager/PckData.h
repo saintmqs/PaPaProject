@@ -97,7 +97,7 @@ NSDictionary *stepsMonitor(NSInteger uid, stepType type, NSString *date, NSStrin
 NSDictionary *sleepUpload(NSInteger uid, NSString *json);
 
 //28 睡眠数据获取
-NSDictionary *sleepMonitor(NSInteger uid, sleepType type);
+NSDictionary *sleepMonitor(NSInteger uid, sleepType type, NSString *date, NSString *style);
 
 //29 客户端版本更新接口
 NSDictionary *appversion();

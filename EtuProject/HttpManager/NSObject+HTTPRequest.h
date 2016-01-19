@@ -43,5 +43,7 @@ typedef void (^ RequestCompleteBlock)(ASIHTTPRequest *request, NSDictionary *dic
                downloadSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                downloadFailure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
                       progress:(void (^)(float progress))progress;
+
+-(void)asynchronousGetRequest:(NSString*)url parameters:(NSDictionary *)parameters successBlock:(void (^)(BOOL success,id data,NSString* msg))successBlock failureBlock:(void (^)(NSString* description))failureBlock;
 @end
 

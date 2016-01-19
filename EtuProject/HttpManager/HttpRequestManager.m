@@ -69,8 +69,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_M(HttpRequestManager);
 	[request setRequestMethod:@"POST"];
 	[request setRequestHeaders:[NSMutableDictionary dictionaryWithDictionary:@{@"Content-Type": @"application/json; charset=UTF-8", @"Accept-Encoding":@"gzip, deflate"}]];
 
-//	NSError *error		= nil;
-//	NSData	*jsonData	= [NSJSONSerialization dataWithJSONObject:jsonDict options:NSJSONWritingPrettyPrinted error:&error];
+	NSError *error		= nil;
+	NSData	*jsonData	= [NSJSONSerialization dataWithJSONObject:jsonDict options:kNilOptions error:&error];
     
     for (NSString *key in jsonDict.allKeys) {
         
@@ -97,7 +97,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_M(HttpRequestManager);
     }
     
 	NSLog(@"************* request.url   %@ ***********", request.url);
-//	NSLog(@"************* start request ***********\n%@\n", [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+	NSLog(@"************* start request ***********\n%@\n", [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
 
 //	[request appendPostData:jsonData];
 

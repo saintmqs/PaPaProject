@@ -315,7 +315,7 @@ NSDictionary *sleepUpload(NSInteger uid, NSString *json)
 }
 
 //28 睡眠数据获取
-NSDictionary *sleepMonitor(NSInteger uid, sleepType type)
+NSDictionary *sleepMonitor(NSInteger uid, sleepType type, NSString *date, NSString *style)
 {
     initDict();
     
@@ -347,7 +347,7 @@ NSDictionary *sleepMonitor(NSInteger uid, sleepType type)
             break;
     }
     addParam(@"type", sleepType);
-    
+    addParam(@"date", date);
     return dict;
 }
 

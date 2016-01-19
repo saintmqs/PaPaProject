@@ -9,6 +9,7 @@
 #import "SleepingRecordViewController.h"
 #import "RFSegmentView.h"
 #import "RecordDataTableCell.h"
+#import "SleepChartModel.h"
 
 @interface SleepingRecordViewController ()<RFSegmentViewDelegate,UITableViewDelegate,UITableViewDataSource>
 {
@@ -19,6 +20,14 @@
     RFSegmentView* segmentView;
     
     UITableView *dataTable;
+    
+    NSMutableArray *daySleepDataArr;
+    NSMutableArray *weekSleepDataArr;
+    NSMutableArray *monthSleepDataArr;
+    
+    sleepType sleeptype;
+    
+    NSMutableArray *selectPointDataArray;
 }
 
 @end
@@ -48,11 +57,17 @@
     bgView.backgroundColor = rgbaColor(51, 19, 42, 1);
     [self.view insertSubview:bgView belowSubview:self.headerView];
     
+    [self initData];
+    
     [self configSegment];
     
-    [self configChartView];
+//    [self configChartView];
     
     [self configTable];
+    
+    sleeptype = sleepDay;
+    
+    [self requestSleepMonitor:sleeptype Date:@""];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,6 +88,15 @@
     if (_chartView) {
         [_chartView coordinatesCorrection];
     }
+}
+
+-(void)initData
+{
+    daySleepDataArr = [NSMutableArray array];
+    weekSleepDataArr = [NSMutableArray array];
+    monthSleepDataArr = [NSMutableArray array];
+    
+    selectPointDataArray = [NSMutableArray array];
 }
 
 - (void)configSegment
@@ -98,10 +122,14 @@
     _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, chartHeight)
                                                withSource:self
                                                 withStyle:PPChartLineStyle];
+    _chartView.delegate = self;
+    _chartView.lineChartStyle = SLEEP_TYPE;
     _chartView.rows = (chartHeight - 20) / 44;
     
     _chartView.backgroundColor = [UIColor clearColor];
     [_chartView showInView:self.view];
+    
+    [self.view bringSubviewToFront:gradientView];
     
     gradientView = [[SleepingRecordGradientView alloc] initWithFrame:CGRectMake(10+50, _chartView.frameY, mScreenWidth - 60, _chartView.frameHeight - 10)];
     gradientView.locations = @[ @0.0f, @0.2f,@0.5f, @0.8, @1.f];
@@ -129,8 +157,16 @@
 {
     NSMutableArray *xTitles = [NSMutableArray array];
     for (int i=0; i<num; i++) {
-        NSString * str = [NSString stringWithFormat:@"R-%d",i];
-        [xTitles addObject:str];
+        SleepChartModel *chartmodel = self.currentDataArr[i];
+        if (chartmodel) {
+            NSString * str = [NSString stringWithFormat:@"%@",chartmodel.t];
+            if ([str rangeOfString:@"-"].location != NSNotFound) {
+                str = [str stringByReplacingOccurrencesOfString:@"-" withString:@"-\n"];
+            }
+            [xTitles addObject:str];
+        }
+//        NSString * str = [NSString stringWithFormat:@"R-%d",i];
+//        [xTitles addObject:str];
     }
     return xTitles;
 }
@@ -140,15 +176,21 @@
 - (NSArray *)PPChart_xLableArray:(PPChart *)chart
 {
     
-    return [self getXTitles:30];
-    //    return [self getXTitles:20];
+    return [self getXTitles:(int)self.currentDataArr.count];
+//    int xCount = (int)self.currentDataArr.count+1 < 10 ? 8 : (int)self.currentDataArr.count+1;
+//    return [self getXTitles:30];
 }
 //数值多重数组
 - (NSArray *)PPChart_yValueArray:(PPChart *)chart
 {
-    NSArray *ary = @[@"1",@"2.4",@"5.2",@"3.1",@"7",@"10",@"12.5",@"9",@"0",@"",@"3"];
+    NSMutableArray *array = [NSMutableArray array];
+    for (int i=0; i<self.currentDataArr.count; i++) {
+        SleepChartModel *chartmodel = self.currentDataArr[i];
+        [array addObject:chartmodel.c];
+    }
+//    NSArray *array = @[@"1",@"2.4",@"5.2",@"3.1",@"7",@"10",@"12.5",@"9",@"0",@"",@"3"];
     
-    return @[ary];
+    return @[array];
 }
 
 #pragma mark - @optional
@@ -161,7 +203,7 @@
 //显示数值范围
 - (CGRange)PPChartChooseRangeInLineChart:(PPChart *)chart
 {
-    return CGRangeMake(3* _chartView.rows, 0);
+    return CGRangeMake(_chartView.rows, 0);
 }
 
 #pragma mark 折线图专享功能
@@ -184,10 +226,105 @@
     return YES;
 }
 
+#pragma mark - PPChart Delegate Method
+-(void)PPChartLoadNextPageData
+{
+    SleepChartModel *model;
+    switch (sleeptype) {
+        case sleepDay:
+        {
+            model = [daySleepDataArr lastObject];
+        }
+            break;
+        case sleepWeek:
+        {
+            model = [weekSleepDataArr lastObject];
+        }
+            break;
+        case sleepMonth:
+        {
+            model = [monthSleepDataArr lastObject];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    [self requestSleepMonitor:sleeptype Date:model.p];
+}
+
+-(void)PPChartSelectPointAtIndex:(NSInteger)index
+{
+    [selectPointDataArray removeAllObjects];
+    
+    SleepChartModel *model;
+    switch (sleeptype) {
+        case sleepDay:
+        {
+            model = daySleepDataArr[index];
+        }
+            break;
+        case sleepWeek:
+        {
+            model = weekSleepDataArr[index];
+        }
+            break;
+        case sleepMonth:
+        {
+            model = monthSleepDataArr[index];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    NSString *totalTime = [self TimeformatFromSeconds:[model.c integerValue]];
+    NSString *deepTime = [self TimeformatFromSeconds:[model.d integerValue]];
+    NSString *slightTime = [self TimeformatFromSeconds:[model.s integerValue]];
+    
+    [selectPointDataArray addObjectsFromArray:@[totalTime,deepTime,slightTime]];
+    [dataTable reloadData];
+}
+
+-(NSString*)TimeformatFromSeconds:(NSInteger)seconds
+{
+    //format of hour
+    NSString *str_hour = [NSString stringWithFormat:@"%02d",(int)(seconds/3600)];
+    //format of minute
+    NSString *str_minute = [NSString stringWithFormat:@"%02d",(int)((seconds%3600)/60)];
+    //format of second
+    NSString *str_second = [NSString stringWithFormat:@"%02d",(int)seconds%60];
+    //format of time
+    
+    NSString *format_time;
+    
+    if ([str_hour integerValue] > 0 && [str_minute integerValue] > 0 && [str_minute integerValue] > 0) {
+        format_time = [NSString stringWithFormat:@"%@时%@分%@秒",str_hour,str_minute,str_second];
+    }
+    else if ([str_minute integerValue] > 0 && [str_minute integerValue] > 0)
+    {
+        format_time = [NSString stringWithFormat:@"%@分%@秒",str_minute,str_second];
+    }
+    else
+    {
+        format_time = [NSString stringWithFormat:@"%@秒",str_second];
+    }
+    
+    return format_time;
+}
+
 #pragma mark - Segment Delegate Method
 -(void)segmentViewDidSelected:(NSUInteger)index
 {
+    [daySleepDataArr removeAllObjects];
+    [weekSleepDataArr removeAllObjects];
+    [monthSleepDataArr removeAllObjects];
     
+    sleeptype = (sleepType)(index+1);
+    
+    [self requestSleepMonitor:sleeptype Date:@""];
 }
 
 #pragma mark - UITableView DataSource & Delegate
@@ -210,11 +347,88 @@
         cell.backgroundColor = [UIColor whiteColor];
         cell.titlesArray = @[@"睡眠时长",@"深睡时长",@"浅睡时长"];
     }
-    cell.dataArray = @[@"4小时20分钟",@"1小时47分钟",@"1小时47分钟"];
+    cell.dataArray = selectPointDataArray;
     
     return cell;
 }
 
+#pragma mark - Http Request
+-(void)requestSleepMonitor:(sleepType)type Date:(NSString *)date
+{
+    showViewHUD;
+    
+    [self startRequestWithDict:sleepMonitor([APP_DELEGATE.userData.uid integerValue], type, date ,@"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            NSDictionary *data = [dict objectForKey:@"data"];
+            NSArray *sleepChartData = [data objectForKey:@"chartData"];
+            switch (type) {
+                case sleepDay:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sleepChartData.count; i++) {
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SleepChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [daySleepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = daySleepDataArr;
+                                       
+                }
+                    break;
+                case sleepWeek:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sleepChartData.count; i++) {
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SleepChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [weekSleepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = weekSleepDataArr;
+                }
+                    break;
+                case sleepMonth:
+                {
+                    NSMutableArray *tempArr = [NSMutableArray array];
+                    for (int i = 0; i<sleepChartData.count; i++) {
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        [tempArr addObject:model];
+                    }
+                    
+                    SleepChartModel *lastModel = [tempArr lastObject];
+                    if (![lastModel.p isEqualToString:date]) {
+                        [monthSleepDataArr addObjectsFromArray:tempArr];
+                    }
+                    
+                    self.currentDataArr = monthSleepDataArr;
+                }
+                    break;
+                default:
+                    break;
+            }
+//            [_chartView strokeChart];
+            if (_chartView) {
+                [_chartView removeFromSuperview];
+            }
+            [self configChartView];
+        }
+        else
+        {
+            
+        }
+    } url:kRequestUrl(@"Health", @"sleepMonitor")];
+}
 @end
 
 #pragma mark - Gradient View

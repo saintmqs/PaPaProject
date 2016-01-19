@@ -51,9 +51,6 @@
 
 -(void)setDataArray:(NSArray *)dataArray
 {
-    if (_dataArray == dataArray) {
-        return;
-    }
     _dataArray = dataArray;
     
     for (int i = 0; i<dataArray.count; i++) {

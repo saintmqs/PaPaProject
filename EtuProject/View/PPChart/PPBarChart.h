@@ -12,8 +12,8 @@
 #define chartMargin     10
 #define xLabelMargin    15
 #define yLabelMargin    15
-#define PPLabelHeight   10
-#define PPYLabelwidth   30
+//#define PPLabelHeight   20
+//#define PPYLabelwidth   30
 
 @interface PPBarChart : UIView
 

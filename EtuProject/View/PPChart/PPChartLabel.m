@@ -18,7 +18,7 @@
         // Initialization code
         [self setLineBreakMode:NSLineBreakByWordWrapping];
         [self setMinimumScaleFactor:5.0f];
-        [self setNumberOfLines:1];
+        [self setNumberOfLines:0];
         [self setFont:[UIFont boldSystemFontOfSize:9.0f]];
         [self setTextColor: PPWhite];
         self.backgroundColor = [UIColor clearColor];

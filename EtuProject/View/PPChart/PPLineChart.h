@@ -10,14 +10,29 @@
 #import <UIKit/UIKit.h>
 #import "PPColor.h"
 
+typedef enum : NSUInteger {
+    SPORT_TYPE,
+    SLEEP_TYPE,
+} LineChartType;
+
 #define chartMargin     10
 #define xLabelMargin    15
 #define yLabelMargin    15
-#define PPLabelHeight    12
+#define PPLabelHeight    30
 #define PPYLabelwidth     60
 #define PPTagLabelwidth     35
 
+@protocol PPLineChartDelegate <NSObject>
+
+-(void)PPLineChartLoadNext;
+
+-(void)PPLineSelectPointAtIndex:(NSInteger)index;
+
+@end
+
 @interface PPLineChart : UIView<UIScrollViewDelegate>
+
+@property (nonatomic, assign) id<PPLineChartDelegate> delegate;
 
 @property (strong, nonatomic) NSArray * xLabels;
 
@@ -44,6 +59,8 @@
 
 @property (nonatomic, retain) NSMutableArray *ShowHorizonLine;
 @property (nonatomic, retain) NSMutableArray *ShowMaxMinArray;
+
+@property (nonatomic, assign) LineChartType  chartType;
 
 -(void)strokeChart;
 
