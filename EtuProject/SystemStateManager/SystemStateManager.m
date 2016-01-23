@@ -42,10 +42,12 @@ static SystemStateManager *systemStateManager;
             else if ([call.callState isEqualToString:CTCallStateConnected])
             {
                 NSLog(@"Call has just been connected");
+                [[PaPaBLEManager shareInstance].bleManager stopPhoneRingShock];
             }
             else if([call.callState isEqualToString:CTCallStateIncoming])
             {
                 NSLog(@"Call is incoming");
+                [[PaPaBLEManager shareInstance].bleManager startPhoneRingShock];
             }
             else if ([call.callState isEqualToString:CTCallStateDialing])
             {

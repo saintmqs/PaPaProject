@@ -369,7 +369,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sleepChartData.count; i++) {
-                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     
@@ -386,7 +386,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sleepChartData.count; i++) {
-                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     
@@ -402,7 +402,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sleepChartData.count; i++) {
-                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[0] error:nil];
+                        SleepChartModel *model = [[SleepChartModel alloc] initWithDictionary:sleepChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     

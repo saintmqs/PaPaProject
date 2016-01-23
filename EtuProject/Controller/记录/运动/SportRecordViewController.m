@@ -340,7 +340,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sportChartData.count; i++) {
-                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     
@@ -357,7 +357,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sportChartData.count; i++) {
-                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     
@@ -373,7 +373,7 @@
                 {
                     NSMutableArray *tempArr = [NSMutableArray array];
                     for (int i = 0; i<sportChartData.count; i++) {
-                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[0] error:nil];
+                        SportChartModel *model = [[SportChartModel alloc] initWithDictionary:sportChartData[i] error:nil];
                         [tempArr addObject:model];
                     }
                     

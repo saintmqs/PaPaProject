@@ -34,7 +34,7 @@ NSDictionary *sendRegCode(NSString *phone);
 NSDictionary *checkRegCode(NSString *phone, NSString *code);
 
 //7	用户注册接口
-NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *repassword);
+NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *repassword,NSString *code);
 
 //8	用户二次信息添加
 NSDictionary *registerbase(NSInteger uid, NSString *birthday, NSInteger sex, NSInteger height, NSInteger weight, NSInteger step);

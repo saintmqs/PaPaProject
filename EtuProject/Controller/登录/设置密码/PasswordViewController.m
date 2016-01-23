@@ -49,6 +49,7 @@
     self.password			= [UITextField textFieldWithFrame:CGRectMake(10, 10, container.width - 10*2, 30) font:0 label:@"输入密码:    " labelTextColor:[UIColor blackColor]];
     _password.maxLength		= 20;
     _password.placeholder	= @"8-16位数字、字母、字符（至少两种）";
+    _password.secureTextEntry	= YES;
     _password.textColor     = [UIColor blackColor];
     
     UIImageView *seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(0, container.height/2, container.width, 0.5)];
@@ -74,50 +75,70 @@
     __block NSString	*repassword	= self.rePassword.text;
     
     if (sender == _btnFinish) {
-//        if ([NSString isStringEmptyOrBlank:password]) {
-//            showTip(@"请输入密码");
-//            return;
-//        }
-//
-//        //        if (![username validateMobile]) {
-//        //            showTip(@"请输入有效的手机号");
-//        //            return;
-//        //        }
-//        
-//        if ([NSString isStringEmptyOrBlank:repassword]) {
-//            showTip(@"请再次输入密码");
-//            return;
-//        }
-//        
-//        if (![password isEqualToString:repassword]) {
-//            showTip(@"两次输入密码不符");
-//            return;
-//        }
+        if ([NSString isStringEmptyOrBlank:password]) {
+            showTip(@"请输入密码");
+            return;
+        }
+
         
-//        showViewHUD;
-//        weakObj(self);
-//        
-//        [self startRequestWithDict:registerAccount(self.phoneNum, password, repassword) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-//            
-//            hideViewHUD;
-//            
-//            if (error) {
-//                showError(error);
-//            }
-//            else
-//            {
-//                Login *login = [[Login alloc]initWithDictionary:[dict objectForKey:@"data"] error:nil];
-//                
-//                APP_DELEGATE.userData = login;
-//                
-//                SelectSexViewController *vc = [[SelectSexViewController alloc] init];
-//                [bself.navigationController pushViewController:vc animated:YES];
-//            }
-//            
-//        } url:kRequestUrl(@"user", @"register")];
+        if ([NSString isStringEmptyOrBlank:repassword]) {
+            showTip(@"请再次输入密码");
+            return;
+        }
         
-        SelectSexViewController *vc = [[SelectSexViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (![password isEqualToString:repassword]) {
+            showTip(@"两次输入密码不符");
+            return;
+        }
+        
+        if (self.isFindPwd) {
+            showViewHUD;
+            weakObj(self);
+            
+            [self startRequestWithDict:findPwd(self.phoneNum, password, repassword,self.verifycode) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+                
+                hideViewHUD;
+                
+                if (error) {
+                    showError(error);
+                }
+                else
+                {
+                    double delayInSeconds = 1.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        
+                        [bself.navigationController popToRootViewControllerAnimated:YES];
+                    });
+                }
+                
+            } url:kRequestUrl(@"user", @"findPwd")];
+        }
+        else
+        {
+            showViewHUD;
+            weakObj(self);
+            
+            [self startRequestWithDict:registerAccount(self.phoneNum, password, repassword,self.verifycode) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+                
+                hideViewHUD;
+                
+                if (error) {
+                    showError(error);
+                }
+                else
+                {
+                    Login *login = [[Login alloc]initWithDictionary:[dict objectForKey:@"data"] error:nil];
+                    
+                    APP_DELEGATE.userData = login;
+                    
+                    SelectSexViewController *vc = [[SelectSexViewController alloc] init];
+                    [bself.navigationController pushViewController:vc animated:YES];
+                }
+                
+            } url:kRequestUrl(@"user", @"register")];
+        }
+        
         
     }
 }

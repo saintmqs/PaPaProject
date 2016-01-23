@@ -70,14 +70,66 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+- (void)onBtnAction:(UIButton *)sender
+{
+    __block NSString	*password	= self.password.text;
+    __block NSString    *newpassword = self.newpassword.text;
+    __block NSString	*renewpassword	= self.reNewpassword.text;
+    
+    if (sender == _btnFinish) {
+        if ([NSString isStringEmptyOrBlank:password]) {
+            showTip(@"请输入密码");
+            return;
+        }
+        
+        
+        if ([NSString isStringEmptyOrBlank:newpassword]) {
+            showTip(@"请输入新密码");
+            return;
+        }
+        
+        if ([NSString isStringEmptyOrBlank:renewpassword]) {
+            showTip(@"请再次输入新密码");
+            return;
+        }
+        
+        if (![newpassword isEqualToString:newpassword]) {
+            showTip(@"两次输入的新密码不符");
+            return;
+        }
+        
+        showViewHUD;
+        weakObj(self);
+        
+        [self startRequestWithDict:updatePwd([APP_DELEGATE.userData.uid integerValue],password,newpassword,renewpassword) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+            
+            hideViewHUD;
+            
+            if (error) {
+                if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+                {
+                    showTip(@"网络连接失败");
+                }
+                else
+                {
+                    showTip([error.userInfo objectForKey:@"msg"]);
+                }
+            }
+            else
+            {
+                showTip([dict objectForKey:@"msg"]);
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+                double delayInSeconds = 1.0;
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    
+                    [bself.navigationController popViewControllerAnimated:YES];
+                });
+
+            }
+            
+        } url:kRequestUrl(@"user", @"updatePwd")];
+        
+    }
 }
-*/
-
 @end

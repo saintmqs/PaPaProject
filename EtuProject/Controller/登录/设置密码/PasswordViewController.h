@@ -11,4 +11,6 @@
 @interface PasswordViewController : BaseViewController
 
 @property (nonatomic, strong) NSString *phoneNum;
+@property (nonatomic, strong) NSString *verifycode;
+@property (nonatomic, assign) BOOL     isFindPwd;
 @end

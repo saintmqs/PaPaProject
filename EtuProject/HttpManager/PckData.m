@@ -49,13 +49,13 @@ NSDictionary *checkRegCode(NSString *phone, NSString *code)
 }
 
 //7	用户注册接口
-NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *repassword)
+NSDictionary *registerAccount(NSString *phone, NSString *password, NSString *repassword, NSString *code)
 {
     initDict();
     addParam(@"phone", phone);
     addParam(@"password", password);
     addParam(@"repassword", repassword);
-    
+    addParam(@"code", code);
     return dict;
 }
 

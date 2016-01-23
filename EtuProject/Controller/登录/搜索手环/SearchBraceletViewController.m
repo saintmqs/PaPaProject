@@ -216,6 +216,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
             
             searchView.hidden = NO;
             noResultView.hidden = YES;
+            bleOffView.hidden = YES;
             
             SelectBraceletViewController *vc = [[SelectBraceletViewController alloc] init];
             vc.searchResultArray = [[PaPaBLEManager shareInstance].bleManager peripheralList];
@@ -225,6 +226,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         {
             noResultView.hidden = NO;
             searchView.hidden = YES;
+            bleOffView.hidden = YES;
         }
         
     } blockNo:^(id time) {
@@ -342,6 +344,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     }
 
 }
+
 
 #pragma mark - PaPaBLEManager Delegate
 -(void)PaPaBLEManagerConnected

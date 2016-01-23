@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "RegisterViewController.h"
+#import "FindPasswordViewController.h"
 #import "Login.h"
 
 @interface LoginViewController ()
@@ -76,7 +77,7 @@
     _btnLogin.layer.cornerRadius		= 10.f;
     
     self.btnFindPwd = [UIButton btnDefaultFrame:CGRectMake(mScreenWidth - 25 - 136/2, _btnLogin.bottom + 20, 136/2, 30) title:@"忘记密码？" font:0];
-    [_btnFindPwd setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_btnFindPwd setTitleColor:rgbaColor(49, 150, 227, 1) forState:UIControlStateNormal];
     _btnFindPwd	.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     _btnFindPwd.contentMode = UIViewContentModeRight;
     _btnFindPwd.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -163,16 +164,9 @@
             }
         }];
     } else if (sender == _btnFindPwd) {
-//        Login *userData = [[Login alloc] init];
-//        userData.uname = username;
-//        APP_DELEGATE.userData = userData;
-//        FindPasswordViewController *findpwd = [[FindPasswordViewController alloc] init];
-//        
-//        if (![NSString isStringEmptyOrBlank:username] && [username validateMobile]) {
-//            //            findpwd.phoneNumString = username;
-//        }
-//        
-//        [self.navigationController pushViewController:findpwd animated:YES];
+        FindPasswordViewController *findpwd = [[FindPasswordViewController alloc] init];
+        
+        [self.navigationController pushViewController:findpwd animated:YES];
     }else if (sender == _btnRegister) {
         RegisterViewController *registerVC = [[RegisterViewController alloc] init];
         [self.navigationController pushViewController:registerVC animated:YES];

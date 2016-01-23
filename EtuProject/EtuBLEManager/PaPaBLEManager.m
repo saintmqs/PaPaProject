@@ -149,13 +149,42 @@ static PaPaBLEManager *papaBLEManager;
 #pragma mark 蓝牙可进行读写操作
 - (void) BLEManagerReadyToReadAndWrite//蓝牙可进行读写操作
 {
-    double delayInSeconds = 2.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [bleManager getSystemInformation]; //获取系统信息
-        [bleManager getBalance]; //获取余额
-        [bleManager getCardID]; //获取公交卡号
-    });
+    if ([bleManager connected]) {
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [bleManager getSystemInformation]; //获取系统信息
+            
+        });
+        dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
+            [bleManager getBalance]; //获取余额
+            
+        });
+        
+
+        dispatch_time_t popTime3 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime3, dispatch_get_main_queue(), ^(void){
+            [bleManager getCardID]; //获取公交卡号
+            
+        });
+        
+//        dispatch_time_t popTime4 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//        dispatch_after(popTime4, dispatch_get_main_queue(), ^(void){
+//            [bleManager getCurrentStepData];
+//            [bleManager getStepData];
+//            
+//        });
+//        
+//        dispatch_time_t popTime5 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//        dispatch_after(popTime5, dispatch_get_main_queue(), ^(void){
+//            [bleManager getCurrentSleepingData];
+//            [bleManager getSleepingData];
+//            
+//        });
+        
+    }
+    
 
 //    [bleManager getBalance]; //获取余额
 //    
@@ -530,7 +559,9 @@ static PaPaBLEManager *papaBLEManager;
             break;
     }
     
-    showTip(errorMsg);
+    if (errorMsg) {
+        showTip(errorMsg);
+    }
 }
 
 #pragma mark 蓝牙返回钱包余额(以分记)
@@ -625,15 +656,30 @@ static PaPaBLEManager *papaBLEManager;
 
 -(void)onDeviceDisconnected:(CBPeripheral *)peripheral//升级时蓝牙连接断开
 {
+    self.isUpdateDisconnect = YES;
     showTip(@"升级时蓝牙连接断开");
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnDeviceDisconnected:)]) {
         [_delegate PaPaOnDeviceDisconnected:peripheral];
     }
     
     //发起重连扫描
-    if ([SystemStateManager shareInstance].hasBindWristband) {
-        [bleManager startScan];
-    }
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        showTip(@"3秒后重新连接手环");
+        double delayInSeconds = 3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            if ([SystemStateManager shareInstance].hasBindWristband) {
+                [bleManager startScan];
+            }
+            
+        });
+        
+    });
+    
+    
+    
 }
 
 -(void)onDFUStarted//升级开始

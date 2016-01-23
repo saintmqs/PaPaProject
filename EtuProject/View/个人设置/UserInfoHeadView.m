@@ -31,7 +31,7 @@
         
         CGFloat labelsWidth = (mScreenWidth - 1)/3;
         UIView *infosView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frameHeight - 30 - 10, mScreenWidth , 30)];
-        [self addSubview:infosView];
+//        [self addSubview:infosView];
         
         {
             UILabel *stepTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, labelsWidth, 14)];

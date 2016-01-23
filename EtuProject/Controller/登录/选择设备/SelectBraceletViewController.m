@@ -39,6 +39,7 @@
     [cancelButton setTitle:@"暂时不绑定 >" forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     cancelButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    addBtnAction(cancelButton, @selector(cancelBind));
     [self.view addSubview:cancelButton];
     
 //    [self setupGradientView];
@@ -111,6 +112,13 @@
     }
     
     showViewHUD;
+}
+
+-(void)cancelBind
+{
+    [SystemStateManager shareInstance].hasBindWristband = NO;
+    
+    [APP_DELEGATE loginSuccess];
 }
 
 #pragma mark - 

@@ -60,6 +60,7 @@ typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
 @property (nonatomic, strong) NSDictionary *firmwareInfo;   //系统信息
 @property (nonatomic, strong) NSString     *balance;
 @property (nonatomic, strong) NSString     *cardId;
+@property (nonatomic, assign) BOOL         isUpdateDisconnect;
 
 +(PaPaBLEManager *)shareInstance;
 

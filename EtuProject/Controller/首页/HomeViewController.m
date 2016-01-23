@@ -28,7 +28,10 @@
     
     BOOL currentStepDataFinish;
     BOOL currentSleepDataFinish;
+    
 }
+@property (nonatomic, strong) NSNumber *synStepDataFinish;
+@property (nonatomic, strong) NSNumber *synSleepDataFinish;
 @end
 
 @implementation HomeViewController
@@ -95,11 +98,20 @@
     {
         gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
     }
+    
+    [self addObserver:self forKeyPath:@"synStepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [self addObserver:self forKeyPath:@"synSleepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc
+{
+    [self removeObserver:self forKeyPath:@"synStepDataFinish"];
+    [self removeObserver:self forKeyPath:@"synSleepDataFinish"];
 }
 
 -(void)getBandData
@@ -110,6 +122,8 @@
     [[PaPaBLEManager shareInstance].bleManager getSleepingData];
     
     [self changeBannersHeaderContent:self.indicatorView];
+    
+    [self startSynData];
 }
 
 -(void)configSynDataView
@@ -434,12 +448,18 @@
 
 -(void)uploadStepsData:(NSString *)json
 {
+    NSLog(@"***uploadSleepData***");
     [self asynchronousGetRequest:kRequestUrl(@"Health", @"stepsUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
-//        NSDictionary *dict = [data objectForKey:@"data"];
-        if ([data objectForKey:@"data"]) {
-            showTip([data objectForKey:@"data"]);
+        if (success) {
+            self.synStepDataFinish = [NSNumber numberWithBool:YES];
         }
+        else
+        {
+            self.synStepDataFinish = [NSNumber numberWithBool:NO];
+        }
+        
+        [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_STEP_DATA];
     } failureBlock:^(NSString *description) {
         
     }];
@@ -465,12 +485,18 @@
 
 -(void)uploadSleepData:(NSString *)json
 {
+    NSLog(@"===uploadSleepData===");
     [self asynchronousGetRequest:kRequestUrl(@"Health", @"sleepUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
-//        NSDictionary *dict = [data objectForKey:@"data"];
-        if ([data objectForKey:@"data"]) {
-            showTip([data objectForKey:@"data"]);
+        if (success) {
+            self.synSleepDataFinish = [NSNumber numberWithBool:YES];
         }
+        else
+        {
+            self.synSleepDataFinish = [NSNumber numberWithBool:NO];
+        }
+        
+        [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_SLEEP_DATA];
     } failureBlock:^(NSString *description) {
         
     }];
@@ -597,6 +623,18 @@
 -(void)disConnetedViewRefreshing:(NSError *)error
 {
     NSLog(@"disConnetedViewRefreshing");
+}
+
+#pragma mark - KVO
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"synStepDataFinish"] || [keyPath isEqualToString:@"synSleepDataFinish"])
+    {
+        if ([_synSleepDataFinish boolValue] && [_synSleepDataFinish boolValue]) {
+            showTip(@"同步计步睡眠数据成功");
+            [self endSynData];
+        }
+    }
 }
 @end
 

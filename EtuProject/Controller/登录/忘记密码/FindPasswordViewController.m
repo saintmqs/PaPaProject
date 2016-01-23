@@ -1,30 +1,30 @@
 //
-//  RegisterViewController.m
+//  FindPasswordViewController.m
 //  EtuProject
 //
-//  Created by 王家兴 on 15/11/5.
-//  Copyright © 2015年 王家兴. All rights reserved.
+//  Created by 王家兴 on 16/1/20.
+//  Copyright © 2016年 王家兴. All rights reserved.
 //
 
-#import "RegisterViewController.h"
+#import "FindPasswordViewController.h"
 #import "PasswordViewController.h"
 
-@interface RegisterViewController ()
+@interface FindPasswordViewController ()
 {
     UIButton *getVerifyCodeBtn;
 }
 @property (nonatomic, strong) UITextField	*phoneNum;
 @property (nonatomic, strong) UITextField	*verifyCode;
-@property (nonatomic, strong) UIButton		*btnRegister;
+@property (nonatomic, strong) UIButton		*btnNextStep;
 
 @end
 
-@implementation RegisterViewController
+@implementation FindPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.titleLabel.text = @"注册啪啪手环账号";
+    self.titleLabel.text = @"重置密码";
     self.titleLabel.textColor = [UIColor grayColor];
     self.headerView.backgroundColor = rgbColor(242, 242, 242);
     
@@ -64,32 +64,15 @@
     
     [container addSubviews:_phoneNum, seperateLine, _verifyCode, nil];
     
-    self.btnRegister = [UIButton btnDefaultFrame:CGRectMake(25, container.bottom + 50, mScreenWidth - 25*2, 45) title:@"注册" font:4];
-    [_btnRegister setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.btnRegister.backgroundColor = rgbaColor(49, 150, 227, 1);
-    _btnRegister.layer.cornerRadius		= 10.f;
+    self.btnNextStep = [UIButton btnDefaultFrame:CGRectMake(25, container.bottom + 50, mScreenWidth - 25*2, 45) title:@"下一步" font:4];
+    [_btnNextStep setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.btnNextStep.backgroundColor = rgbaColor(49, 150, 227, 1);
+    _btnNextStep.layer.cornerRadius		= 10.f;
     
-    [self.view addSubview:_btnRegister];
-    
-    UILabel *protocolLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.btnRegister.frameBottom + 20, mScreenWidth - 20, 20)];
-    protocolLabel.font = [UIFont systemFontOfSize:13];
-    protocolLabel.textAlignment = NSTextAlignmentCenter;
-    protocolLabel.textColor = [UIColor lightGrayColor];
-    protocolLabel.text = @"点击“注册”即您同意并接受啪啪手环的用户协议和隐私协议";
-    
-    NSMutableAttributedString *mutableStr = [[NSMutableAttributedString alloc] initWithString:protocolLabel.text];
-    
-    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"用户协议"]];
-    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"用户协议"]];
-
-    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"隐私协议"]];
-    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"隐私协议"]];
-
-    protocolLabel.attributedText = mutableStr;
-    [self.view addSubview:protocolLabel];
+    [self.view addSubview:_btnNextStep];
     
     addBtnAction(getVerifyCodeBtn, @selector(onBtnAction:));
-    addBtnAction(_btnRegister, @selector(onBtnAction:));
+    addBtnAction(_btnNextStep, @selector(onBtnAction:));
     
 }
 
@@ -103,17 +86,17 @@
     __block NSString	*phoneNum	= self.phoneNum.text;
     __block NSString	*verifyCode	= self.verifyCode.text;
     
-    if (sender == _btnRegister) {
+    if (sender == _btnNextStep) {
         if ([NSString isStringEmptyOrBlank:phoneNum]) {
             showTip(@"请输入手机号");
             return;
         }
-
+        
         if (![phoneNum validateMobile]) {
             showTip(@"请输入有效的手机号");
             return;
         }
-
+        
         if ([NSString isStringEmptyOrBlank:verifyCode]) {
             showTip(@"请输入验证码");
             return;
@@ -122,7 +105,7 @@
         showViewHUD;
         weakObj(self);
         
-        [self startRequestWithDict:checkRegCode(phoneNum,verifyCode) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        [self startRequestWithDict:checkPwdCode(phoneNum,verifyCode) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
             
             hideViewHUD;
             
@@ -138,14 +121,15 @@
                 PasswordViewController *vc = [[PasswordViewController alloc] init];
                 vc.phoneNum = phoneNum;
                 vc.verifycode = verifyCode;
+                vc.isFindPwd = YES;
                 [bself.navigationController pushViewController:vc animated:YES];
             }
             
-        } url:kRequestUrl(@"user", @"checkRegCode")];
+        } url:kRequestUrl(@"user", @"checkPwdCode")];
         
-//        PasswordViewController *vc = [[PasswordViewController alloc] init];
-//        vc.phoneNum = phoneNum;
-//        [self.navigationController pushViewController:vc animated:YES];
+        //        PasswordViewController *vc = [[PasswordViewController alloc] init];
+        //        vc.phoneNum = phoneNum;
+        //        [self.navigationController pushViewController:vc animated:YES];
         
     } else if (sender == getVerifyCodeBtn)
     {
@@ -156,7 +140,7 @@
         
         showViewHUD;
         
-        [self startRequestWithDict:sendRegCode(phoneNum) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        [self startRequestWithDict:sendPwdCode(phoneNum) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
             
             hideViewHUD;
             
@@ -175,7 +159,7 @@
                     [getVerifyCodeBtn setTitle:@"获取验证码" forState:UIControlStateNormal];
                     [getVerifyCodeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                     getVerifyCodeBtn.userInteractionEnabled = YES;
-
+                    
                 } blockNo:^(id time) {
                     NSString *sec = [NSString stringWithFormat:@"重新发送(%@)",time];
                     [getVerifyCodeBtn setTitle:sec forState:UIControlStateNormal];
@@ -185,7 +169,7 @@
                 }];
             }
             
-        } url:kRequestUrl(@"user", @"sendRegCode")];
+        } url:kRequestUrl(@"user", @"sendPwdCode")];
     }
 }
 
@@ -217,4 +201,5 @@
     });
     dispatch_resume(_timer);
 }
+
 @end

@@ -9,6 +9,9 @@
 #import "ClockDetailSettingViewController.h"
 #import "CustomPickerModel.h"
 #import "ClockSettingTableCell.h"
+#import "ClocksCycleSettingViewController.h"
+
+#import "JGActionSheet.h"
 
 #define PICKER_MAXHOUR 23
 #define PICKER_MINHOUR 0
@@ -21,7 +24,7 @@
 
 #define CURRENTCOLOR rgbaColor(255, 255, 255, 1)
 
-@interface ClockDetailSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ClockDetailSettingViewController ()<UITableViewDataSource, UITableViewDelegate,JGActionSheetDelegate>
 {
     UIView *leftView;
     UIView *rightView;
@@ -371,7 +374,7 @@
     switch (indexPath.row) {
         case 0:
         {
-            
+            [self selectClockRingModel];
         }
             break;
             
@@ -380,4 +383,31 @@
     }
 }
 
+#pragma mark -
+- (void)selectClockRingModel
+{
+    JGActionSheetSection *section = [JGActionSheetSection sectionWithTitle:nil message:nil buttonTitles:@[@"每天", @"只响一次"] buttonStyle:JGActionSheetButtonStyleDefault];
+    
+    NSArray *sections = @[section, [JGActionSheetSection sectionWithTitle:nil message:nil buttonTitles:@[@"自定义闹钟"] buttonStyle:JGActionSheetButtonStyleCancel]];
+    JGActionSheet* actionSheet = [[JGActionSheet alloc] initWithSections:sections];
+    actionSheet.delegate = self;
+    
+    [actionSheet setButtonPressedBlock:^(JGActionSheet *sheet, NSIndexPath *indexPath) {
+        
+        if (indexPath.section == 0)
+        {
+            
+        }
+        else if (indexPath.section == 1)
+        {
+            ClocksCycleSettingViewController *vc = [[ClocksCycleSettingViewController alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+
+        }
+        
+        [sheet dismissAnimated:YES];
+    }];
+    
+    [actionSheet showInView:self.navigationController.view animated:YES];
+}
 @end
