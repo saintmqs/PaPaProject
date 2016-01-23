@@ -11,10 +11,13 @@
 @interface PPCircularProgressView : UIView
 {
     UIView *whitepoint;
+    NSTimer *timer;
 }
 @property(nonatomic, strong) UIColor *trackTintColor;
 @property(nonatomic, strong) UIColor *progressTintColor;
+@property (nonatomic, assign) float targetProgress;
 @property (nonatomic) float progress;
 
+-(void)changeProgress;
 @end
 

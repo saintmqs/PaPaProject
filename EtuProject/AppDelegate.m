@@ -116,13 +116,14 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 - (void)loginSuccess
 {
     if (![[PaPaBLEManager shareInstance].bleManager connected] && [SystemStateManager shareInstance].hasBindWristband) {
-        SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
-        if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
-            
-            [nav pushViewController:vc animated:YES];
-        }
-        
+        if (![[SystemStateManager shareInstance].activeController isKindOfClass:[SearchBraceletViewController class]]) {
+            SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+            if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]) {
+                UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+                
+                [nav pushViewController:vc animated:YES];
+            }
+        }        
         return;
     }
     
@@ -222,18 +223,24 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 - (void)logOut
 {
     self.userData = nil;
-    [self setupViewControllers];
-    self.window.rootViewController = self.rootTabbarController;
-    [APP_DELEGATE.rootTabbarController setSelectedIndex:1];
-    [self checkNeedLogin];
+
+    LoginViewController *login = [[LoginViewController alloc] init];
+    
+    UINavigationController	*tab = [[UINavigationController alloc]initWithRootViewController:login];
+    [tab setNavigationBarHidden:YES];
+    
+    self.window.rootViewController = tab;
+    
+//    [self setupViewControllers];
+//    self.window.rootViewController = self.rootTabbarController;
+//    [APP_DELEGATE.rootTabbarController setSelectedIndex:1];
+//    [self checkNeedLogin];
 }
 
 
 #pragma mark - ViewController setup
 - (void)setupViewControllers
-{
-    _isRootViewLaunched = YES;
-    
+{    
     self.home		= [[HomeViewController alloc] init];
     self.record     = [[RecordViewController alloc] init];
     {

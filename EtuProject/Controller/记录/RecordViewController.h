@@ -16,8 +16,6 @@
 @property (nonatomic,strong) SleepingRecordViewController *sleep;
 @property (nonatomic,strong) SportRecordViewController *sport;
 
-@property (nonatomic,assign) BOOL isRootViewLaunched;
-
 - (void)customizeTabBarForController:(RDVTabBarController *)tabBarController;
 
 @end

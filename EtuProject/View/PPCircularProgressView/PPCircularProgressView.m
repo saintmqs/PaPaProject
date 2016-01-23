@@ -143,19 +143,7 @@
 - (void)setProgress:(float)progress
 {
     _progress = progress;
-    [self performSelector:@selector(changeProgress:) withObject:[NSNumber numberWithFloat:progress] afterDelay:0.2f];
-}
-
--(void)changeProgress:(NSNumber *)progress
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(changeProgress:) object:nil];
-    
-    if (_progress == [progress floatValue]) {
-        _progress = [progress floatValue];
-        return;
-    }
-    
-    [self performSelector:@selector(changeProgress:) withObject:progress afterDelay:0.2f];
+    [self setNeedsDisplay];
 }
 
 @end

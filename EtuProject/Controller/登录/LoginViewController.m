@@ -137,11 +137,11 @@
             
             if (success) {
                 //                [bself.navigationController popViewControllerAnimated:YES];
-                if (APP_DELEGATE.isRootViewLaunched) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-                    [bself dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
+//                if (APP_DELEGATE.isRootViewLaunched) {
+//                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+//                    [bself dismissViewControllerAnimated:YES completion:nil];
+//                }
+//                else
                 {
                     if ([APP_DELEGATE.userData.isall integerValue] == 0) {
                         [APP_DELEGATE loginbyFixInfo];

@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) PPCircularProgressView *progressView;
 @property (nonatomic, strong) PPProgressInnerView *innerView;
+
+-(void)startProgressChange;
 @end

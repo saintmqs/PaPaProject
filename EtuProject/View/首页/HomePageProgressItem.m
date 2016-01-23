@@ -36,4 +36,24 @@
     return self;
 }
 
+-(void)startProgressChange
+{
+    [self progressChange];
+}
+
+-(void)progressChange
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(progressChange) object:nil];
+    _progressView.progress += 0.01;
+    
+    if (_progressView.progress < _progressView.targetProgress)
+    {
+        [self performSelector:@selector(progressChange) withObject:nil afterDelay:0.01f];
+    }
+    else
+    {
+        _progressView.progress = _progressView.targetProgress;
+    }
+}
+
 @end

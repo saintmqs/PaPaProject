@@ -31,7 +31,6 @@
 @property (nonatomic,strong) TrafficAccountViewController *traffic; //公交卡账户
 
 @property (nonatomic,strong) Login *userData;
-@property (nonatomic, assign) BOOL isRootViewLaunched;
 
 - (void)doLoginWithUsername:(NSString *)username pwd:(NSString *)pwd block:(void (^)(BOOL success, NSError *error))block;
 

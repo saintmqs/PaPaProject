@@ -26,12 +26,15 @@
     NSInteger slightsleepSec;
     NSInteger totalSleepSec;
     
-    BOOL currentStepDataFinish;
-    BOOL currentSleepDataFinish;
+    
     
 }
-@property (nonatomic, strong) NSNumber *synStepDataFinish;
-@property (nonatomic, strong) NSNumber *synSleepDataFinish;
+@property (nonatomic, assign) BOOL synStepDataFinish;
+@property (nonatomic, assign) BOOL synSleepDataFinish;
+
+@property (nonatomic, assign) BOOL currentStepDataFinish;
+@property (nonatomic, assign) BOOL currentSleepDataFinish;
+
 @end
 
 @implementation HomeViewController
@@ -79,8 +82,6 @@
     
     [self.view addSubview:_indicatorView];
     
-    [self getBandData];
-    
     //同步数据转子
     [self configSynDataView];
     
@@ -92,15 +93,23 @@
         gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
                                     (id)rgbaColor(21, 88, 168, 1).CGColor ];
         
-        [self requestData];
+        if (APP_DELEGATE.userData) {
+            [self getBandData];
+        }
+//        [self requestData];
     }
     else
     {
         gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
     }
     
+    
+    
     [self addObserver:self forKeyPath:@"synStepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     [self addObserver:self forKeyPath:@"synSleepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    [self addObserver:self forKeyPath:@"currentStepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [self addObserver:self forKeyPath:@"currentSleepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,6 +121,8 @@
 {
     [self removeObserver:self forKeyPath:@"synStepDataFinish"];
     [self removeObserver:self forKeyPath:@"synSleepDataFinish"];
+    [self removeObserver:self forKeyPath:@"currentStepDataFinish"];
+    [self removeObserver:self forKeyPath:@"currentSleepDataFinish"];
 }
 
 -(void)getBandData
@@ -158,7 +169,7 @@
     
     NSMutableArray *contentDataArr = [NSMutableArray array];
     
-    if ([SystemStateManager shareInstance].hasBindWristband && currentStepDataFinish && currentSleepDataFinish) {
+    if ([SystemStateManager shareInstance].hasBindWristband) {
         
         NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
@@ -391,28 +402,6 @@
 }
 
 #pragma mark - Http Request
--(void)requestData
-{
-    [self startRequestWithDict:stepsMonitor([APP_DELEGATE.userData.uid integerValue], stepsToday, @"", @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        if (!error) {
-//            NSDictionary *data = [dict objectForKey:@"data"];
-//            
-//            showTip([data objectForKey:@"msg"]);
-        }
-        else
-        {
-            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-            {
-                showTip(@"网络连接失败");
-            }
-            else
-            {
-                showTip([error.userInfo objectForKey:@"msg"]);
-            }
-        }
-    } url:kRequestUrl(@"Health", @"stepsMonitor")];
-}
-
 //刷新余额
 -(void)refreshCardBalance
 {
@@ -452,11 +441,11 @@
     [self asynchronousGetRequest:kRequestUrl(@"Health", @"stepsUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
         if (success) {
-            self.synStepDataFinish = [NSNumber numberWithBool:YES];
+            self.synStepDataFinish = YES;
         }
         else
         {
-            self.synStepDataFinish = [NSNumber numberWithBool:NO];
+            self.synStepDataFinish = NO;
         }
         
         [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_STEP_DATA];
@@ -489,11 +478,11 @@
     [self asynchronousGetRequest:kRequestUrl(@"Health", @"sleepUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
         if (success) {
-            self.synSleepDataFinish = [NSNumber numberWithBool:YES];
+            self.synSleepDataFinish = YES;
         }
         else
         {
-            self.synSleepDataFinish = [NSNumber numberWithBool:NO];
+            self.synSleepDataFinish = NO;
         }
         
         [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_SLEEP_DATA];
@@ -572,9 +561,8 @@
             calorie = [data objectForKey:@"c"];
             stepCount = strFormat(@"%ld",steps);
             
-            currentStepDataFinish = YES;
+            self.currentStepDataFinish = YES;
             
-            [self changeBannersHeaderContent:_indicatorView];
         }
         else
         {
@@ -609,9 +597,8 @@
     
     totalSleepSec = deepsleepSec + slightsleepSec;
     
-    currentSleepDataFinish = YES;
+    self.currentSleepDataFinish = YES;
     
-    [self changeBannersHeaderContent:_indicatorView];
 }
 
 #pragma mark - ParentViewController Method
@@ -630,9 +617,16 @@
 {
     if([keyPath isEqualToString:@"synStepDataFinish"] || [keyPath isEqualToString:@"synSleepDataFinish"])
     {
-        if ([_synSleepDataFinish boolValue] && [_synSleepDataFinish boolValue]) {
+        if (self.synSleepDataFinish && self.synSleepDataFinish) {
             showTip(@"同步计步睡眠数据成功");
             [self endSynData];
+        }
+    }
+    
+    if([keyPath isEqualToString:@"currentStepDataFinish"] || [keyPath isEqualToString:@"currentSleepDataFinish"])
+    {
+        if (self.currentStepDataFinish && self.currentSleepDataFinish) {
+            [self changeBannersHeaderContent:self.indicatorView];
         }
     }
 }

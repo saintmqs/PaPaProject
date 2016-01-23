@@ -135,7 +135,10 @@ static CGFloat SWITCH_FOCUS_PICTURE_INTERVAL = 5.0; //switch interval time
         SGFocusImageItem *item = aImageItems[i];
         HomePageProgressItem *itemView = [[HomePageProgressItem alloc] initWithFrame:CGRectMake(i * _scrollView.frame.size.width+space, space, _scrollView.frame.size.width-space*2, _scrollView.frame.size.height-2*space-size.height)];
         
-        itemView.progressView.progress = [item.progress floatValue];
+        itemView.progressView.progress = 0;
+        itemView.progressView.targetProgress = [item.progress floatValue];
+        
+        [itemView startProgressChange];
         
         itemView.innerView.titleLabel.text = item.title;
         itemView.innerView.contentLabel.text = item.content;
