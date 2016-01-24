@@ -10,4 +10,9 @@
 
 @interface AboutUsViewController : BaseViewController
 
+@property (nonatomic, strong) UIImageView *appIcon;
+@property (nonatomic, strong) UILabel     *appVersionLabel;
+@property (nonatomic, strong) UIButton    *appProtocolBtn;
+@property (nonatomic, strong) UILabel     *appCopyRightLabel;
+
 @end

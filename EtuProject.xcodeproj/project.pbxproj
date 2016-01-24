@@ -370,6 +370,13 @@
 		A89608BF1BF242D700BAC743 /* SelectStepsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A89608BE1BF242D700BAC743 /* SelectStepsViewController.m */; };
 		A8B1A73D1C4B4799005DB2B7 /* SleepChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A73C1C4B4799005DB2B7 /* SleepChartModel.m */; };
 		A8B1A7401C4B47A9005DB2B7 /* SportChartModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B1A73F1C4B47A9005DB2B7 /* SportChartModel.m */; };
+		A8C02A3C1C54B0C600886205 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = A8C02A3B1C54B0C600886205 /* appIcon.png */; };
+		A8C02A401C54B51200886205 /* BaseWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A3F1C54B51200886205 /* BaseWebViewController.m */; };
+		A8C02A4D1C54BC5A00886205 /* WPAttributedStyleAction.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A441C54BC5A00886205 /* WPAttributedStyleAction.m */; };
+		A8C02A4E1C54BC5A00886205 /* WPHotspotLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A461C54BC5A00886205 /* WPHotspotLabel.m */; };
+		A8C02A4F1C54BC5A00886205 /* WPTappableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A481C54BC5A00886205 /* WPTappableLabel.m */; };
+		A8C02A501C54BC5A00886205 /* NSMutableString+TagReplace.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A4A1C54BC5A00886205 /* NSMutableString+TagReplace.m */; };
+		A8C02A511C54BC5A00886205 /* NSString+WPAttributedMarkup.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A4C1C54BC5A00886205 /* NSString+WPAttributedMarkup.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1052,6 +1059,19 @@
 		A8B1A73C1C4B4799005DB2B7 /* SleepChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepChartModel.m; sourceTree = "<group>"; };
 		A8B1A73E1C4B47A9005DB2B7 /* SportChartModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportChartModel.h; sourceTree = "<group>"; };
 		A8B1A73F1C4B47A9005DB2B7 /* SportChartModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportChartModel.m; sourceTree = "<group>"; };
+		A8C02A3B1C54B0C600886205 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
+		A8C02A3E1C54B51200886205 /* BaseWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseWebViewController.h; sourceTree = "<group>"; };
+		A8C02A3F1C54B51200886205 /* BaseWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseWebViewController.m; sourceTree = "<group>"; };
+		A8C02A431C54BC5A00886205 /* WPAttributedStyleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAttributedStyleAction.h; sourceTree = "<group>"; };
+		A8C02A441C54BC5A00886205 /* WPAttributedStyleAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAttributedStyleAction.m; sourceTree = "<group>"; };
+		A8C02A451C54BC5A00886205 /* WPHotspotLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPHotspotLabel.h; sourceTree = "<group>"; };
+		A8C02A461C54BC5A00886205 /* WPHotspotLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPHotspotLabel.m; sourceTree = "<group>"; };
+		A8C02A471C54BC5A00886205 /* WPTappableLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTappableLabel.h; sourceTree = "<group>"; };
+		A8C02A481C54BC5A00886205 /* WPTappableLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTappableLabel.m; sourceTree = "<group>"; };
+		A8C02A491C54BC5A00886205 /* NSMutableString+TagReplace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+TagReplace.h"; sourceTree = "<group>"; };
+		A8C02A4A1C54BC5A00886205 /* NSMutableString+TagReplace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+TagReplace.m"; sourceTree = "<group>"; };
+		A8C02A4B1C54BC5A00886205 /* NSString+WPAttributedMarkup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+WPAttributedMarkup.h"; sourceTree = "<group>"; };
+		A8C02A4C1C54BC5A00886205 /* NSString+WPAttributedMarkup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+WPAttributedMarkup.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1059,6 +1079,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8674B891BEA57C400F3FB44 /* CoreText.framework in Frameworks */,
 				A81403301C454D4300CFAB98 /* CoreTelephony.framework in Frameworks */,
 				A814032E1C454D2A00CFAB98 /* libsqlite3.0.tbd in Frameworks */,
 				A814032C1C454D1F00CFAB98 /* libxml2.tbd in Frameworks */,
@@ -1069,7 +1090,6 @@
 				A8674B8F1BEA57E600F3FB44 /* StoreKit.framework in Frameworks */,
 				A8674B8D1BEA57DD00F3FB44 /* CFNetwork.framework in Frameworks */,
 				A8674B8B1BEA57CC00F3FB44 /* UIKit.framework in Frameworks */,
-				A8674B891BEA57C400F3FB44 /* CoreText.framework in Frameworks */,
 				A8674B871BEA57BA00F3FB44 /* Foundation.framework in Frameworks */,
 				A81402491C22EFF200CFAB98 /* libBLEManager.a in Frameworks */,
 				A8674B851BEA579900F3FB44 /* QuartzCore.framework in Frameworks */,
@@ -1378,6 +1398,7 @@
 			children = (
 				A87136B51C50EF6600F5300D /* @2x */,
 				A87136D41C50EF6600F5300D /* @3x */,
+				A8C02A3B1C54B0C600886205 /* appIcon.png */,
 				A87136A31C4E8A3B00F5300D /* point_select@2x.png */,
 				A87136A41C4E8A3B00F5300D /* sportpoint@2x.png */,
 				A82E340D1C1FEB24006A6EE2 /* paymentIco1.png */,
@@ -1425,6 +1446,7 @@
 		A8674B9A1BEA586400F3FB44 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				A8C02A411C54BC5A00886205 /* WPAttributedMarkup */,
 				A81403311C4A3E0500CFAB98 /* AFNetworking */,
 				A81403201C43E06500CFAB98 /* AMPActivityIndicator */,
 				A81402CF1C40A8F200CFAB98 /* MJRefresh */,
@@ -2384,6 +2406,7 @@
 		A8674E151BEA58C300F3FB44 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A8C02A3D1C54B44400886205 /* 通用网页模板 */,
 				A8674E271BEA604100F3FB44 /* BaseViewController */,
 				A8896E0E1BEB8CC400ADEB77 /* 首页 */,
 				A8896E201BEBA29D00ADEB77 /* 记录 */,
@@ -2991,6 +3014,40 @@
 			path = PPLoadingView;
 			sourceTree = "<group>";
 		};
+		A8C02A3D1C54B44400886205 /* 通用网页模板 */ = {
+			isa = PBXGroup;
+			children = (
+				A8C02A3E1C54B51200886205 /* BaseWebViewController.h */,
+				A8C02A3F1C54B51200886205 /* BaseWebViewController.m */,
+			);
+			path = "通用网页模板";
+			sourceTree = "<group>";
+		};
+		A8C02A411C54BC5A00886205 /* WPAttributedMarkup */ = {
+			isa = PBXGroup;
+			children = (
+				A8C02A421C54BC5A00886205 /* Extras */,
+				A8C02A491C54BC5A00886205 /* NSMutableString+TagReplace.h */,
+				A8C02A4A1C54BC5A00886205 /* NSMutableString+TagReplace.m */,
+				A8C02A4B1C54BC5A00886205 /* NSString+WPAttributedMarkup.h */,
+				A8C02A4C1C54BC5A00886205 /* NSString+WPAttributedMarkup.m */,
+			);
+			path = WPAttributedMarkup;
+			sourceTree = "<group>";
+		};
+		A8C02A421C54BC5A00886205 /* Extras */ = {
+			isa = PBXGroup;
+			children = (
+				A8C02A431C54BC5A00886205 /* WPAttributedStyleAction.h */,
+				A8C02A441C54BC5A00886205 /* WPAttributedStyleAction.m */,
+				A8C02A451C54BC5A00886205 /* WPHotspotLabel.h */,
+				A8C02A461C54BC5A00886205 /* WPHotspotLabel.m */,
+				A8C02A471C54BC5A00886205 /* WPTappableLabel.h */,
+				A8C02A481C54BC5A00886205 /* WPTappableLabel.m */,
+			);
+			path = Extras;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3125,6 +3182,7 @@
 				A87136FB1C50EF6600F5300D /* bottomIco3A@2x.png in Resources */,
 				A87136FF1C50EF6700F5300D /* headBackground@2x.png in Resources */,
 				A871371E1C50EF6700F5300D /* icoA-1@3x.png in Resources */,
+				A8C02A3C1C54B0C600886205 /* appIcon.png in Resources */,
 				A871370C1C50EF6700F5300D /* topIcoInstall@2x.png in Resources */,
 				A871371C1C50EF6700F5300D /* btnCheckboxB@3x.png in Resources */,
 				A87137151C50EF6700F5300D /* bottomIco2A@3x.png in Resources */,
@@ -3247,6 +3305,7 @@
 				A8674DB01BEA586400F3FB44 /* JSONHTTPClient.m in Sources */,
 				A88A86F91C1074EB00D7C6D2 /* UserInfoHeadView.m in Sources */,
 				A8674E211BEA594D00F3FB44 /* NSObject+HTTPRequest.m in Sources */,
+				A8C02A4D1C54BC5A00886205 /* WPAttributedStyleAction.m in Sources */,
 				A8674DE91BEA586400F3FB44 /* UIImageView+WebCache.m in Sources */,
 				A8674D9C1BEA586400F3FB44 /* IQMediaCaptureController.m in Sources */,
 				A88A87001C15BD7D00D7C6D2 /* RFSegmentView.m in Sources */,
@@ -3261,6 +3320,7 @@
 				A89608B61BEF9ABC00BAC743 /* CSPickerView.m in Sources */,
 				A89608BF1BF242D700BAC743 /* SelectStepsViewController.m in Sources */,
 				A8674D9E1BEA586400F3FB44 /* IQAudioSession.m in Sources */,
+				A8C02A4E1C54BC5A00886205 /* WPHotspotLabel.m in Sources */,
 				A8674DA51BEA586400F3FB44 /* IQPartitionView.m in Sources */,
 				A8674D791BEA586400F3FB44 /* ASIS3BucketObject.m in Sources */,
 				A8896E6D1BEE468700ADEB77 /* CustomPickerModel.m in Sources */,
@@ -3351,9 +3411,11 @@
 				A8674DA31BEA586400F3FB44 /* IQMediaView.m in Sources */,
 				A8674DBA1BEA586400F3FB44 /* NSString+Oxygen.m in Sources */,
 				A8896E531BEBAD0C00ADEB77 /* SuggestionsViewController.m in Sources */,
+				A8C02A501C54BC5A00886205 /* NSMutableString+TagReplace.m in Sources */,
 				A8674D7E1BEA586400F3FB44 /* CustomSearchBar.m in Sources */,
 				A8674DD61BEA586400F3FB44 /* UIButton+Bootstrap.m in Sources */,
 				A89436831C01A45E00D160BD /* SearchBraceletViewController.m in Sources */,
+				A8C02A4F1C54BC5A00886205 /* WPTappableLabel.m in Sources */,
 				A88A86E91C0DE12100D7C6D2 /* PPChart.m in Sources */,
 				A8674DBF1BEA586400F3FB44 /* UIAlertView+Oxygen.m in Sources */,
 				A88A86A51C0804D000D7C6D2 /* HomePageProgressItem.m in Sources */,
@@ -3395,8 +3457,10 @@
 				A87136B01C4FCD8800F5300D /* ClocksCycleTableCell.m in Sources */,
 				A894368A1C01B90700D160BD /* PPLoadingView.m in Sources */,
 				A8674DB41BEA586400F3FB44 /* MBProgressHUD.m in Sources */,
+				A8C02A401C54B51200886205 /* BaseWebViewController.m in Sources */,
 				A8674D801BEA586400F3FB44 /* DAPagesContainer.m in Sources */,
 				A814026C1C3A031900CFAB98 /* SelectBraceletCell.m in Sources */,
+				A8C02A511C54BC5A00886205 /* NSString+WPAttributedMarkup.m in Sources */,
 				A8674D721BEA586400F3FB44 /* ASICloudFilesContainer.m in Sources */,
 				A891D6A71BEA404900E2102F /* main.m in Sources */,
 				A81403051C40A8F200CFAB98 /* MJRefreshBackNormalFooter.m in Sources */,
@@ -3575,7 +3639,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "78819aef-f4de-489f-aed0-4982ea8103a6";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -3604,7 +3668,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "78819aef-f4de-489f-aed0-4982ea8103a6";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

@@ -17,6 +17,8 @@
     UITableView *lastPurchaseHistoryTable;
     
     UIView *bottomView;
+    
+    NSMutableArray *dataArray;
 }
 @end
 
@@ -31,10 +33,14 @@
     
     self.headerView.backgroundColor = rgbaColor(255, 118, 40, 1);
     
+    dataArray = [NSMutableArray array];
+    
     [self configTopView];
     [self configBottomView];
     
     [self configListTable];
+    
+    [[PaPaBLEManager shareInstance].bleManager getExpensesRecord];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,7 +64,7 @@
     balanceLabel.textColor = [UIColor whiteColor];
     balanceLabel.font = [UIFont boldSystemFontOfSize:40];
     balanceLabel.textAlignment = NSTextAlignmentCenter;
-    balanceLabel.text = @"192.65";
+    balanceLabel.text = [PaPaBLEManager shareInstance].balance;
     [headInfoView addSubview:balanceLabel];
     
     UILabel *descripitonLabel = [[UILabel alloc] initWithFrame:CGRectMake((mScreenWidth - 100)/2, balanceLabel.frameBottom + 5, 100, 14)];
@@ -78,7 +84,7 @@
     [checkLogsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [checkLogsButton setTitle:@"查看所有消费记录>" forState:UIControlStateNormal];
     checkLogsButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    addBtnAction(checkLogsButton, @selector(checkAllLogs));
+//    addBtnAction(checkLogsButton, @selector(checkAllLogs));
     
     
 }
@@ -134,4 +140,10 @@
     return cell;
 }
 
+#pragma mark - PaPa
+- (void) BLEManagerHasExpensesRecord:(NSArray *)record//蓝牙返回消费记录，每个记录以NSDictionary存储
+{
+    NSLog(@"%@",record);
+    dataArray = [NSMutableArray arrayWithArray:record];
+}
 @end

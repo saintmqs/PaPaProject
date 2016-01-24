@@ -154,28 +154,28 @@ static PaPaBLEManager *papaBLEManager;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [bleManager getSystemInformation]; //获取系统信息
-            
         });
         dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
             [bleManager getBalance]; //获取余额
-            
         });
-        
 
         dispatch_time_t popTime3 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime3, dispatch_get_main_queue(), ^(void){
             [bleManager getCardID]; //获取公交卡号
-            
         });
         
-//        dispatch_time_t popTime4 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//        dispatch_after(popTime4, dispatch_get_main_queue(), ^(void){
-//            [bleManager getCurrentStepData];
-//            [bleManager getStepData];
-//            
-//        });
-//        
+        dispatch_time_t popTime4 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime4, dispatch_get_main_queue(), ^(void){
+            
+            NSTimeZone *zone = [NSTimeZone defaultTimeZone];//获得当前应用程序默认的时区
+            NSInteger interval = [zone secondsFromGMTForDate:[NSDate date]];//以秒为单位返回当前应用程序与世界标准时间（格林威尼时间）的时差
+            NSDate *localeDate = [[NSDate date] dateByAddingTimeInterval:interval];
+            NSTimeInterval timeInterval2 = [localeDate timeIntervalSince1970];
+            
+            [bleManager setWristbandTime:timeInterval2];
+        });
+//
 //        dispatch_time_t popTime5 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 //        dispatch_after(popTime5, dispatch_get_main_queue(), ^(void){
 //            [bleManager getCurrentSleepingData];
@@ -183,14 +183,11 @@ static PaPaBLEManager *papaBLEManager;
 //            
 //        });
         
+        if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerReadyToReadAndWrite)]) {
+            [_delegate PaPaBLEManagerReadyToReadAndWrite];
+        }
+        
     }
-    
-
-//    [bleManager getBalance]; //获取余额
-//    
-//    [bleManager getCardID]; //获取公交卡号
-//    
-//    [bleManager getSystemInformation]; //获取系统信息
 }
 
 #pragma mark 蓝牙断开连接

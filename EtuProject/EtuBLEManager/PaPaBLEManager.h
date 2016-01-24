@@ -20,6 +20,7 @@ typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
 - (void) getBLEStatusToDoNext:(CBCentralManagerState)state;
 //蓝牙已连接
 - (void) PaPaBLEManagerConnected;
+- (void) PaPaBLEManagerReadyToReadAndWrite;
 //蓝牙断开连接
 - (void) PaPaBLEManagerDisconnected:(NSError *)error;
 

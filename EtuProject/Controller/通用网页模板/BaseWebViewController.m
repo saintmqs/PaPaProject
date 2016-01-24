@@ -1,25 +1,24 @@
 //
-//  HelpViewController.m
+//  BaseWebViewController.m
 //  EtuProject
 //
-//  Created by 王家兴 on 15/11/5.
-//  Copyright © 2015年 王家兴. All rights reserved.
+//  Created by 王家兴 on 16/1/24.
+//  Copyright © 2016年 王家兴. All rights reserved.
 //
 
-#import "HelpViewController.h"
-
-@interface HelpViewController ()<UIWebViewDelegate>
+#import "BaseWebViewController.h"
+@interface BaseWebViewController ()<UIWebViewDelegate>
 {
     UIWebView *webview;
 }
 @end
 
-@implementation HelpViewController
+@implementation BaseWebViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.titleLabel.text = @"使用帮助";
+    self.titleLabel.text = self.titleString;
     self.titleLabel.textColor = [UIColor grayColor];
     self.headerView.backgroundColor = rgbColor(242, 242, 242);
     
@@ -29,7 +28,7 @@
     webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, mScreenHeight - self.headerView.frameBottom)];
     webview.delegate = self;
     
-    NSURLRequest *detailRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.etuchina.com/apihtml/help.html"]];
+    NSURLRequest *detailRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]];
     webview.scalesPageToFit = YES;
     [webview loadRequest:detailRequest];
     
@@ -70,7 +69,7 @@
 
 -(void)dealloc
 {
-    NSLog(@"%s,dealloc",__func__);
+//    NSLog(@"%s,dealloc",__func__);
     webview.delegate = nil;
     [webview loadHTMLString:@"" baseURL:nil];
     [webview stopLoading];

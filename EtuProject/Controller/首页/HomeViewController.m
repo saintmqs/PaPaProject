@@ -101,6 +101,7 @@
     else
     {
         gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
+        [self changeBannersHeaderContent:self.indicatorView];
     }
     
     
@@ -173,8 +174,8 @@
         
         NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
-        [dataDict1 setObject:strFormat(@"%@",stepCount)  forKey:@"content"];
-        [dataDict1 setObject:strFormat(@"%@公里 | %@千卡",distance,calorie) forKey:@"detail"];
+        [dataDict1 setObject:strFormat(@"%@",stepCount?stepCount:@"0000")  forKey:@"content"];
+        [dataDict1 setObject:strFormat(@"%@公里 | %@千卡",distance?distance:@"0" ,calorie?calorie:@"0") forKey:@"detail"];
         float progress = [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue] >=1? 1.0 : [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue];
         [dataDict1 setObject:strFormat(@"%f",progress) forKey:@"progress"];
         [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
@@ -526,6 +527,12 @@
 -(void)PaPaOnSuccessfulFileTranferred
 {
     [self endSynData];
+}
+
+
+-(void)PaPaBLEManagerReadyToReadAndWrite
+{
+    [self getBandData];
 }
 
 //获取系统信息

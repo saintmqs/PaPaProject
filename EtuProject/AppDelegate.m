@@ -358,6 +358,17 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 {
     NSUInteger index = [tabBarController.viewControllers indexOfObject:viewController];
     
+    if (index == 2) {
+        if ([[PaPaBLEManager shareInstance].bleManager connected]) {
+            
+        }
+        else
+        {
+            showTip(@"请先连接绑定手环");
+            return NO;
+        }
+    }
+    
     if (index == 0 || index == 2) {
         self.rootTabbarController.tabBarHidden = YES;
         return YES;

@@ -8,6 +8,12 @@
 
 #import "RegisterViewController.h"
 #import "PasswordViewController.h"
+#import "NSString+WPAttributedMarkup.h"
+#import "WPAttributedStyleAction.h"
+#import "WPHotspotLabel.h"
+#import <CoreText/CoreText.h>
+
+#import "BaseWebViewController.h"
 
 @interface RegisterViewController ()
 {
@@ -71,21 +77,30 @@
     
     [self.view addSubview:_btnRegister];
     
-    UILabel *protocolLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.btnRegister.frameBottom + 20, mScreenWidth - 20, 20)];
+    NSDictionary* style = @{@"body":[UIFont systemFontOfSize:13],
+                            @"lightgray":[UIColor lightGrayColor],
+                            @"u": @{NSUnderlineStyleAttributeName : @(kCTUnderlineStyleSingle|kCTUnderlinePatternSolid)},
+                            @"userprotocol":[WPAttributedStyleAction styledActionWithAction:^{
+                                 NSLog(@"用户协议");
+                                BaseWebViewController *vc = [[BaseWebViewController alloc] init];
+                                vc.titleString = @"用户协议";
+                                vc.urlString = @"http://www.etuchina.com/apihtml/useragreement.html";
+                                [self.navigationController pushViewController:vc animated:YES];
+                             }],
+                             @"privacyprotocol":[WPAttributedStyleAction styledActionWithAction:^{
+                                 NSLog(@"隐私协议");
+                                 BaseWebViewController *vc = [[BaseWebViewController alloc] init];
+                                 vc.titleString = @"隐私协议";
+                                 vc.urlString = @"http://www.etuchina.com/apihtml/hide.html";
+                                 [self.navigationController pushViewController:vc animated:YES];
+                             }],
+                             @"link":rgbaColor(49, 150, 227, 1)};
+    
+    WPHotspotLabel *protocolLabel = [[WPHotspotLabel alloc] initWithFrame:CGRectMake(20, self.btnRegister.frameBottom + 20, mScreenWidth - 40, 20)];
     protocolLabel.font = [UIFont systemFontOfSize:13];
     protocolLabel.textAlignment = NSTextAlignmentCenter;
-    protocolLabel.textColor = [UIColor lightGrayColor];
-    protocolLabel.text = @"点击“注册”即您同意并接受啪啪手环的用户协议和隐私协议";
-    
-    NSMutableAttributedString *mutableStr = [[NSMutableAttributedString alloc] initWithString:protocolLabel.text];
-    
-    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"用户协议"]];
-    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"用户协议"]];
-
-    [mutableStr addAttribute:NSForegroundColorAttributeName value:rgbaColor(49, 150, 227, 1) range:[protocolLabel.text rangeOfString:@"隐私协议"]];
-    [mutableStr addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:[protocolLabel.text rangeOfString:@"隐私协议"]];
-
-    protocolLabel.attributedText = mutableStr;
+    protocolLabel.numberOfLines = 0;
+    protocolLabel.attributedText = [@"<lightgray>点击“注册”即您同意并接受啪啪手环的</lightgray><userprotocol><u>用户协议</u></userprotocol><lightgray>和</lightgray><privacyprotocol><u>隐私协议</u></privacyprotocol>" attributedStringWithStyleBook:style];
     [self.view addSubview:protocolLabel];
     
     addBtnAction(getVerifyCodeBtn, @selector(onBtnAction:));
