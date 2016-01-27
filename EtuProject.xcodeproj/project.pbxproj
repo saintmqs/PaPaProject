@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A81402491C22EFF200CFAB98 /* libBLEManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A81402471C22EFF200CFAB98 /* libBLEManager.a */; };
 		A814024A1C22EFF200CFAB98 /* 蓝牙API说明.txt in Resources */ = {isa = PBXBuildFile; fileRef = A81402481C22EFF200CFAB98 /* 蓝牙API说明.txt */; };
 		A81402511C242E3D00CFAB98 /* ClocksManagerTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402501C242E3D00CFAB98 /* ClocksManagerTableCell.m */; };
 		A81402551C282A6E00CFAB98 /* RecordDataTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A81402541C282A6E00CFAB98 /* RecordDataTableCell.m */; };
@@ -377,6 +376,10 @@
 		A8C02A4F1C54BC5A00886205 /* WPTappableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A481C54BC5A00886205 /* WPTappableLabel.m */; };
 		A8C02A501C54BC5A00886205 /* NSMutableString+TagReplace.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A4A1C54BC5A00886205 /* NSMutableString+TagReplace.m */; };
 		A8C02A511C54BC5A00886205 /* NSString+WPAttributedMarkup.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A4C1C54BC5A00886205 /* NSString+WPAttributedMarkup.m */; };
+		A8C02A531C5750A200886205 /* libBLEManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C02A521C5750A200886205 /* libBLEManager.a */; };
+		A8C02A561C576C3F00886205 /* FDActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A551C576C3F00886205 /* FDActivityIndicatorView.m */; };
+		A8C02A5A1C57BB1100886205 /* ClocksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A591C57BB1100886205 /* ClocksManager.m */; };
+		A8C02A5D1C57BB8900886205 /* ClockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A8C02A5C1C57BB8900886205 /* ClockModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1072,6 +1075,13 @@
 		A8C02A4A1C54BC5A00886205 /* NSMutableString+TagReplace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+TagReplace.m"; sourceTree = "<group>"; };
 		A8C02A4B1C54BC5A00886205 /* NSString+WPAttributedMarkup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+WPAttributedMarkup.h"; sourceTree = "<group>"; };
 		A8C02A4C1C54BC5A00886205 /* NSString+WPAttributedMarkup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+WPAttributedMarkup.m"; sourceTree = "<group>"; };
+		A8C02A521C5750A200886205 /* libBLEManager.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libBLEManager.a; path = ../../../Downloads/libBLEManager.a; sourceTree = "<group>"; };
+		A8C02A541C576C3F00886205 /* FDActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDActivityIndicatorView.h; sourceTree = "<group>"; };
+		A8C02A551C576C3F00886205 /* FDActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDActivityIndicatorView.m; sourceTree = "<group>"; };
+		A8C02A581C57BB1100886205 /* ClocksManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClocksManager.h; sourceTree = "<group>"; };
+		A8C02A591C57BB1100886205 /* ClocksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClocksManager.m; sourceTree = "<group>"; };
+		A8C02A5B1C57BB8900886205 /* ClockModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClockModel.h; sourceTree = "<group>"; };
+		A8C02A5C1C57BB8900886205 /* ClockModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClockModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1079,6 +1089,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8C02A531C5750A200886205 /* libBLEManager.a in Frameworks */,
 				A8674B891BEA57C400F3FB44 /* CoreText.framework in Frameworks */,
 				A81403301C454D4300CFAB98 /* CoreTelephony.framework in Frameworks */,
 				A814032E1C454D2A00CFAB98 /* libsqlite3.0.tbd in Frameworks */,
@@ -1091,7 +1102,6 @@
 				A8674B8D1BEA57DD00F3FB44 /* CFNetwork.framework in Frameworks */,
 				A8674B8B1BEA57CC00F3FB44 /* UIKit.framework in Frameworks */,
 				A8674B871BEA57BA00F3FB44 /* Foundation.framework in Frameworks */,
-				A81402491C22EFF200CFAB98 /* libBLEManager.a in Frameworks */,
 				A8674B851BEA579900F3FB44 /* QuartzCore.framework in Frameworks */,
 				A8674B831BEA578800F3FB44 /* ImageIO.framework in Frameworks */,
 				A8674B811BEA578000F3FB44 /* SystemConfiguration.framework in Frameworks */,
@@ -1422,6 +1432,7 @@
 		A8674B751BEA541100F3FB44 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A8C02A521C5750A200886205 /* libBLEManager.a */,
 				A814032F1C454D4300CFAB98 /* CoreTelephony.framework */,
 				A814032D1C454D2A00CFAB98 /* libsqlite3.0.tbd */,
 				A814032B1C454D1F00CFAB98 /* libxml2.tbd */,
@@ -2446,6 +2457,8 @@
 				A8B1A73C1C4B4799005DB2B7 /* SleepChartModel.m */,
 				A8B1A73E1C4B47A9005DB2B7 /* SportChartModel.h */,
 				A8B1A73F1C4B47A9005DB2B7 /* SportChartModel.m */,
+				A8C02A5B1C57BB8900886205 /* ClockModel.h */,
+				A8C02A5C1C57BB8900886205 /* ClockModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2951,6 +2964,7 @@
 				A8674E171BEA58C300F3FB44 /* Model */,
 				A8674E191BEA58C300F3FB44 /* View */,
 				A8674E151BEA58C300F3FB44 /* Controller */,
+				A8C02A571C57BADA00886205 /* ClocksManager */,
 				A814026D1C3A499600CFAB98 /* EtuBLEManager */,
 				A8674E161BEA58C300F3FB44 /* HttpManager */,
 				A81402611C38C57600CFAB98 /* SystemStateManager */,
@@ -3008,6 +3022,8 @@
 		A89436871C01B90700D160BD /* PPLoadingView */ = {
 			isa = PBXGroup;
 			children = (
+				A8C02A541C576C3F00886205 /* FDActivityIndicatorView.h */,
+				A8C02A551C576C3F00886205 /* FDActivityIndicatorView.m */,
 				A89436881C01B90700D160BD /* PPLoadingView.h */,
 				A89436891C01B90700D160BD /* PPLoadingView.m */,
 			);
@@ -3046,6 +3062,15 @@
 				A8C02A481C54BC5A00886205 /* WPTappableLabel.m */,
 			);
 			path = Extras;
+			sourceTree = "<group>";
+		};
+		A8C02A571C57BADA00886205 /* ClocksManager */ = {
+			isa = PBXGroup;
+			children = (
+				A8C02A581C57BB1100886205 /* ClocksManager.h */,
+				A8C02A591C57BB1100886205 /* ClocksManager.m */,
+			);
+			path = ClocksManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3267,6 +3292,7 @@
 				A8674D871BEA586400F3FB44 /* WZLoadMoreTableFooterView.m in Sources */,
 				A81403661C4A3E0700CFAB98 /* UIRefreshControl+AFNetworking.m in Sources */,
 				A89608B31BEF9A2400BAC743 /* SelectAgeViewController.m in Sources */,
+				A8C02A5D1C57BB8900886205 /* ClockModel.m in Sources */,
 				A814030C1C40A8F200CFAB98 /* UIScrollView+MJExtension.m in Sources */,
 				A8674DC41BEA586400F3FB44 /* UITextField+Oxygen.m in Sources */,
 				A8896E2C1BEBA95600ADEB77 /* UserInfoViewController.m in Sources */,
@@ -3358,6 +3384,7 @@
 				A8674D611BEA586400F3FB44 /* ActionSheetCustomPicker.m in Sources */,
 				A891D6AA1BEA404900E2102F /* AppDelegate.m in Sources */,
 				A8674E0D1BEA586400F3FB44 /* mask.c in Sources */,
+				A8C02A5A1C57BB1100886205 /* ClocksManager.m in Sources */,
 				A8674D971BEA586400F3FB44 /* IQAssetsAlbumViewCell.m in Sources */,
 				A81402591C29815000CFAB98 /* TrafficAccountViewController.m in Sources */,
 				A81403611C4A3E0700CFAB98 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
@@ -3468,6 +3495,7 @@
 				A8674DCB1BEA586400F3FB44 /* OFMutableDictionary.m in Sources */,
 				A8674DC11BEA586400F3FB44 /* UIImageView+extend.m in Sources */,
 				A8674DA61BEA586400F3FB44 /* IQ_SCSiriWaveformView.m in Sources */,
+				A8C02A561C576C3F00886205 /* FDActivityIndicatorView.m in Sources */,
 				A8674D781BEA586400F3FB44 /* ASIS3Bucket.m in Sources */,
 				A8674DAF1BEA586400F3FB44 /* JSONAPI.m in Sources */,
 				A8674D601BEA586400F3FB44 /* AbstractActionSheetPicker.m in Sources */,
@@ -3623,6 +3651,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EtuProject/PrefixHeader_etu.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3639,7 +3668,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "78819aef-f4de-489f-aed0-4982ea8103a6";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -3652,6 +3681,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/EtuProject/PrefixHeader_etu.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3666,9 +3696,10 @@
 					"$(PROJECT_DIR)/EtuProject/Util/ZBarSDK",
 					"$(PROJECT_DIR)/EtuProject/Util/BLEManager",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.etuchina.papa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "78819aef-f4de-489f-aed0-4982ea8103a6";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

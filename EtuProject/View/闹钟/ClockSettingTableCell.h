@@ -13,8 +13,15 @@ typedef enum : NSUInteger {
     SWITCH_TYPE,
 }ClockSettingCellType;
 
+@protocol ClockSettingTableCellDelegate <NSObject>
+
+-(void)settingSwitchAction:(id)sender;
+
+@end
+
 @interface ClockSettingTableCell : UITableViewCell
 
+@property (nonatomic, assign) id<ClockSettingTableCellDelegate> delegate;
 @property (nonatomic, assign) ClockSettingCellType cellType;
 @property (nonatomic, strong) UILabel *settingTitleLabel;
 @property (nonatomic, strong) UILabel *settingDetailLabel;

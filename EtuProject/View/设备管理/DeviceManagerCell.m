@@ -29,9 +29,10 @@
         
         _managerSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(mScreenWidth - 20 - 60, (60-30)/2, 60, 30)];
         [_managerSwitch setOnTintColor:rgbaColor(0, 156, 233, 1)];
-        [_managerSwitch setOnDynamicBlock:^(UIView *view, float percent) {
-            //激活闹钟
-        }];
+        _managerSwitch.on = NO;//设置初始为ON的一边
+        
+        [_managerSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+        
         [self addSubview:_managerSwitch];
         
         _seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, 60 - 1, mScreenWidth - 20, 1)];
@@ -70,4 +71,10 @@
     }
 }
 
+-(void) switchAction:(id)sender
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(deviceManagerSwitchAction:)]) {
+        [_delegate deviceManagerSwitchAction:sender];
+    }
+}
 @end

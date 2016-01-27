@@ -14,4 +14,6 @@
 @property (nonatomic, strong) UISwitch *clockSwitch;
 
 @property (nonatomic, strong) UIImageView *seperateLine;
+
+@property (nonatomic, strong) ClockModel *clockModel;
 @end

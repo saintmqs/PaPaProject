@@ -19,6 +19,13 @@
 
 @implementation ClocksEditListViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [clocksEditTable reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -52,7 +59,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return [ClocksManager shareInstance].clocksArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -66,8 +73,11 @@
     }
     cell.clockSwitch.hidden = YES;
     
-    cell.seperateLine.hidden = indexPath.row == 2;
-    cell.clockTimeLabel.text = @"07:00";
+    cell.seperateLine.hidden = indexPath.row == [ClocksManager shareInstance].clocksArray.count - 1;
+    
+    ClockModel *clockModel = [ClocksManager shareInstance].clocksArray[indexPath.row];
+    
+    cell.clockTimeLabel.text = clockModel.t;
     
     return cell;
 }
@@ -77,6 +87,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     ClockDetailSettingViewController *vc = [[ClockDetailSettingViewController alloc] init];
+    vc.selectClockModel = [ClocksManager shareInstance].clocksArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 @end

@@ -24,22 +24,22 @@
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(mScreenWidth - 62 - 15, 12, 62, 12)];
         _dateLabel.textColor = [UIColor grayColor];
         _dateLabel.font = [UIFont systemFontOfSize:10];
-        _dateLabel.text = @"2015-10-10";
+        _dateLabel.text = @"0000-00-00";
         _dateLabel.textAlignment = NSTextAlignmentRight;
         [self addSubview:_dateLabel];
         
-        _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _titleLabel.frameBottom + 8, 240, 16)];
-        _detailLabel.textColor = [UIColor grayColor];
-        _detailLabel.font = [UIFont systemFontOfSize:12];
-        _detailLabel.textAlignment = NSTextAlignmentLeft;
-        _detailLabel.text = @"余额：124.00";
-        [self addSubview:_detailLabel];
+//        _detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, _titleLabel.frameBottom + 8, 240, 16)];
+//        _detailLabel.textColor = [UIColor grayColor];
+//        _detailLabel.font = [UIFont systemFontOfSize:12];
+//        _detailLabel.textAlignment = NSTextAlignmentLeft;
+//        _detailLabel.text = @"余额：124.00";
+//        [self addSubview:_detailLabel];
         
         _priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(_detailLabel.frameRight + 10, _dateLabel.frameBottom + 5, mScreenWidth - _detailLabel.frameRight - 10 - 15, 20)];
         _priceLabel.textColor = [UIColor blackColor];
         _priceLabel.font = [UIFont systemFontOfSize:18];
         _priceLabel.textAlignment = NSTextAlignmentRight;
-        _priceLabel.text = @"100.00";
+        _priceLabel.text = @"0.00";
         [self addSubview:_priceLabel];
         
         _seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, 60 - 1, mScreenWidth - 20, 1)];

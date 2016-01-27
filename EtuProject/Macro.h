@@ -24,6 +24,7 @@
 #import "UIButton+WebCache.h"
 #import "UserDataManager.h"
 #import "SystemStateManager.h"
+#import "ClocksManager.h"
 // Macros
 
 //#if DEBUG

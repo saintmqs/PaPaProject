@@ -24,9 +24,11 @@
         
         _clockSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(mScreenWidth - 20 - 60, (60-30)/2, 60, 30)];
         [_clockSwitch setOnTintColor:rgbaColor(0, 156, 233, 1)];
-        [_clockSwitch setOnDynamicBlock:^(UIView *view, float percent) {
-            //激活闹钟
-        }];
+        _clockSwitch.on = NO;//设置初始为ON的一边
+        self.clockModel.isOn = NO;
+        
+        [_clockSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+        
         [self addSubview:_clockSwitch];
         
         _seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, 60 - 1, mScreenWidth - 20, 1)];
@@ -35,5 +37,13 @@
         
     }
     return self;
+}
+
+-(void) switchAction:(id)sender
+{
+    UISwitch *tempswitch = (UISwitch *)sender;
+    BOOL setting = tempswitch.isOn;
+    [tempswitch setOn:setting animated:YES];
+    self.clockModel.isOn = setting;
 }
 @end

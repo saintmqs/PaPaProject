@@ -28,6 +28,8 @@
     stepType steptype;
     
     NSMutableArray *selectPointDataArray;
+    
+    NSInteger maxValue;
 }
 @end
 
@@ -200,7 +202,16 @@
 //显示数值范围
 - (CGRange)PPChartChooseRangeInLineChart:(PPChart *)chart
 {
-    return CGRangeMake(3* _chartView.rows, 0);
+    NSInteger rowCount = (long int)_chartView.rows;
+    if ((maxValue % rowCount) !=0) {
+        NSInteger modulus = maxValue%rowCount;
+        maxValue = maxValue + modulus;
+    }
+    NSInteger rowValue =  maxValue/_chartView.rows;
+    if (rowValue <= 0) {
+        rowValue = 3;
+    }
+    return CGRangeMake(rowValue* _chartView.rows, 0);
 }
 
 #pragma mark 折线图专享功能
@@ -277,9 +288,9 @@
             break;
     }
     
-    NSString *distance = strFormat(@"%ld公里",(NSInteger)[model.b integerValue]);
-    NSString *steps = strFormat(@"%ld",(NSInteger)[model.s integerValue]);
-    NSString *calorie = strFormat(@"%ld千卡",(NSInteger)[model.c integerValue]);
+    NSString *distance = strFormat(@"%ld公里",(long)[model.b integerValue]);
+    NSString *steps = strFormat(@"%ld",(long)[model.s integerValue]);
+    NSString *calorie = strFormat(@"%ld千卡",(long)[model.c integerValue]);
     
     [selectPointDataArray addObjectsFromArray:@[distance,steps,calorie]];
     [dataTable reloadData];
@@ -334,6 +345,9 @@
         
         if (!error) {
             NSDictionary *data = [dict objectForKey:@"data"];
+            
+            maxValue = [[data objectForKey:@"maxYvalue"] integerValue];
+            
             NSArray *sportChartData = [data objectForKey:@"chartData"];
             switch (type) {
                 case sleepDay:

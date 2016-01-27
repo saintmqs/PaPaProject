@@ -18,6 +18,13 @@
 
 @implementation ClocksManagerViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [clocksManagerTable reloadData];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -54,7 +61,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return [ClocksManager shareInstance].clocksArray.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,8 +74,15 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    cell.seperateLine.hidden = indexPath.row == 2;
-    cell.clockTimeLabel.text = @"07:00";
+    cell.seperateLine.hidden = indexPath.row == [ClocksManager shareInstance].clocksArray.count - 1;
+    
+    ClockModel *clockModel = [ClocksManager shareInstance].clocksArray[indexPath.row];
+    
+    cell.clockTimeLabel.text = clockModel.t;
+    
+    [cell.clockSwitch setOn:clockModel.isOn animated:YES];
+    
+    cell.clockModel = clockModel;
 
     return cell;
 }

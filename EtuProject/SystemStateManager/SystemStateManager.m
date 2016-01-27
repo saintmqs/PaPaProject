@@ -34,6 +34,7 @@ static SystemStateManager *systemStateManager;
         }
         
         _callCenter = [[CTCallCenter alloc] init];
+        weakObj(self);
         _callCenter.callEventHandler = ^(CTCall* call) {
             if ([call.callState isEqualToString:CTCallStateDisconnected])
             {
@@ -42,12 +43,16 @@ static SystemStateManager *systemStateManager;
             else if ([call.callState isEqualToString:CTCallStateConnected])
             {
                 NSLog(@"Call has just been connected");
-                [[PaPaBLEManager shareInstance].bleManager stopPhoneRingShock];
+                if (bself.isRingShake) {
+                    [[PaPaBLEManager shareInstance].bleManager stopPhoneRingShock];
+                }
             }
             else if([call.callState isEqualToString:CTCallStateIncoming])
             {
                 NSLog(@"Call is incoming");
-                [[PaPaBLEManager shareInstance].bleManager startPhoneRingShock];
+                if (bself.isRingShake) {
+                    [[PaPaBLEManager shareInstance].bleManager startPhoneRingShock];
+                }
             }
             else if ([call.callState isEqualToString:CTCallStateDialing])
             {

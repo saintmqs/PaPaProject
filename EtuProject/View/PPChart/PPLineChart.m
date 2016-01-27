@@ -114,7 +114,7 @@
         switch (self.chartType) {
             case SPORT_TYPE:
             {
-                label.text = strFormat(@"%d",(int)(level * (lineYCount - i)+_yValueMin)*1000);
+                label.text = strFormat(@"%d",(int)(level * (lineYCount - i)+_yValueMin));
             }
                 break;
             case SLEEP_TYPE:

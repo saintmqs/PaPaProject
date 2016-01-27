@@ -28,6 +28,8 @@
     NSArray *titlesArray;
     
     NSArray *detailsArray;
+    
+    NSData *headImageData;
 }
 @end
 
@@ -291,6 +293,53 @@
     }];
     
     [actionSheet showInView:self.navigationController.view animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    
+    NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    if ([mediaType isEqualToString:@"public.image"]){
+        UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+        headImageData = UIImageJPEGRepresentation(image,0.5);
+    }
+    
+    showViewHUD;
+    
+    // Get NSString from NSData object in Base64
+    NSString *base64Encoded = [headImageData base64EncodedStringWithOptions:0];
+    base64Encoded = strFormat(@"data:image/jpg;base64,%@",base64Encoded);
+    
+    [self startRequestWithDict:updateAvater([APP_DELEGATE.userData.uid integerValue], base64Encoded) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        
+        hideViewHUD;
+        
+        if (!error) {
+            showTip([dict objectForKey:@"msg"]);
+            
+            if ([[dict objectForKey:@"data"] isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *data = [dict objectForKey:@"data"];
+                APP_DELEGATE.userData.avatar = [data objectForKey:@"avater"];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshAvatar" object:nil];
+            }
+            
+            [self.infoHeadView.headImageView setImage:[[UIImage alloc] initWithData:headImageData] forState:UIControlStateNormal];
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+        
+    } url:kRequestUrl(@"user", @"updateAvater")];
 }
 
 #pragma mark - Http Request

@@ -14,6 +14,8 @@
     UITableView *clocksCycleEditTable;
     
     NSArray *weekArray;
+    
+    NSMutableArray *checkedDays;
 }
 
 @end
@@ -32,6 +34,15 @@
     
     weekArray = [NSArray arrayWithObjects:@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日", nil];
     
+    if ([self.clockModel.w isEqualToString:@"0"]) {
+        checkedDays = [NSMutableArray array];
+    }
+    else
+    {
+        checkedDays = [NSMutableArray arrayWithArray:[self.clockModel.w componentsSeparatedByString:@","]] ;
+
+    }
+    
     clocksCycleEditTable = [[UITableView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, mScreenHeight-self.headerView.frameBottom)];
     clocksCycleEditTable.dataSource = self;
     clocksCycleEditTable.delegate = self;
@@ -44,6 +55,14 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - 
+-(void)didTopLeftButtonClick:(UIButton *)sender
+{
+    self.clockModel.w = [checkedDays componentsJoinedByString:@","];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableView DataSource & Delegate
@@ -68,6 +87,9 @@
     cell.seperateLine.hidden = indexPath.row == weekArray.count - 1;
     cell.titleLabel.text = weekArray[indexPath.row];
     
+    if ([checkedDays containsObject:strFormat(@"%ld",(long)indexPath.row+1)]) {
+        cell.checked = YES;
+    }
     return cell;
 }
 
@@ -76,6 +98,18 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     ClocksCycleTableCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.checked = !cell.checked;
+    
+    if (cell.checked) {
+        if (![checkedDays containsObject:strFormat(@"%ld",(long)indexPath.row+1)]) {
+            [checkedDays addObject:strFormat(@"%ld",(long)indexPath.row+1)];
+        }
+    }
+    else
+    {
+        if ([checkedDays containsObject:strFormat(@"%ld",(long)indexPath.row+1)]) {
+            [checkedDays removeObject:strFormat(@"%ld",(long)indexPath.row+1)];
+        }
+    }
 }
 
 @end

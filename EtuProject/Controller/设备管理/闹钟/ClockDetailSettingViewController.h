@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) CSPickerView *hourPickerView;
 @property (nonatomic, strong) CSPickerView *minutePickerView;
+@property (nonatomic, strong) ClockModel   *selectClockModel;
 
 - (void)pickerView:(CSPickerView *)pickerView
          tableView:(UITableView *)tableView

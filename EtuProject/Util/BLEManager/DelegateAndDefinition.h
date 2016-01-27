@@ -44,7 +44,9 @@ enum _packetCmdType
     WRISTBAND_SET_TIME = 0x40,//设置手环时间
     
     //闹钟
-    WRISTBAND_ALARM_CLOCK = 0x50,//设置手环闹钟
+    WRISTBAND_ALARM_CLOCK_ADD = 0x50,//增加手环闹钟
+    WRISTBAND_ALARM_CLOCK_REMOVE = 0x51,//删除手环闹钟
+    WRISTBAND_ALARM_CLOCK_ENABLE = 0x52,//设置手环闹钟可用或者不可用
     
     //电池
     BATTERTY_REMAINING_CAPACITY = 0x61,//获取电池剩余电量
@@ -77,6 +79,7 @@ enum _packetCmdType
 - (void) BLEManagerReceiveDataFailed:(NSError *)error;//接收数据失败
 - (void) BLEManagerOperationSucceed:(NSUInteger)cmdNo;//手环收到命令后操作成功
 - (void) BLEManagerOperationFailed:(NSUInteger)cmdNo;//手环收到命令后操作失败
+- (void) BLEManagerOperationTimeout:(NSUInteger)cmdNo;//手环收到命令后10s(暂定)未返回消息
 - (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
 - (void) BLEManagerHasExpensesRecord:(NSArray *)record;//蓝牙返回消费记录，每个记录以NSDictionary存储
 - (void) BLEManagerStepTargetAchieved;//达到目标步数消息

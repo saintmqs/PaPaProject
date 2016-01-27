@@ -24,7 +24,7 @@
 
 #define CURRENTCOLOR rgbaColor(255, 255, 255, 1)
 
-@interface ClockDetailSettingViewController ()<UITableViewDataSource, UITableViewDelegate,JGActionSheetDelegate>
+@interface ClockDetailSettingViewController ()<UITableViewDataSource, UITableViewDelegate,JGActionSheetDelegate,ClockSettingTableCellDelegate>
 {
     UIView *leftView;
     UIView *rightView;
@@ -49,6 +49,8 @@
     
     UITableView *settingsTable;
     NSArray     *titlesArray;
+    
+    NSString    *cycleString;
 }
 @end
 
@@ -88,6 +90,32 @@
         }
     }
     return self;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if ([self.selectClockModel.w isEqualToString:@"0"]) {
+        cycleString = @"只响一次";
+        return;
+    }
+    
+    if ([self.selectClockModel.w isEqualToString:@"1,2,3,4,5,6,7"]) {
+        cycleString = @"每天";
+        return;
+    }
+    
+    NSArray *checkedDays = [self.selectClockModel.w componentsSeparatedByString:@","];
+    NSArray *weekArray = [NSArray arrayWithObjects:@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日", nil];
+    
+    NSMutableArray *cycleStrings = [NSMutableArray array];
+    for (NSString *indexStr in checkedDays) {
+        [cycleStrings addObject:weekArray[[indexStr integerValue]-1]];
+    }
+    cycleString = [cycleStrings componentsJoinedByString:@""];
+    
+    [settingsTable reloadData];
 }
 
 - (void)viewDidLoad {
@@ -187,6 +215,16 @@
     [super viewDidLayoutSubviews];
     leftView.frame = CGRectMake(0, self.headerView.frameBottom + 40, mScreenWidth/2, 240);
     rightView.frame = CGRectMake(leftView.frameRight, self.headerView.frameBottom + 40, mScreenWidth/2, 240);
+}
+
+#pragma mark - Button Action
+-(void)didTopRightButtonClick:(UIButton *)sender
+{
+    if (hourStr && minuteStr) {
+       self.selectClockModel.t = strFormat(@"%@:%@",hourStr,minuteStr);
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - 初始化赋值操作
@@ -340,11 +378,13 @@
     ClockSettingTableCell *cell = (ClockSettingTableCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[ClockSettingTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.delegate = self;
         cell.backgroundColor = [UIColor whiteColor];
     }
     
     cell.seperateLine.hidden = indexPath.row == [titlesArray count] -1;
     cell.settingTitleLabel.text = [titlesArray objectAtIndex:indexPath.row];
+    [cell.settingSwitch setOn:self.selectClockModel.isOn animated:YES];
     
     switch (indexPath.row) {
         case 0:
@@ -352,7 +392,7 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.cellType = DETAIL_TYPE;
             cell.settingDetailLabel.frame = CGRectMake(mScreenWidth/2 - 40, (60-30)/2, mScreenWidth/2, 30);
-            cell.settingDetailLabel.text = @"只响一次";
+            cell.settingDetailLabel.text = cycleString;
         }
             break;
         case 1:
@@ -383,7 +423,16 @@
     }
 }
 
-#pragma mark -
+#pragma mark - Cell Delegate Method
+-(void)settingSwitchAction:(id)sender
+{
+    UISwitch *tempswitch = (UISwitch *)sender;
+    BOOL setting = tempswitch.isOn;
+    [tempswitch setOn:setting animated:YES];
+    self.selectClockModel.isOn = setting;
+}
+
+#pragma mark - 选择闹钟模式
 - (void)selectClockRingModel
 {
     JGActionSheetSection *section = [JGActionSheetSection sectionWithTitle:nil message:nil buttonTitles:@[@"每天", @"只响一次"] buttonStyle:JGActionSheetButtonStyleDefault];
@@ -396,16 +445,30 @@
         
         if (indexPath.section == 0)
         {
+            if (indexPath.row == 0) {
+                self.selectClockModel.y = 2;
+                self.selectClockModel.w = @"1,2,3,4,5,6,7";
+                cycleString = @"每天";
+            }
+            else
+            {
+                self.selectClockModel.y = 1;
+                self.selectClockModel.w = @"0";
+                cycleString = @"只响一次";
+            }
             
         }
         else if (indexPath.section == 1)
         {
             ClocksCycleSettingViewController *vc = [[ClocksCycleSettingViewController alloc] init];
+            vc.clockModel = self.selectClockModel;
             [self.navigationController pushViewController:vc animated:YES];
 
         }
         
         [sheet dismissAnimated:YES];
+        
+        [settingsTable reloadData];
     }];
     
     [actionSheet showInView:self.navigationController.view animated:YES];

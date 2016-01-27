@@ -29,9 +29,9 @@
         
         _settingSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(mScreenWidth - 20 - 60, (60-30)/2, 60, 30)];
         [_settingSwitch setOnTintColor:rgbaColor(0, 156, 233, 1)];
-        [_settingSwitch setOnDynamicBlock:^(UIView *view, float percent) {
-            //激活闹钟
-        }];
+        _settingSwitch.on = NO;//设置初始为ON的一边
+        
+        [_settingSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
         [self addSubview:_settingSwitch];
         
         _seperateLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, 60 - 1, mScreenWidth - 20, 1)];
@@ -61,6 +61,13 @@
             break;
         default:
             break;
+    }
+}
+
+-(void) switchAction:(id)sender
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(settingSwitchAction:)]) {
+        [_delegate settingSwitchAction:sender];
     }
 }
 @end

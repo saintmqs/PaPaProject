@@ -10,7 +10,7 @@
 #import "DeviceManagerCell.h"
 #import "ClocksManagerViewController.h"
 
-@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
+@interface DeviceManagerViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,DeviceManagerCellDelegate>
 {
     UITableView *deviceManagerTable;
     
@@ -27,7 +27,6 @@
     self.headerView.backgroundColor = rgbaColor(0, 155, 232, 1);
     
     [[PaPaBLEManager shareInstance].bleManager getRemainingBatteryCapacity];
-    [[PaPaBLEManager shareInstance].bleManager getSystemInformation];
     
     _deviceHeadView = [[DeviceManagerHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 220)];
     [self.view addSubview:_deviceHeadView];
@@ -66,6 +65,7 @@
     DeviceManagerCell *cell = (DeviceManagerCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell = [[DeviceManagerCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        cell.delegate = self;
         cell.backgroundColor = [UIColor whiteColor];
     }
     
@@ -168,6 +168,14 @@
     [deviceManagerTable reloadData];
 }
 
+#pragma mark - Cell Delegate Method
+-(void)deviceManagerSwitchAction:(id)sender
+{
+    UISwitch *tempswitch = (UISwitch *)sender;
+    BOOL setting = tempswitch.isOn;
+    [tempswitch setOn:setting animated:YES];
+    [SystemStateManager shareInstance].isRingShake = setting;
+}
 
 #pragma mark - 
 -(void)connetedViewRefreshing

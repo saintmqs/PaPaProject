@@ -10,4 +10,5 @@
 
 @interface ClocksCycleSettingViewController : BaseViewController
 
+@property (nonatomic, strong) ClockModel *clockModel;
 @end

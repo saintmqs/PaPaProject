@@ -89,14 +89,13 @@
     [self configTableUI];
     
     if ([SystemStateManager shareInstance].hasBindWristband) {
-        gradientView.locations = @[ @0.0f, @1.f];
-        gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
-                                    (id)rgbaColor(21, 88, 168, 1).CGColor ];
-        
         if (APP_DELEGATE.userData) {
             [self getBandData];
         }
-//        [self requestData];
+        
+        gradientView.locations = @[ @0.0f, @1.f];
+        gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
+                                    (id)rgbaColor(21, 88, 168, 1).CGColor ];
     }
     else
     {
@@ -111,6 +110,8 @@
     
     [self addObserver:self forKeyPath:@"currentStepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     [self addObserver:self forKeyPath:@"currentSleepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAvatar) name:@"refreshAvatar" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -124,13 +125,19 @@
     [self removeObserver:self forKeyPath:@"synSleepDataFinish"];
     [self removeObserver:self forKeyPath:@"currentStepDataFinish"];
     [self removeObserver:self forKeyPath:@"currentSleepDataFinish"];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)getBandData
 {
+    [[PaPaBLEManager shareInstance].bleManager setStepTarget:200];
+    
     [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
+    
     [[PaPaBLEManager shareInstance].bleManager getStepData];
+    
     [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
+    
     [[PaPaBLEManager shareInstance].bleManager getSleepingData];
     
     [self changeBannersHeaderContent:self.indicatorView];
@@ -448,29 +455,9 @@
         {
             self.synStepDataFinish = NO;
         }
-        
-        [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_STEP_DATA];
     } failureBlock:^(NSString *description) {
         
     }];
-//    [self startRequestWithDict:stepsUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-//        if (!error) {
-//            NSDictionary *data = [dict objectForKey:@"data"];
-//            showTip([data objectForKey:@"msg"]);
-//        }
-//        else
-//        {
-//            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-//            {
-//                showTip(@"网络连接失败");
-//            }
-//            else
-//            {
-//                showTip([error.userInfo objectForKey:@"msg"]);
-//            }
-//        }
-//        
-//    } url:kRequestUrl(@"Health", @"stepsUpload")];
 }
 
 -(void)uploadSleepData:(NSString *)json
@@ -485,29 +472,9 @@
         {
             self.synSleepDataFinish = NO;
         }
-        
-        [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_SLEEP_DATA];
     } failureBlock:^(NSString *description) {
         
     }];
-    
-//    [self startRequestWithDict:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-//        if (!error) {
-//            NSDictionary *data = [dict objectForKey:@"data"];
-//            showTip([data objectForKey:@"msg"]);
-//        }
-//        else
-//        {
-//            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-//            {
-//                showTip(@"网络连接失败");
-//            }
-//            else
-//            {
-//                showTip([error.userInfo objectForKey:@"msg"]);
-//            }
-//        }
-//    } url:kRequestUrl(@"Health", @"sleepUpload")];
 }
 
 #pragma mark - PaPaBLEManager Delegate
@@ -529,16 +496,16 @@
     [self endSynData];
 }
 
-
+//第一次绑定后的回调操作进行读写
 -(void)PaPaBLEManagerReadyToReadAndWrite
 {
-    [self getBandData];
+//    [self getBandData];
 }
 
 //获取系统信息
 - (void) PaPaBLEManagerHasSystemInformation:(NSDictionary *)info
 {
-    [[PaPaBLEManager shareInstance] updateFirmware:info];
+//    [[PaPaBLEManager shareInstance] updateFirmware:info];
 }
 
 //蓝牙返回余额
@@ -558,7 +525,7 @@
 //蓝牙返回今天的步数
 - (void) PaPaBLEManagerUpdateCurrentSteps:(NSUInteger)steps
 {
-    NSLog(@"steps = %ld",steps);
+    NSLog(@"steps = %ld",(unsigned long)steps);
     
     [self startRequestWithDict:sport([APP_DELEGATE.userData.uid integerValue], steps) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
         
@@ -566,7 +533,7 @@
             NSDictionary *data = [dict objectForKey:@"data"];
             distance = [data objectForKey:@"l"];
             calorie = [data objectForKey:@"c"];
-            stepCount = strFormat(@"%ld",steps);
+            stepCount = strFormat(@"%ld",(unsigned long)steps);
             
             self.currentStepDataFinish = YES;
             
@@ -611,7 +578,10 @@
 #pragma mark - ParentViewController Method
 -(void)connetedViewRefreshing
 {
+    //绑定过手环后直接连接成果后做操作
     NSLog(@"connetedViewRefreshing");
+    
+    [self getBandData];
 }
 
 -(void)disConnetedViewRefreshing:(NSError *)error
@@ -627,6 +597,17 @@
         if (self.synSleepDataFinish && self.synSleepDataFinish) {
             showTip(@"同步计步睡眠数据成功");
             [self endSynData];
+            
+            //删除计步数据
+            [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_STEP_DATA];
+            [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_SLEEP_DATA];
+            
+            return;
+        }
+        
+        if (!self.synStepDataFinish || !self.synSleepDataFinish) {
+            showTip(@"同步计步睡眠数据失败");
+            [self endSynData];
         }
     }
     
@@ -636,6 +617,13 @@
             [self changeBannersHeaderContent:self.indicatorView];
         }
     }
+}
+
+#pragma mark - NSNotifiaction Method
+-(void)refreshAvatar
+{
+    [self.leftNavButton sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] forState:UIControlStateNormal placeholderImage:nil];
+    [self.leftNavButton sd_setImageWithURL:[NSURL URLWithString:APP_DELEGATE.userData.avatar] forState:UIControlStateHighlighted placeholderImage:nil];
 }
 @end
 

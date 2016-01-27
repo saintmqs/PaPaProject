@@ -36,6 +36,21 @@ static PaPaBLEManager *papaBLEManager;
     return self;
 }
 
+//初始读写操作
+-(void)initialWriteAndRead
+{
+    [bleManager getSystemInformation]; //获取系统信息
+    
+    [bleManager getBalance]; //获取余额
+    
+    [bleManager getCardID]; //获取公交卡号
+    
+    NSTimeInterval timeInterval2 = [[NSDate date] timeIntervalSince1970];
+    NSInteger time = round(timeInterval2);
+    
+    [bleManager setWristbandTime:(int32_t)time]; //设定手环时间
+}
+
 -(BOOL)blePoweredOn
 {
     return _blePoweredOn;
@@ -122,10 +137,12 @@ static PaPaBLEManager *papaBLEManager;
 - (void) BLEManagerConnected//蓝牙已连接(此时还不能进行读写操作)
 {
     showTip(@"蓝牙已连接");
-//    
-//    NSURL *updateUrl = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"product_test" ofType:@"zip"]];
-    
-//
+}
+
+#pragma mark 蓝牙可进行读写操作
+- (void) BLEManagerReadyToReadAndWrite//蓝牙可进行读写操作
+{
+    //先执行绑定操作
     CBPeripheral *peripheral = [bleManager getCurrentConnectedPeripheral];
     if (![peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
         [bleManager bindCurrentWristband]; //绑定当前手环
@@ -139,55 +156,18 @@ static PaPaBLEManager *papaBLEManager;
         
         [SystemStateManager shareInstance].bindUUID = peripheral.identifier.UUIDString;
     }
-    
-    //代理
-    if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerConnected)]) {
-        [_delegate PaPaBLEManagerConnected];
-    }
-}
-
-#pragma mark 蓝牙可进行读写操作
-- (void) BLEManagerReadyToReadAndWrite//蓝牙可进行读写操作
-{
-    if ([bleManager connected]) {
-        double delayInSeconds = 0.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [bleManager getSystemInformation]; //获取系统信息
-        });
-        dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
-            [bleManager getBalance]; //获取余额
-        });
-
-        dispatch_time_t popTime3 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime3, dispatch_get_main_queue(), ^(void){
-            [bleManager getCardID]; //获取公交卡号
-        });
+    else
+    {
+        [SystemStateManager shareInstance].isFirstBindWristband = NO;
         
-        dispatch_time_t popTime4 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime4, dispatch_get_main_queue(), ^(void){
-            
-            NSTimeZone *zone = [NSTimeZone defaultTimeZone];//获得当前应用程序默认的时区
-            NSInteger interval = [zone secondsFromGMTForDate:[NSDate date]];//以秒为单位返回当前应用程序与世界标准时间（格林威尼时间）的时差
-            NSDate *localeDate = [[NSDate date] dateByAddingTimeInterval:interval];
-            NSTimeInterval timeInterval2 = [localeDate timeIntervalSince1970];
-            
-            [bleManager setWristbandTime:timeInterval2];
-        });
-//
-//        dispatch_time_t popTime5 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//        dispatch_after(popTime5, dispatch_get_main_queue(), ^(void){
-//            [bleManager getCurrentSleepingData];
-//            [bleManager getSleepingData];
-//            
-//        });
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerReadyToReadAndWrite)]) {
-            [_delegate PaPaBLEManagerReadyToReadAndWrite];
+        [self initialWriteAndRead];
+        //代理
+        if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerConnected)]) {
+            [_delegate PaPaBLEManagerConnected];
         }
-        
     }
+    
+    
 }
 
 #pragma mark 蓝牙断开连接
@@ -255,114 +235,87 @@ static PaPaBLEManager *papaBLEManager;
     showError(error);
 }
 
+#pragma mark 手环收到命令后10s(暂定)未返回消息
+- (void) BLEManagerOperationTimeout:(NSUInteger)cmdNo;//手环收到命令后10s(暂定)未返回消息
+{
+    
+}
+
 #pragma mark 手环收到命令后操作成功
 - (void) BLEManagerOperationSucceed:(NSUInteger)cmdNo//手环收到命令后操作成功
 {
     switch (cmdNo) {
         case COMMAND_NULL:
-        {
-            
-        }
             break;
             
             //电子钱包命令，还未完善
         case WALLET_GET_BALANCE://获取余额
-        {
-            
-        }
             break;
         case WALLET_GET_EXPENSES://获取消费记录
-        {
-            
-        }
             break;
         case WALLET_ADD_BALANCE://增加余额
-        {
-            
-        }
             break;
             
             //运动相关
         case SPORTS_SET_STEPS://设置目标步数
-        {
-            
-        }
             break;
         case SPORTS_GET_DATA://获取计步信息
-        {
-            
-        }
             break;
         case SPORTS_GET_CURRENT://获取今天步数
-        {
-            
-        }
             break;
         case SPROTS_DELETE_DATA://删除计步信息
-        {
-            
-        }
             break;
             
             //睡眠相关
         case SLEEP_GET_DATA://获取睡眠信息
-        {
-            
-        }
             break;
         case SLEEP_GET_CURRENT://获取今天睡眠时间
-        {
-            
-        }
             break;
         case SLEEP_DELETE_DATA://删除睡眠信息
-        {
-            
-        }
             break;
             
             //来电和短信
         case PHONE_RING_SHOCK://来电手环震动
-        {
-            
-        }
             break;
         case PHONE_RING_SHOCK_STOP://接电话停止震动
-        {
-            
-        }
             break;
         case PHONE_MESSAGE_SHOCK://短信手环震动
-        {
-            
-        }
             break;
             
             //时间
         case WRISTBAND_SET_TIME://设置手环时间
-        {
-            
-        }
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK://设置手环闹钟
-        {
-            
-        }
+        case WRISTBAND_ALARM_CLOCK_ADD://增加手环闹钟
+            break;
+        case WRISTBAND_ALARM_CLOCK_REMOVE://删除手环闹钟
+            break;
+        case WRISTBAND_ALARM_CLOCK_ENABLE://设置手环闹钟可用或者不可用
             break;
             
             //电池
         case BATTERTY_REMAINING_CAPACITY://获取电池剩余电量
-        {
-            
-        }
             break;
             
             //绑定和解绑
         case WRISTBAND_BIND://绑定手环
         {
-            
+            if ([bleManager connected]) {
+                
+                [self initialWriteAndRead];
+                
+                [SystemStateManager shareInstance].isFirstBindWristband = YES;
+                
+//                if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerReadyToReadAndWrite)]) {
+//                    [_delegate PaPaBLEManagerReadyToReadAndWrite];
+//                }
+                
+                if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerConnected)]) {
+                    [_delegate PaPaBLEManagerConnected];
+                }
+
+            }
         }
             break;
         case WRISTBAND_UNBUND://解绑手环
@@ -385,26 +338,14 @@ static PaPaBLEManager *papaBLEManager;
             
             //系统相关
         case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
-        {
-            
-        }
             break;
         case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
-        {
-            
-        }
             break;
         case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
-        {
-            
-        }
             break;
             
             //卡号
         case WRISTBAND_GET_CARD_ID://获取卡号
-        {
-            
-        }
             break;
         default:
             break;
@@ -417,141 +358,79 @@ static PaPaBLEManager *papaBLEManager;
     NSString *errorMsg;
     switch (cmdNo) {
         case COMMAND_NULL:
-        {
-            
-        }
             break;
             
             //电子钱包命令，还未完善
         case WALLET_GET_BALANCE://获取余额
-        {
-            
-        }
             break;
         case WALLET_GET_EXPENSES://获取消费记录
-        {
-            
-        }
             break;
         case WALLET_ADD_BALANCE://增加余额
-        {
-            
-        }
-            break;
+             break;
             
             //运动相关
         case SPORTS_SET_STEPS://设置目标步数
-        {
-            
-        }
-            break;
+             break;
         case SPORTS_GET_DATA://获取计步信息
-        {
-            
-        }
-            break;
+             break;
         case SPORTS_GET_CURRENT://获取今天步数
-        {
-            
-        }
-            break;
+             break;
         case SPROTS_DELETE_DATA://删除计步信息
-        {
-            
-        }
             break;
             
             //睡眠相关
         case SLEEP_GET_DATA://获取睡眠信息
-        {
-            
-        }
             break;
         case SLEEP_GET_CURRENT://获取今天睡眠时间
-        {
-            
-        }
             break;
         case SLEEP_DELETE_DATA://删除睡眠信息
-        {
-            
-        }
             break;
             
             //来电和短信
         case PHONE_RING_SHOCK://来电手环震动
-        {
-            
-        }
             break;
         case PHONE_RING_SHOCK_STOP://接电话停止震动
-        {
-            
-        }
             break;
         case PHONE_MESSAGE_SHOCK://短信手环震动
-        {
-            
-        }
             break;
             
             //时间
         case WRISTBAND_SET_TIME://设置手环时间
-        {
-            
-        }
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK://设置手环闹钟
-        {
-            
-        }
+        case WRISTBAND_ALARM_CLOCK_ADD://增加手环闹钟
+            break;
+        case WRISTBAND_ALARM_CLOCK_REMOVE://删除手环闹钟
+            break;
+        case WRISTBAND_ALARM_CLOCK_ENABLE://设置手环闹钟可用或者不可用
             break;
             
             //电池
         case BATTERTY_REMAINING_CAPACITY://获取电池剩余电量
-        {
-            
-        }
             break;
             
             //绑定和解绑
         case WRISTBAND_BIND://绑定手环
-        {
-            
-        }
             break;
         case WRISTBAND_UNBUND://解绑手环
-        {
-            
-        }
             break;
             
             
             //系统相关
         case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
-        {
-            
-        }
             break;
         case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
         {
-            
+            errorMsg = @"获取系统信息失败";
         }
             break;
         case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
-        {
-            
-        }
-            break;
+             break;
             
             //卡号
         case WRISTBAND_GET_CARD_ID://获取卡号
-        {
-            
-        }
-            break;
+             break;
         default:
             break;
     }
@@ -632,6 +511,8 @@ static PaPaBLEManager *papaBLEManager;
 #pragma mark 手环系统信息
 - (void) BLEManagerHasSystemInformation:(NSDictionary *)info//手环系统信息
 {
+    NSLog(@"info = %@", info);
+    
     self.firmwareInfo = info;
     
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasSystemInformation:)]) {

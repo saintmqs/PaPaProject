@@ -56,7 +56,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     
     if ([[PaPaBLEManager shareInstance] blePoweredOn]) {
         searchView.hidden = NO;
-        [_loadingView startAnimation];
         bleOffView.hidden = YES;
     }
     else
@@ -103,10 +102,8 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     descriptionLabel.text = @"打开手机蓝牙，靠近手环~";
     [searchView addSubview:descriptionLabel];
     
-    _loadingView =  [[PPLoadingView alloc] initWithFrame:CGRectMake((mScreenWidth - 180)/2, descriptionLabel.bottom + (searchView.frameHeight - 50 - 45 - 180)/2, 180, 180)];
-    
-    objc_setAssociatedObject(self, (const void *)CFBridgingRetain(LOOP_ITEM_ASS_KEY), nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(self, (const void *)CFBridgingRetain(LOOP_ITEM_ASS_KEY), _loadingView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    _loadingView =  [[FDActivityIndicatorView alloc] initWithFrame:CGRectMake((mScreenWidth - 180)/2, descriptionLabel.bottom + (searchView.frameHeight - 50 - 45 - 180)/2, 180, 180)];
+    _loadingView.color = rgbaColor(255, 176, 0, 1);
     
     [searchView addSubview:_loadingView];
 }
@@ -205,12 +202,8 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 {
     [[PaPaBLEManager shareInstance].bleManager startScan];
     
-    PPLoadingView *loopView = objc_getAssociatedObject(self, (const void *)CFBridgingRetain(LOOP_ITEM_ASS_KEY));
-    [loopView startAnimation];
-    
     [self bleScanning:^{
         [[PaPaBLEManager shareInstance].bleManager stopScan];
-        [loopView stopAnimation];
         
         if ([[PaPaBLEManager shareInstance].bleManager peripheralList].count != 0) {
             
@@ -237,7 +230,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 #pragma mark - 侦测蓝牙
 //蓝牙扫描计时block
 - (void)bleScanning:(void(^)())blockYes blockNo:(void(^)(id time))blockNo {
-    __block int timeout=3; //倒计时时间
+    __block int timeout=5; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
     dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
@@ -346,8 +339,8 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 }
 
 
-#pragma mark - PaPaBLEManager Delegate
--(void)PaPaBLEManagerConnected
+#pragma mark - ParentViewController Delegate
+-(void)connetedViewRefreshing
 {
     [SystemStateManager shareInstance].hasBindWristband = YES;
     
@@ -360,8 +353,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         }
         
         [APP_DELEGATE loginSuccess];
-    });
-    
-    
+        
+    });    
 }
 @end

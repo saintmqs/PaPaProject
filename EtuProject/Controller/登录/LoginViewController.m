@@ -42,9 +42,9 @@
     [backgroundImageView setImage:[UIImage imageNamed:@"loginBg"]];
 //    [self.view addSubview:backgroundImageView];
     
-    avatorBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth-80)/2, self.headerView.bottom + 20, 80, 100)];
+    avatorBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth-100)/2, self.headerView.bottom + 20, 100, 100)];
 //    avatorBgImageView.backgroundColor = [UIColor grayColor];
-    [avatorBgImageView setImage:[UIImage imageNamed:@"photo2"]];
+    [avatorBgImageView setImage:[UIImage imageNamed:@"appIcon"]];
     [self.view addSubview:avatorBgImageView];
     
     UIView *container = [[UIView alloc]initWithFrame:CGRectMake(10, avatorBgImageView.bottom + 20, self.view.width - 20, 100)];

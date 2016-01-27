@@ -8,6 +8,7 @@
 
 #import "BaseViewController.h"
 #import "PPLoadingView.h"
+#import "FDActivityIndicatorView.h"
 
 @interface SearchBraceletViewController : BaseViewController
 
@@ -15,7 +16,7 @@
 @property (nonatomic, strong) UIView  *bleOffView;//蓝牙未开启
 @property (nonatomic, strong) UIView  *noResultView;//未搜索到手环
 
-@property (nonatomic, strong) PPLoadingView *loadingView;
+@property (nonatomic, strong) FDActivityIndicatorView *loadingView;
 @property (nonatomic, strong) PPGradientView *gradientView;
 
 @property (nonatomic, strong) dispatch_source_t timer;

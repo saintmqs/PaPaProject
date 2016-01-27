@@ -14,8 +14,15 @@ typedef enum : NSUInteger {
     SWITCH_TYPE,
 }DeviceManagerCellType;
 
+@protocol DeviceManagerCellDelegate <NSObject>
+
+-(void)deviceManagerSwitchAction:(id)sender;
+
+@end
+
 @interface DeviceManagerCell : UITableViewCell
 
+@property (nonatomic, assign) id<DeviceManagerCellDelegate> delegate;
 @property (nonatomic, assign) DeviceManagerCellType cellType;
 @property (nonatomic, strong) UILabel *managerTitleLabel;
 @property (nonatomic, strong) UILabel *managerDetailLabel;
