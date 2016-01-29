@@ -36,14 +36,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [[PaPaBLEManager shareInstance] setDelegate:self];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[PaPaBLEManager shareInstance] setDelegate:self];
     
     self.view.backgroundColor = rgbColor(249, 249, 250);
+    
+    [[PaPaBLEManager shareInstance] setDelegate:self];
     
     if (iOS7) {
         self.edgesForExtendedLayout = UIRectEdgeNone;

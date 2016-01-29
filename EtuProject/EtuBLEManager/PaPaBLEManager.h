@@ -13,6 +13,7 @@
 typedef void(^PaPaBLEBlock)(CBCentralManagerState state);
 typedef void(^PaPaBLEUploadDownloadSuccessBlock)(NSDictionary *data);
 typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
+typedef void(^LatestBlock)(void);
 
 @protocol PaPaBLEManagerDelegate <NSObject>
 
@@ -26,10 +27,12 @@ typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
 
 //蓝牙返回计步信息，每个记录以NSDictionary存储
 - (void) PaPaBLEManagerHasStepData:(NSArray *)stepData;
+- (void) PaPaBLEManagerHasStepDataFailed;
 //蓝牙返回今天的步数
 - (void) PaPaBLEManagerUpdateCurrentSteps:(NSUInteger)steps;
 //蓝牙返回睡眠信息，每个记录以NSDictionary存储
 - (void) PaPaBLEManagerHasSleepData:(NSArray *)sleepData;
+- (void) PaPaBLEManagerHasSleepFailed;
 //蓝牙返回今天的睡眠信息
 - (void) PaPaBLEManagerUpdateCurrentSleepData:(NSDictionary *)mins;
 //蓝牙返回钱包余额(以分记)
@@ -67,7 +70,7 @@ typedef void(^PaPaBLEUploadDownloadFailedBlock)(NSError *error);
 
 -(BOOL)blePoweredOn;
 
--(void)updateFirmware:(NSDictionary *)info;
+-(void)updateFirmware:(NSDictionary *)info isLastestVersion:(LatestBlock)lastestblock;
 
 -(void)getUpDateFirmwareFromServer:(PaPaBLEUploadDownloadSuccessBlock)successBlock
                             failed:(PaPaBLEUploadDownloadFailedBlock)failedBlock;

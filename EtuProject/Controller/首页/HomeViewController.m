@@ -25,9 +25,6 @@
     NSInteger deepsleepSec;
     NSInteger slightsleepSec;
     NSInteger totalSleepSec;
-    
-    
-    
 }
 @property (nonatomic, assign) BOOL synStepDataFinish;
 @property (nonatomic, assign) BOOL synSleepDataFinish;
@@ -89,9 +86,9 @@
     [self configTableUI];
     
     if ([SystemStateManager shareInstance].hasBindWristband) {
-        if (APP_DELEGATE.userData) {
-            [self getBandData];
-        }
+//        if (APP_DELEGATE.userData) {
+//            [self getBandData];
+//        }
         
         gradientView.locations = @[ @0.0f, @1.f];
         gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
@@ -100,9 +97,8 @@
     else
     {
         gradientView.backgroundColor = rgbaColor(117, 118, 118, 1);
-        [self changeBannersHeaderContent:self.indicatorView];
     }
-    
+    [self changeBannersHeaderContent:self.indicatorView];
     
     
     [self addObserver:self forKeyPath:@"synStepDataFinish" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
@@ -130,6 +126,15 @@
 
 -(void)getBandData
 {
+    [[PaPaBLEManager shareInstance].bleManager getBalance]; //获取余额
+    
+    [[PaPaBLEManager shareInstance].bleManager getCardID]; //获取公交卡号
+    
+    NSTimeInterval timeInterval2 = [[NSDate date] timeIntervalSince1970];
+    NSInteger time = round(timeInterval2);
+    
+    [[PaPaBLEManager shareInstance].bleManager setWristbandTime:(int32_t)time]; //设定手环时间
+    
     [[PaPaBLEManager shareInstance].bleManager setStepTarget:200];
     
     [[PaPaBLEManager shareInstance].bleManager getCurrentStepData];
@@ -142,7 +147,11 @@
     
     [self changeBannersHeaderContent:self.indicatorView];
     
-    [self startSynData];
+    if (![SystemStateManager shareInstance].isSyningData) {
+        [self startSynData];
+        [SystemStateManager shareInstance].isSyningData = YES;
+    }
+    
 }
 
 -(void)configSynDataView
@@ -162,13 +171,6 @@
     _detailTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _detailTableView.bounces = NO;
     [self.view addSubview:_detailTableView];
-    
-//    self.detailTableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        // 进入刷新状态后会自动调用这个block
-//    }];
-//    或
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-//    self.detailTableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refreshCardBalance)];
 }
 
 #pragma mark 改变上面滚动栏的内容
@@ -183,7 +185,7 @@
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
         [dataDict1 setObject:strFormat(@"%@",stepCount?stepCount:@"0000")  forKey:@"content"];
         [dataDict1 setObject:strFormat(@"%@公里 | %@千卡",distance?distance:@"0" ,calorie?calorie:@"0") forKey:@"detail"];
-        float progress = [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue] >=1? 1.0 : [stepCount doubleValue]/[APP_DELEGATE.userData.baseInfo.step doubleValue];
+        float progress = [stepCount doubleValue]/[APP_DELEGATE.userData.step doubleValue] >=1? 1.0 : [stepCount doubleValue]/[APP_DELEGATE.userData.step doubleValue];
         [dataDict1 setObject:strFormat(@"%f",progress) forKey:@"progress"];
         [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
         [contentDataArr addObject:dataDict1];
@@ -410,39 +412,6 @@
 }
 
 #pragma mark - Http Request
-//刷新余额
--(void)refreshCardBalance
-{
-    // 马上进入刷新状态
-//    [self.detailTableView.header beginRefreshing];
-    
-    showViewHUD;
-    
-    [self startRequestWithDict:getCitizencardBalance([APP_DELEGATE.userData.uid integerValue], @"") completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
-        
-//        [self.detailTableView.header endRefreshing];
-        
-        hideViewHUD;
-        
-        if (!error) {
-//            NSDictionary *data = [dict objectForKey:@"data"];
-//            showTip([data objectForKey:@"msg"]);
-        }
-        else
-        {
-            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-            {
-                showTip(@"网络连接失败");
-            }
-            else
-            {
-                showTip([error.userInfo objectForKey:@"msg"]);
-            }
-        }
-        
-    } url:kRequestUrl(@"Citizencard", @"getCitizencardBalance")];
-}
-
 -(void)uploadStepsData:(NSString *)json
 {
     NSLog(@"***uploadSleepData***");
@@ -456,7 +425,7 @@
             self.synStepDataFinish = NO;
         }
     } failureBlock:^(NSString *description) {
-        
+         self.synStepDataFinish = NO;
     }];
 }
 
@@ -473,7 +442,7 @@
             self.synSleepDataFinish = NO;
         }
     } failureBlock:^(NSString *description) {
-        
+        self.synSleepDataFinish = NO;
     }];
 }
 
@@ -481,7 +450,11 @@
 //固件升级开始
 -(void)PaPaOnDFUStarted
 {
-    [self startSynData];
+    if (![SystemStateManager shareInstance].isSyningData) {
+        [self startSynData];
+        [SystemStateManager shareInstance].isUpdatingFirmware = YES;
+        [SystemStateManager shareInstance].isSyningData = YES;
+    }
 }
 
 //升级进度百分比
@@ -493,19 +466,22 @@
 //升级完成
 -(void)PaPaOnSuccessfulFileTranferred
 {
-    [self endSynData];
-}
-
-//第一次绑定后的回调操作进行读写
--(void)PaPaBLEManagerReadyToReadAndWrite
-{
-//    [self getBandData];
+    [MBProgressHUD hideHUD];
+    
+    if ([SystemStateManager shareInstance].isSyningData) {
+        [self endSynData];
+        [SystemStateManager shareInstance].isUpdatingFirmware = NO;
+        [SystemStateManager shareInstance].isSyningData = NO;
+    }
 }
 
 //获取系统信息
 - (void) PaPaBLEManagerHasSystemInformation:(NSDictionary *)info
 {
-//    [[PaPaBLEManager shareInstance] updateFirmware:info];
+    [MBProgressHUD showMessage:@"正在检测固件版本..."];
+    [[PaPaBLEManager shareInstance] updateFirmware:info isLastestVersion:^{
+        [self getBandData];
+    }];
 }
 
 //蓝牙返回余额
@@ -520,6 +496,12 @@
     NSLog(@"stepData %@",stepData);
     
     [self uploadStepsData:[stepData JSONString]];
+}
+
+//蓝牙返回计步信息失败
+- (void) PaPaBLEManagerHasStepDataFailed
+{
+    self.synStepDataFinish = NO;
 }
 
 //蓝牙返回今天的步数
@@ -575,13 +557,19 @@
     
 }
 
+//蓝牙返回睡眠信息失败
+- (void) PaPaBLEManagerHasSleepFailed
+{
+    self.synSleepDataFinish = NO;
+}
+
 #pragma mark - ParentViewController Method
 -(void)connetedViewRefreshing
 {
-    //绑定过手环后直接连接成果后做操作
+    //绑定过手环后直接连接成功后做操作
     NSLog(@"connetedViewRefreshing");
     
-    [self getBandData];
+//    [self getBandData];
 }
 
 -(void)disConnetedViewRefreshing:(NSError *)error
@@ -594,19 +582,26 @@
 {
     if([keyPath isEqualToString:@"synStepDataFinish"] || [keyPath isEqualToString:@"synSleepDataFinish"])
     {
-        if (self.synSleepDataFinish && self.synSleepDataFinish) {
+        if (self.synStepDataFinish && self.synSleepDataFinish) {
             showTip(@"同步计步睡眠数据成功");
-            [self endSynData];
             
             //删除计步数据
             [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_STEP_DATA];
             [[PaPaBLEManager shareInstance].bleManager removeSyncedData:DELETE_SLEEP_DATA];
             
+            if ([SystemStateManager shareInstance].isUpdatingFirmware) {
+                return;
+            }
+            [self endSynData];
+            
             return;
         }
         
-        if (!self.synStepDataFinish || !self.synSleepDataFinish) {
+        if (!self.synStepDataFinish && !self.synSleepDataFinish) {
             showTip(@"同步计步睡眠数据失败");
+            if ([SystemStateManager shareInstance].isUpdatingFirmware) {
+                return;
+            }
             [self endSynData];
         }
     }

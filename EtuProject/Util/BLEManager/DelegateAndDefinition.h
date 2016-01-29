@@ -63,6 +63,7 @@ enum _packetCmdType
     
     //卡号
     WRISTBAND_GET_CARD_ID = 0x91,//获取卡号
+    WRISTBAND_GET_MAC_ADDR = 0x92,//获取MAC地址
     
 };
 
@@ -79,7 +80,7 @@ enum _packetCmdType
 - (void) BLEManagerReceiveDataFailed:(NSError *)error;//接收数据失败
 - (void) BLEManagerOperationSucceed:(NSUInteger)cmdNo;//手环收到命令后操作成功
 - (void) BLEManagerOperationFailed:(NSUInteger)cmdNo;//手环收到命令后操作失败
-- (void) BLEManagerOperationTimeout:(NSUInteger)cmdNo;//手环收到命令后10s(暂定)未返回消息
+- (void) BLEManagerOperationTimeout:(NSUInteger)cmdNo;//手环收到命令后10s(暂定，获取计步、睡眠和消费记录是20s)未返回消息
 - (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
 - (void) BLEManagerHasExpensesRecord:(NSArray *)record;//蓝牙返回消费记录，每个记录以NSDictionary存储
 - (void) BLEManagerStepTargetAchieved;//达到目标步数消息
@@ -91,6 +92,7 @@ enum _packetCmdType
 - (void) BLEManagerHasRemainingBatteryCapacity:(NSUInteger)level;//手环返回电量，暂定返回百分比数值
 - (void) BLEManagerHasSystemInformation:(NSDictionary *)info;//手环系统信息
 - (void) BLEManagerHasCardID:(NSString *)cardID;//卡号
+//- (void) BLEManagerHasMACAddress:(NSString *)macAddr;//MAC地址,暂不用
 
 @end
 

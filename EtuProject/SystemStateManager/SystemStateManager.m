@@ -39,6 +39,9 @@ static SystemStateManager *systemStateManager;
             if ([call.callState isEqualToString:CTCallStateDisconnected])
             {
                 NSLog(@"Call has been disconnected");
+                if (bself.isRingShake) {
+                    [[PaPaBLEManager shareInstance].bleManager stopPhoneRingShock];
+                }
             }
             else if ([call.callState isEqualToString:CTCallStateConnected])
             {

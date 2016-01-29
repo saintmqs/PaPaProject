@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSString		*apikey;//用户秘钥
 @property (nonatomic, copy) NSString		*avatar;//头像
 @property (nonatomic, copy) NSString        *isall;//0-资料没有完善，登录之后跳转到选择性别那里，然后一步一步的完成资料，之后调取接口8  1-资料已经完善
+@property (nonatomic, copy) NSString        *step;
 @property (nonatomic, copy) BaseInfo        *baseInfo;
 @end
 

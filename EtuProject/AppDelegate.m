@@ -36,7 +36,18 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     self.window.backgroundColor = rgbColor(249, 249, 250);
     [self.window addSubview:splash];
     
-    [self systemInit];
+    NSUserDefaults *udf = [NSUserDefaults standardUserDefaults];
+    NSString *phoneNumber = [udf valueForKey:kUD_LOGIN_PHONENUM];
+    NSString *password = [udf valueForKey:kUD_LOGIN_PASSWORD];
+    
+    if ([NSString isStringEmpty:phoneNumber] && [NSString isStringEmpty:password]) {
+        [self systemInit];
+    }
+    else
+    {
+        [self autoLoginByName:phoneNumber andPassword:password];
+    }
+    
     
     [SystemStateManager shareInstance];
     
@@ -86,6 +97,34 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     }
 }
 
+-(void)autoLoginByName:(NSString *)username andPassword:(NSString *)password
+{
+    [APP_DELEGATE doLoginWithUsername:username pwd:password block:^(BOOL success, NSError *error) {
+        
+        if (success) {
+            {
+                if ([APP_DELEGATE.userData.isall integerValue] == 0) {
+                    [APP_DELEGATE loginbyFixInfo];
+                }
+                else
+                {
+                    [APP_DELEGATE loginSuccess];
+                }
+            }
+            
+        } else {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+        }
+    }];
+}
+
 - (void)showBasicIntroWithBg
 {
     EAIntroPage *page1 = [EAIntroPage page];
@@ -123,7 +162,13 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
                 
                 [nav pushViewController:vc animated:YES];
             }
-        }        
+            else
+            {
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                [nav setNavigationBarHidden:YES];
+                self.window.rootViewController = nav;
+            }
+        }
         return;
     }
     
@@ -180,7 +225,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     [self startRequestWithDict:login(uname, pwd) completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
         if (!error) {
             Login *login = [[Login alloc]initWithDictionary:[dict objectForKey:@"data"] error:nil];
-            
             if (login) {
                 APP_DELEGATE.userData = login;
                 
@@ -222,6 +266,11 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 - (void)logOut
 {
+    NSUserDefaults *udf = [NSUserDefaults standardUserDefaults];
+    [udf setValue:@"" forKey:kUD_LOGIN_PHONENUM];
+    [udf setValue:@"" forKey:kUD_LOGIN_PASSWORD];
+    [udf synchronize];
+    
     self.userData = nil;
 
     LoginViewController *login = [[LoginViewController alloc] init];

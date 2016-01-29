@@ -249,7 +249,7 @@ static NSString * ControllerInstanceUUID;
         success(operation,responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        success(operation,error);
+        failure(operation,error);
         
         NSLog(@"下载失败");
         

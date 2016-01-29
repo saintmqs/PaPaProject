@@ -18,6 +18,7 @@
 #import <IQUIView+Hierarchy.h>
 #import <IQSegmentedNextPrevious.h>
 #import <MBProgressHUD.h>
+#import "MBProgressHUD+NJ.h"
 #import "PckData.h"
 #import "UIImageView+WebCache.h"
 #import "UIView+convenience.h"

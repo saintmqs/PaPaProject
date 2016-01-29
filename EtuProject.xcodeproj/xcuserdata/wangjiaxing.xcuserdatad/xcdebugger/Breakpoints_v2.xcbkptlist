@@ -99,22 +99,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x9009;&#x62e9;&#x8bbe;&#x5907;/SelectBraceletViewController.m"
-            timestampString = "474917977.204452"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "EtuProject/Controller/&#x8bbe;&#x5907;&#x7ba1;&#x7406;/DeviceManagerViewController.m"
             timestampString = "475601478.744629"
             startingColumnNumber = "9223372036854775807"
@@ -260,7 +244,7 @@
                   moduleName = "EtuProject"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/wangjiaxing/Desktop/Project/PaPa/EtuProject/Controller/%E7%99%BB%E5%BD%95/%E6%B3%A8%E5%86%8C/RegisterViewController.m"
-                  timestampString = "475603975.472023"
+                  timestampString = "475765043.602276"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "140"
@@ -275,7 +259,7 @@
                   moduleName = "EtuProject"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/wangjiaxing/Desktop/Project/PaPa/EtuProject/Controller/%E7%99%BB%E5%BD%95/%E6%B3%A8%E5%86%8C/RegisterViewController.m"
-                  timestampString = "475603975.472439"
+                  timestampString = "475765043.602464"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "140"
@@ -346,22 +330,6 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "-onReceiveRequestBack:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x9009;&#x62e9;&#x8bbe;&#x5907;/SelectBraceletViewController.m"
-            timestampString = "475227771.011679"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
-            landmarkName = "-cancelBind"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -563,13 +531,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
-            timestampString = "475603749.705896"
+            filePath = "EtuProject/SystemStateManager/SystemStateManager.m"
+            timestampString = "475661234.65563"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "502"
-            endingLineNumber = "502"
-            landmarkName = "-PaPaBLEManagerReadyToReadAndWrite"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "-init"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x8bbe;&#x5907;&#x7ba1;&#x7406;/DeviceManagerViewController.m"
+            timestampString = "475661263.953138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "-deviceManagerSwitchAction:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/SystemStateManager/SystemStateManager.m"
+            timestampString = "475662196.405507"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -580,12 +580,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
-            timestampString = "475603873.949371"
+            timestampString = "475748826.667556"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "-dealloc"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
+            landmarkName = "-uploadStepsData:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -596,12 +596,252 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
-            timestampString = "475603914.944011"
+            timestampString = "475748826.667556"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "595"
-            endingLineNumber = "595"
-            landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
+            startingLineNumber = "435"
+            endingLineNumber = "435"
+            landmarkName = "-uploadSleepData:"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[HomeViewController uploadSleepData:]"
+                  moduleName = "EtuProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangjiaxing/Desktop/Project/PaPa/EtuProject/Controller/%E9%A6%96%E9%A1%B5/HomeViewController.m"
+                  timestampString = "475765043.621406"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "435"
+                  endingLineNumber = "435"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__38-[HomeViewController uploadSleepData:]_block_invoke"
+                  moduleName = "EtuProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/wangjiaxing/Desktop/Project/PaPa/EtuProject/Controller/%E9%A6%96%E9%A1%B5/HomeViewController.m"
+                  timestampString = "475765043.621624"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "435"
+                  endingLineNumber = "435"
+                  offsetFromSymbolStart = "80">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x641c;&#x7d22;&#x624b;&#x73af;/SearchBraceletViewController.m"
+            timestampString = "475729800.905776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "296"
+            endingLineNumber = "296"
+            landmarkName = "-getBLEStatusToDoNext:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x641c;&#x7d22;&#x624b;&#x73af;/SearchBraceletViewController.m"
+            timestampString = "475730190.684642"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
+            landmarkName = "-centralManagerDidUpdateState:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
+            timestampString = "475748826.667556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "467"
+            endingLineNumber = "467"
+            landmarkName = "-PaPaOnSuccessfulFileTranferred"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
+            timestampString = "475748826.667556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "572"
+            endingLineNumber = "572"
+            landmarkName = "-connetedViewRefreshing"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x641c;&#x7d22;&#x624b;&#x73af;/SearchBraceletViewController.m"
+            timestampString = "475742716.308381"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "364"
+            endingLineNumber = "364"
+            landmarkName = "-connetedViewRefreshing"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x9996;&#x9875;/HomeViewController.m"
+            timestampString = "475748826.667556"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "481"
+            endingLineNumber = "481"
+            landmarkName = "-PaPaBLEManagerHasSystemInformation:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/Controller/&#x767b;&#x5f55;/&#x9009;&#x62e9;&#x8bbe;&#x5907;/SelectBraceletViewController.m"
+            timestampString = "475747191.428085"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "-connetedViewRefreshing"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/EtuBLEManager/PaPaBLEManager.m"
+            timestampString = "475748342.692823"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "-updateFirmware:isLastestVersion:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/EtuBLEManager/PaPaBLEManager.m"
+            timestampString = "475748561.842393"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "-BLEManagerDisconnected:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/AppDelegate.m"
+            timestampString = "475763498.202713"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-application:didFinishLaunchingWithOptions:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/AppDelegate.m"
+            timestampString = "475763552.417273"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-autoLoginByName:andPassword:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/AppDelegate.m"
+            timestampString = "475763562.508218"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
+            landmarkName = "-loginSuccess"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "EtuProject/EtuBLEManager/PaPaBLEManager.m"
+            timestampString = "475764324.356237"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "657"
+            endingLineNumber = "657"
+            landmarkName = "-onDeviceDisconnected:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -16,7 +16,7 @@
     if (self) {
         self.backgroundColor = rgbaColor(0, 155, 232, 1);
         
-        _headImageView = [[UIButton alloc] initWithFrame:CGRectMake((mScreenWidth - 78)/2, 20, 78, 78)];
+        _headImageView = [[UIButton alloc] initWithFrame:CGRectMake((mScreenWidth - 128)/2, 20, 128, 128)];
         _headImageView.backgroundColor = [UIColor whiteColor];
         _headImageView.layer.cornerRadius = _headImageView.frameWidth/2;
         _headImageView.layer.masksToBounds = YES;
@@ -24,7 +24,7 @@
         addBtnAction(_headImageView, @selector(changeHeadImage));
         [self addSubview:_headImageView];
         
-        UIImageView *headBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, 10, 90, 90)];
+        UIImageView *headBgImageView = [[UIImageView alloc] initWithFrame:CGRectMake((mScreenWidth - 140)/2, 10, 140, 140)];
         [headBgImageView setImage:[UIImage imageNamed:@"headBackground"]];
         headBgImageView.center = CGPointMake(_headImageView.center.x, _headImageView.center.y - 2);
         [self addSubview:headBgImageView];

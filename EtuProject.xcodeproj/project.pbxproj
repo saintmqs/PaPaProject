@@ -312,6 +312,8 @@
 		A871372E1C50EF6700F5300D /* topIcoRightWrite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A87136F21C50EF6600F5300D /* topIcoRightWrite@3x.png */; };
 		A87137301C50FD7200F5300D /* photo2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = A871372F1C50FD7200F5300D /* photo2@3x.png */; };
 		A87137321C50FD7E00F5300D /* photo2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A87137311C50FD7E00F5300D /* photo2@2x.png */; };
+		A87BB0941C5B3BAC007FE4FF /* MBProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A87BB0911C5B3BAC007FE4FF /* MBProgressHUD.bundle */; };
+		A87BB0951C5B3BAC007FE4FF /* MBProgressHUD+NJ.m in Sources */ = {isa = PBXBuildFile; fileRef = A87BB0931C5B3BAC007FE4FF /* MBProgressHUD+NJ.m */; };
 		A8896E131BEB8E1900ADEB77 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E121BEB8E1900ADEB77 /* HomeViewController.m */; };
 		A8896E161BEB8E6500ADEB77 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E151BEB8E6500ADEB77 /* RegisterViewController.m */; };
 		A8896E191BEB8E8F00ADEB77 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A8896E181BEB8E8F00ADEB77 /* LoginViewController.m */; };
@@ -948,6 +950,9 @@
 		A87136F21C50EF6600F5300D /* topIcoRightWrite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "topIcoRightWrite@3x.png"; sourceTree = "<group>"; };
 		A871372F1C50FD7200F5300D /* photo2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo2@3x.png"; sourceTree = "<group>"; };
 		A87137311C50FD7E00F5300D /* photo2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo2@2x.png"; sourceTree = "<group>"; };
+		A87BB0911C5B3BAC007FE4FF /* MBProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MBProgressHUD.bundle; sourceTree = "<group>"; };
+		A87BB0921C5B3BAC007FE4FF /* MBProgressHUD+NJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+NJ.h"; sourceTree = "<group>"; };
+		A87BB0931C5B3BAC007FE4FF /* MBProgressHUD+NJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+NJ.m"; sourceTree = "<group>"; };
 		A8896E111BEB8E1900ADEB77 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		A8896E121BEB8E1900ADEB77 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		A8896E141BEB8E6500ADEB77 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -2050,6 +2055,9 @@
 		A8674C7C1BEA586400F3FB44 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
+				A87BB0911C5B3BAC007FE4FF /* MBProgressHUD.bundle */,
+				A87BB0921C5B3BAC007FE4FF /* MBProgressHUD+NJ.h */,
+				A87BB0931C5B3BAC007FE4FF /* MBProgressHUD+NJ.m */,
 				A8674C7D1BEA586400F3FB44 /* MBProgressHUD.h */,
 				A8674C7E1BEA586400F3FB44 /* MBProgressHUD.m */,
 			);
@@ -3179,6 +3187,7 @@
 				A82E34381C1FEB24006A6EE2 /* paymentIco5.png in Resources */,
 				A814030A1C40A8F200CFAB98 /* MJRefresh.bundle in Resources */,
 				A87136F41C50EF6600F5300D /* bottomIco1A_Hover@2x.png in Resources */,
+				A87BB0941C5B3BAC007FE4FF /* MBProgressHUD.bundle in Resources */,
 				A87136FE1C50EF6700F5300D /* btnCheckboxB@2x.png in Resources */,
 				A87137191C50EF6700F5300D /* bottomIco3A@3x.png in Resources */,
 				A82E34341C1FEB24006A6EE2 /* paymentIco2.png in Resources */,
@@ -3406,6 +3415,7 @@
 				A8674D8D1BEA586400F3FB44 /* IQKeyboardManager.m in Sources */,
 				A8674DC61BEA586400F3FB44 /* UIView+dynamic.m in Sources */,
 				A81403021C40A8F200CFAB98 /* MJRefreshAutoNormalFooter.m in Sources */,
+				A87BB0951C5B3BAC007FE4FF /* MBProgressHUD+NJ.m in Sources */,
 				A8674D691BEA586400F3FB44 /* ASIDataCompressor.m in Sources */,
 				A81402701C3A49C100CFAB98 /* PaPaBLEManager.m in Sources */,
 				A8674D961BEA586400F3FB44 /* IQAlbumAssetsViewController.m in Sources */,

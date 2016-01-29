@@ -125,8 +125,6 @@
 //蓝牙已连接
 -(void)connetedViewRefreshing
 {
-    hideViewHUD;
-    
     [searchResultTable reloadData];
     
     [APP_DELEGATE loginSuccess];
@@ -135,7 +133,6 @@
 //蓝牙断开连接
 - (void)disConnetedViewRefreshing:(NSError *)error
 {
-    hideViewHUD;
     showError(error);
 }
 @end

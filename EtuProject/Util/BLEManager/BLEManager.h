@@ -83,6 +83,8 @@
 
 - (void) getCardID;//获取公交卡号
 
+//- (void) getMACAddress;//获取手环MAC地址，目前影响app升级，暂时不用
+
 - (void) updateFirmware:(NSURL *)url;//固件升级,升级过程中再次调用该接口会取消升级（取消升级后会断开连接，app可以选择是否再次连接）
 
 - (void) changeBLEName:(NSString *)name;//修改蓝牙名称，最长15个字符 

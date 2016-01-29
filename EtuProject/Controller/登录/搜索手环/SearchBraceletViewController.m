@@ -200,31 +200,41 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 #pragma mark - Scanning
 -(void)startScan
 {
-    [[PaPaBLEManager shareInstance].bleManager startScan];
-    
-    [self bleScanning:^{
-        [[PaPaBLEManager shareInstance].bleManager stopScan];
+    if ([[PaPaBLEManager shareInstance] blePoweredOn])
+    {
+        searchView.hidden = NO;
+        [[PaPaBLEManager shareInstance].bleManager startScan];
         
-        if ([[PaPaBLEManager shareInstance].bleManager peripheralList].count != 0) {
+        [self bleScanning:^{
+            [[PaPaBLEManager shareInstance].bleManager stopScan];
             
-            searchView.hidden = NO;
-            noResultView.hidden = YES;
-            bleOffView.hidden = YES;
+            if ([[PaPaBLEManager shareInstance].bleManager peripheralList].count != 0) {
+                
+                searchView.hidden = NO;
+                noResultView.hidden = YES;
+                bleOffView.hidden = YES;
+                
+                SelectBraceletViewController *vc = [[SelectBraceletViewController alloc] init];
+                vc.searchResultArray = [[PaPaBLEManager shareInstance].bleManager peripheralList];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            else
+            {
+                noResultView.hidden = NO;
+                searchView.hidden = YES;
+                bleOffView.hidden = YES;
+            }
             
-            SelectBraceletViewController *vc = [[SelectBraceletViewController alloc] init];
-            vc.searchResultArray = [[PaPaBLEManager shareInstance].bleManager peripheralList];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-        else
-        {
-            noResultView.hidden = NO;
-            searchView.hidden = YES;
-            bleOffView.hidden = YES;
-        }
-        
-    } blockNo:^(id time) {
-        
-    }];
+        } blockNo:^(id time) {
+            
+        }];
+    }
+    else
+    {
+        searchView.hidden = YES;
+        bleOffView.hidden = NO;
+        noResultView.hidden = YES;
+    }
 }
 
 #pragma mark - 侦测蓝牙
@@ -291,12 +301,21 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
             message = @"The app is not authorized to use Bluetooth Low Energy.";
             break;
         case CBCentralManagerStatePoweredOff:
+        {
             message = @"Bluetooth is currently powered off.";
+            searchView.hidden = YES;
+            bleOffView.hidden = NO;
+            noResultView.hidden = YES;
+            if (_timer) {
+                dispatch_source_cancel(_timer);
+            }
+        }
             break;
         case CBCentralManagerStatePoweredOn:
         {
             message = @"work";
             [self startScan];
+            bleOffView.hidden = YES;
         }
             break;
         case CBCentralManagerStateUnknown:
