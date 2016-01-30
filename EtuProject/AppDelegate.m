@@ -17,10 +17,12 @@
 #import "SelectSexViewController.h"
 #import "PPLoadingView.h"
 
+#import "BaseWebViewController.h"
+
 static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 
 
-@interface AppDelegate ()<UINavigationControllerDelegate, RDVTabBarControllerDelegate>
+@interface AppDelegate ()<UINavigationControllerDelegate, RDVTabBarControllerDelegate,UIAlertViewDelegate>
 
 @end
 
@@ -33,6 +35,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     UIImageView *splash = [[UIImageView alloc]initWithImage:[UIImage imageNamed:iPhone5 ? @"Default-568h":@"Default"]];
+    splash.backgroundColor = [UIColor redColor];
     self.window.backgroundColor = rgbColor(249, 249, 250);
     [self.window addSubview:splash];
     
@@ -43,13 +46,6 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     if ([NSString isStringEmpty:phoneNumber] && [NSString isStringEmpty:password]) {
         [self systemInit];
     }
-    else
-    {
-        [self autoLoginByName:phoneNumber andPassword:password];
-    }
-    
-    
-    [SystemStateManager shareInstance];
     
     [PaPaBLEManager shareInstance];
     
@@ -63,7 +59,11 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
         [def setObject:APP_VERSION forKey:kUD_INTRO_VERSION];
         [def synchronize];
     }
-    
+    else
+    {
+        [self versionCheck];
+    }
+        
     [application setApplicationIconBadgeNumber:0];
 #if SUPPORT_IOS8
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
@@ -231,7 +231,10 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
                 NSUserDefaults *udf = [NSUserDefaults standardUserDefaults];
                 [udf setValue:username forKey:kUD_LOGIN_PHONENUM];
                 [udf setValue:password forKey:kUD_LOGIN_PASSWORD];
+                //自动登录缓存
+                [udf setObject:@"1" forKey:kUD_AUTOLOGIN];
                 [udf synchronize];
+                
                 
                 if (block) {
                     block(YES, nil);
@@ -247,6 +250,7 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     } url:kRequestUrl(@"user", @"login")];
 }
 
+#pragma mark 登录判断
 - (BOOL)checkNeedLogin
 {
     if (!self.userData) {
@@ -264,11 +268,13 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
     return NO;
 }
 
+#pragma mark 登出
 - (void)logOut
 {
     NSUserDefaults *udf = [NSUserDefaults standardUserDefaults];
     [udf setValue:@"" forKey:kUD_LOGIN_PHONENUM];
     [udf setValue:@"" forKey:kUD_LOGIN_PASSWORD];
+    [udf setValue:@"0" forKey:kUD_AUTOLOGIN];
     [udf synchronize];
     
     self.userData = nil;
@@ -284,6 +290,52 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 //    self.window.rootViewController = self.rootTabbarController;
 //    [APP_DELEGATE.rootTabbarController setSelectedIndex:1];
 //    [self checkNeedLogin];
+}
+
+#pragma mark 应用版本检测
+-(void)versionCheck
+{
+    NSUserDefaults *udf = [NSUserDefaults standardUserDefaults];
+    NSString *isAutoLogin = [udf objectForKey:kUD_AUTOLOGIN];
+    
+    [[SystemStateManager shareInstance] appVersionNeedUpdate:^{
+       
+        if ([isAutoLogin isEqualToString:@"1"]) {
+            LoginViewController *login = [[LoginViewController alloc] init];
+            
+            UINavigationController	*tab = [[UINavigationController alloc]initWithRootViewController:login];
+            [tab setNavigationBarHidden:YES];
+            
+            self.window.rootViewController = tab;
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"检测到有新版本" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"前往下载", nil];
+        [alert show];
+    } isLatestVersion:^{
+        NSString *phoneNumber = [udf valueForKey:kUD_LOGIN_PHONENUM];
+        NSString *password = [udf valueForKey:kUD_LOGIN_PASSWORD];
+        
+        if ([isAutoLogin isEqualToString:@"1"]) {
+             [self autoLoginByName:phoneNumber andPassword:password];
+        }
+    } checkVersionFailed:^{
+        showTip(@"检测应用版本失败");
+    }];
+}
+
+#pragma mark - UIAlertView Delegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==0) {
+        BaseWebViewController *vc = [[BaseWebViewController alloc] init];
+        vc.titleString = @"应用下载";
+        vc.urlString = [SystemStateManager shareInstance].appDownloadUrl;
+        
+        if ([self.window.rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
+            
+            [nav pushViewController:vc animated:YES];
+        }
+    }
 }
 
 

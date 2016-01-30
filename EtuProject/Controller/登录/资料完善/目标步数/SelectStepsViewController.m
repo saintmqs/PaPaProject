@@ -296,8 +296,23 @@
                              
                              self.rightNavButton.userInteractionEnabled = YES;
                              
-                             SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
-                             [bself.navigationController pushViewController:vc animated:YES];
+                             [[SystemStateManager shareInstance] appVersionNeedUpdate:^{
+                                 
+                                 LoginViewController *login = [[LoginViewController alloc] init];
+                                 
+                                 UINavigationController	*tab = [[UINavigationController alloc]initWithRootViewController:login];
+                                 [tab setNavigationBarHidden:YES];
+                                 
+                                 APP_DELEGATE.window.rootViewController = tab;
+                                 
+                                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"检测到有新版本" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"前往下载", nil];
+                                 [alert show];
+                             } isLatestVersion:^{
+                                 SearchBraceletViewController *vc = [[SearchBraceletViewController alloc] init];
+                                 [bself.navigationController pushViewController:vc animated:YES];
+                             } checkVersionFailed:^{
+                                 showTip(@"检测应用版本失败");
+                             }];
                          });
                      }
                      else

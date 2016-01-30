@@ -7,11 +7,12 @@
 //
 
 #import "BaseViewController.h"
+#import "WPHotspotLabel.h"
 
 @interface AboutUsViewController : BaseViewController
 
 @property (nonatomic, strong) UIImageView *appIcon;
-@property (nonatomic, strong) UILabel     *appVersionLabel;
+@property (nonatomic, strong) WPHotspotLabel     *appVersionLabel;
 @property (nonatomic, strong) UIButton    *appProtocolBtn;
 @property (nonatomic, strong) UILabel     *appCopyRightLabel;
 

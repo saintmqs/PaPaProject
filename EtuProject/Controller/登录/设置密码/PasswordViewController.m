@@ -47,7 +47,7 @@
     [self.view addSubview:container];
     
     self.password			= [UITextField textFieldWithFrame:CGRectMake(10, 10, container.width - 10*2, 30) font:0 label:@"输入密码:    " labelTextColor:[UIColor blackColor]];
-    _password.maxLength		= 20;
+    _password.maxLength		= 16;
     _password.placeholder	= @"8-16位数字、字母、字符（至少两种）";
     _password.secureTextEntry	= YES;
     _password.textColor     = [UIColor blackColor];

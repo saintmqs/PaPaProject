@@ -8,11 +8,6 @@
 
 #import "RegisterViewController.h"
 #import "PasswordViewController.h"
-#import "NSString+WPAttributedMarkup.h"
-#import "WPAttributedStyleAction.h"
-#import "WPHotspotLabel.h"
-#import <CoreText/CoreText.h>
-
 #import "BaseWebViewController.h"
 
 @interface RegisterViewController ()
@@ -45,6 +40,7 @@
     [self.view addSubview:container];
     
     self.phoneNum			= [UITextField textFieldWithFrame:CGRectMake(10, 10, container.width - 10*2, 30) font:0 label:@"手机号:    " labelTextColor:[UIColor blackColor]];
+    _phoneNum.keyboardType  = UIKeyboardTypeNumberPad;
     _phoneNum.maxLength		= 11;
     //    _phoneNum.placeholder	= @"手机号";
     _phoneNum.textColor     = [UIColor blackColor];

@@ -69,4 +69,46 @@ static SystemStateManager *systemStateManager;
     }
     return self;
 }
+
+-(void)appVersionNeedUpdate:(versionBlock)updateBlock
+            isLatestVersion:(versionBlock)isLatestBlock
+         checkVersionFailed:(versionBlock)failedBlock
+{
+    [self startRequestWithDict:appversion() completeBlock:^(ASIHTTPRequest *request, NSDictionary *dict, NSError *error) {
+        if (!error) {
+            
+            NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+            // app版本
+            NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+            
+            NSDictionary *data = [dict objectForKey:@"data"];
+            //服务器返回版本号
+            NSString *lastestApp_version = [data objectForKey:@"version"];
+            //服务器返回下载页面链接
+            self.appDownloadUrl = [data objectForKey:@"downloadurl"];
+            
+            //版本比对
+            if (![NSString isStringEmpty:lastestApp_version] && ![app_Version isEqualToString:lastestApp_version]) {
+                updateBlock();
+            }
+            else
+            {
+                isLatestBlock();
+            }
+        }
+        else
+        {
+            if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+            {
+                showTip(@"网络连接失败");
+            }
+            else
+            {
+                showTip([error.userInfo objectForKey:@"msg"]);
+            }
+            failedBlock();
+        }
+    } url:kRequestUrl(@"Version", @"appversion")];
+}
+
 @end

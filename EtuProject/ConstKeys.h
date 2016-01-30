@@ -15,6 +15,7 @@
 #define kUD_DEFAULT_AREA            @"com.etuchina.default_area"
 
 #define kUD_BIND_DEVICE             @"com.etuchina.bindingWristband"
+#define kUD_AUTOLOGIN               @"com.etuchina.autologin"
 // keys
 #define kUSERNAME					@"username"
 #define kPASSWORD					@"password"

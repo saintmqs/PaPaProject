@@ -414,7 +414,7 @@
 #pragma mark - Http Request
 -(void)uploadStepsData:(NSString *)json
 {
-    NSLog(@"***uploadSleepData***");
+    NSLog(@"***uploadStepData***");
     [self asynchronousGetRequest:kRequestUrl(@"Health", @"stepsUpload") parameters:sleepUpload([APP_DELEGATE.userData.uid integerValue], json) successBlock:^(BOOL success, id data, NSString *msg) {
         
         if (success) {
@@ -533,6 +533,15 @@
         }
         
     } url:kRequestUrl(@"health", @"sport")];
+    
+    NSTimeInterval timeInterval2 = [[NSDate date] timeIntervalSince1970];
+    NSInteger time = round(timeInterval2);
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setValue:strFormat(@"%ld",(unsigned long)steps) forKey:@"s"];
+    [dict setValue:strFormat(@"%ld",(unsigned long)time) forKey:@"t"];
+    
+    [self uploadStepsData:[@[dict] JSONString]];
 }
 
 //蓝牙返回睡眠信息，每个记录以NSDictionary存储

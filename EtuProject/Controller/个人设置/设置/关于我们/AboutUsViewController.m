@@ -30,10 +30,17 @@
     [_appIcon setImage:[UIImage imageNamed:@"appIcon"]];
     [self.view addSubview:_appIcon];
     
-    _appVersionLabel = [[UILabel alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, _appIcon.frameBottom + 9, 90, 15)];
-    _appVersionLabel.text = @"当前版本 V1.0.0";
+    NSDictionary* style = @{@"body":[UIFont systemFontOfSize:13],
+                            @"lightgray":[UIColor lightGrayColor],
+                            @"blue":rgbaColor(0, 155, 232, 1)};
+    
+    _appVersionLabel = [[WPHotspotLabel alloc] initWithFrame:CGRectMake((mScreenWidth - 90)/2, _appIcon.frameBottom + 9, 90, 15)];
+    
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    // app版本
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    _appVersionLabel.attributedText = [strFormat(@"<lightgray>当前版本 </lightgray><blue>V%@</blue>",app_Version)  attributedStringWithStyleBook:style];
     _appVersionLabel.font = [UIFont systemFontOfSize:12];
-    _appVersionLabel.textColor = [UIColor lightGrayColor];
     _appVersionLabel.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_appVersionLabel];
     

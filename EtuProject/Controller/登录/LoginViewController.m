@@ -10,8 +10,9 @@
 #import "RegisterViewController.h"
 #import "FindPasswordViewController.h"
 #import "Login.h"
+#import "BaseWebViewController.h"
 
-@interface LoginViewController ()
+@interface LoginViewController ()<UIAlertViewDelegate>
 {
     UIImageView *avatorBgImageView;
 }
@@ -114,56 +115,66 @@
     __block NSString	*password	= self.password.text;
     
     if (sender == _btnLogin) {
-        if ([NSString isStringEmptyOrBlank:username]) {
-            showTip(@"请输入手机号");
-            return;
-        }
         
-        //        if (![username validateMobile]) {
-        //            showTip(@"请输入有效的手机号");
-        //            return;
-        //        }
-        
-        if ([NSString isStringEmptyOrBlank:password]) {
-            showTip(@"请输入密码");
-            return;
-        }
-        
-        showViewHUD;
 //        weakObj(self);
         
-        [APP_DELEGATE doLoginWithUsername:username pwd:password block:^(BOOL success, NSError *error) {
+        [[SystemStateManager shareInstance] appVersionNeedUpdate:^{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"检测到有新版本" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"前往下载", nil];
+            [alert show];
+        } isLatestVersion:^{
+            if ([NSString isStringEmptyOrBlank:username]) {
+                showTip(@"请输入手机号");
+                return;
+            }
             
-            hideViewHUD;
+            //        if (![username validateMobile]) {
+            //            showTip(@"请输入有效的手机号");
+            //            return;
+            //        }
             
-            if (success) {
-                //                [bself.navigationController popViewControllerAnimated:YES];
-//                if (APP_DELEGATE.isRootViewLaunched) {
-//                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-//                    [bself dismissViewControllerAnimated:YES completion:nil];
-//                }
-//                else
-                {
-                    if ([APP_DELEGATE.userData.isall integerValue] == 0) {
-                        [APP_DELEGATE loginbyFixInfo];
+            if ([NSString isStringEmptyOrBlank:password]) {
+                showTip(@"请输入密码");
+                return;
+            }
+
+            showViewHUD;
+            
+            [APP_DELEGATE doLoginWithUsername:username pwd:password block:^(BOOL success, NSError *error) {
+                
+                hideViewHUD;
+                
+                if (success) {
+                    //                [bself.navigationController popViewControllerAnimated:YES];
+                    //                if (APP_DELEGATE.isRootViewLaunched) {
+                    //                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+                    //                    [bself dismissViewControllerAnimated:YES completion:nil];
+                    //                }
+                    //                else
+                    {
+                        if ([APP_DELEGATE.userData.isall integerValue] == 0) {
+                            [APP_DELEGATE loginbyFixInfo];
+                        }
+                        else
+                        {
+                            [APP_DELEGATE loginSuccess];
+                        }
+                    }
+                    
+                } else {
+                    if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
+                    {
+                        showTip(@"网络连接失败");
                     }
                     else
                     {
-                        [APP_DELEGATE loginSuccess];
+                        showTip([error.userInfo objectForKey:@"msg"]);
                     }
                 }
-                
-            } else {
-                if (error == nil || [error.userInfo objectForKey:@"msg"] == nil)
-                {
-                    showTip(@"网络连接失败");
-                }
-                else
-                {
-                    showTip([error.userInfo objectForKey:@"msg"]);
-                }
-            }
+            }];
+        } checkVersionFailed:^{
+            showTip(@"网络连接失败");
         }];
+        
     } else if (sender == _btnFindPwd) {
         FindPasswordViewController *findpwd = [[FindPasswordViewController alloc] init];
         
@@ -174,4 +185,15 @@
     }
 }
 
+#pragma mark - UIAlertView Delegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==0) {
+        BaseWebViewController *vc = [[BaseWebViewController alloc] init];
+        vc.titleString = @"应用下载";
+        vc.urlString = [SystemStateManager shareInstance].appDownloadUrl;
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 @end

@@ -26,6 +26,10 @@
 #import "UserDataManager.h"
 #import "SystemStateManager.h"
 #import "ClocksManager.h"
+#import "NSString+WPAttributedMarkup.h"
+#import "WPAttributedStyleAction.h"
+#import "WPHotspotLabel.h"
+#import <CoreText/CoreText.h>
 // Macros
 
 //#if DEBUG

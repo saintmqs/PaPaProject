@@ -388,6 +388,7 @@ static PaPaBLEManager *papaBLEManager;
             //绑定和解绑
         case WRISTBAND_BIND://绑定手环
         {
+            NSLog(@"绑定手环成功");
             if ([bleManager connected]) {
                 
                 [bleManager getSystemInformation]; //获取系统信息
@@ -403,6 +404,7 @@ static PaPaBLEManager *papaBLEManager;
             break;
         case WRISTBAND_UNBUND://解绑手环
         {
+            NSLog(@"解绑手环成功");
             [SystemStateManager shareInstance].hasBindWristband = NO;
             //本地缓存绑定手环
             NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
@@ -506,6 +508,7 @@ static PaPaBLEManager *papaBLEManager;
             //绑定和解绑
         case WRISTBAND_BIND://绑定手环
         {
+            NSLog(@"绑定手环失败");
             errorMsg = @"绑定手环失败";
             [SystemStateManager shareInstance].hasBindWristband = NO;
             //本地缓存绑定手环
@@ -519,6 +522,7 @@ static PaPaBLEManager *papaBLEManager;
             break;
         case WRISTBAND_UNBUND://解绑手环
         {
+            NSLog(@"解绑手环失败");
             [SystemStateManager shareInstance].hasBindWristband = NO;
             //本地缓存绑定手环
             NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
