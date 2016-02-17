@@ -33,6 +33,8 @@
         _yLabelsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 50, self.bounds.size.height - PPLabelHeight)];
         _yLabelsScrollView.delegate = self;
         _yLabelsScrollView.transform = CGAffineTransformMakeRotation(M_PI);
+        _yLabelsScrollView.showsHorizontalScrollIndicator = NO;
+        _yLabelsScrollView.showsVerticalScrollIndicator = NO;
         [self addSubview:_yLabelsScrollView];
         
         _chartScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(50, 0, self.bounds.size.width - 60, self.bounds.size.height - PPLabelHeight)];
@@ -40,7 +42,7 @@
         _chartScrollView.transform = CGAffineTransformMakeRotation(M_PI);
         _chartScrollView.showsHorizontalScrollIndicator = NO;
         _chartScrollView.showsVerticalScrollIndicator = NO;
-        _chartScrollView.pagingEnabled = YES;
+        _chartScrollView.pagingEnabled = NO;
         
         _chartScrollView.mj_footer = [MJRefreshBackFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
         [self addSubview:_chartScrollView];
@@ -109,7 +111,8 @@
     _yLabelsScrollView.contentSize =CGSizeMake(50, lineYCount*levelHeight+5);
 
     for (int i=0; i<lineYCount+1; i++) {
-        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake(0.0,_yLabelsScrollView.contentSize.height - i*levelHeight, PPYLabelwidth, PPLabelHeight)];
+        PPChartLabel * label = [[PPChartLabel alloc] initWithFrame:CGRectMake(0.0,10 + _yLabelsScrollView.contentSize.height - i*levelHeight, PPYLabelwidth, PPLabelHeight)];
+        label.font = [UIFont systemFontOfSize:12];
 //        label.backgroundColor = [UIColor yellowColor];
         switch (self.chartType) {
             case SPORT_TYPE:
@@ -261,7 +264,7 @@
         UIBezierPath *progressline = [UIBezierPath bezierPath];
         CGFloat firstValue = [[childAry objectAtIndex:0] floatValue];
         CGFloat xPosition = 20;//_xLabels.count*_xLabelWidth - _xLabelWidth;
-        CGFloat chartCavanHeight =  self.frame.size.height - PPLabelHeight*self.rows/3;
+        CGFloat chartCavanHeight =  _chartScrollView.frameHeight;// self.frame.size.height - PPLabelHeight*self.rows/3;
         
         float grade = ((float)firstValue-_yValueMin) / ((float)_yValueMax-_yValueMin);
         NSLog(@"grade = %f",grade);
@@ -349,7 +352,7 @@
 
 - (void)addPoint:(CGPoint)point tag:(NSInteger)tag index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    UIButton *view = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 13, 13)];
+    UIButton *view = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 19, 19)];
     
     view.tag = 1000+tag;
     view.center = point;
@@ -357,25 +360,51 @@
 //    view.layer.cornerRadius = 4;
 //    view.layer.borderWidth = 1;
 //    view.layer.borderColor = [UIColor whiteColor].CGColor;//[[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:PPGreen.CGColor;
-    [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
+    switch (self.chartType) {
+        case SPORT_TYPE:
+        {
+            [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
+        }
+            break;
+        case SLEEP_TYPE:
+        {
+            [view setImage:[UIImage imageNamed:@"sleeppoint"] forState:UIControlStateNormal];
+        }
+            break;
+        default:
+            break;
+    }
     [view setImage:[UIImage imageNamed:@"point_select"] forState:UIControlStateSelected];
     addBtnAction(view, @selector(selectPoint:));
     
     if (isHollow) {
-//        view.backgroundColor = [UIColor whiteColor];
-        [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
+        
     }else{
-        [view setImage:[UIImage imageNamed:@"sportpoint"] forState:UIControlStateNormal];
-//        view.backgroundColor = [_colors objectAtIndex:index]?[_colors objectAtIndex:index]:PPGreen;
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-PPTagLabelwidth/2.0, point.y+12*2 < 0 ? point.y+12 : point.y+12*2, PPTagLabelwidth, 12)];
-        label.layer.cornerRadius = 12/2;
-        label.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.5].CGColor;
-        label.layer.borderWidth = 2.0f;
-        label.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-        label.font = [UIFont boldSystemFontOfSize:7];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-PPTagLabelwidth/2.0, point.y+12*2 < 0 ? point.y+12 : point.y+12*2, PPTagLabelwidth+6, 16)];
+        label.layer.cornerRadius = 16/2;
+        switch (self.chartType) {
+            case SPORT_TYPE:
+            {
+                label.backgroundColor = [rgbaColor(0, 110, 190, 1) colorWithAlphaComponent:1];
+                label.layer.borderColor = [rgbaColor(0, 110, 190, 1) colorWithAlphaComponent:0.1].CGColor;
+                label.layer.borderWidth = 1.0f;
+            }
+                break;
+            case SLEEP_TYPE:
+            {
+                label.backgroundColor = [rgbaColor(42, 18, 38, 1) colorWithAlphaComponent:1];
+                label.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.5].CGColor;
+                label.layer.borderWidth = 1.0f;
+            }
+                break;
+            default:
+                break;
+        }
+        
+        label.font = [UIFont boldSystemFontOfSize:11];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
-        label.text = [NSString stringWithFormat:@"%.2f",value];
+        label.text = [NSString stringWithFormat:@"%.1f",value];
         label.transform = CGAffineTransformMakeRotation(M_PI);
         label.layer.masksToBounds = YES;
 

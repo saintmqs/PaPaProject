@@ -24,16 +24,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.titleLabel.text = @"设备管理";
-    self.headerView.backgroundColor = rgbaColor(0, 155, 232, 1);
+    self.titleLabel.textColor = [UIColor grayColor];
+    self.headerView.backgroundColor = rgbColor(242, 242, 242);
+    
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeft"] forState:UIControlStateNormal];
+    [self.leftNavButton setImage:[UIImage imageNamed:@"topIcoLeftWrite"] forState:UIControlStateHighlighted];
     
     [[PaPaBLEManager shareInstance].bleManager getRemainingBatteryCapacity];
     
-    _deviceHeadView = [[DeviceManagerHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 220)];
-    [self.view addSubview:_deviceHeadView];
+//    _deviceHeadView = [[DeviceManagerHeadView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, 220)];
+//    [self.view addSubview:_deviceHeadView];
     
     titlesArray = [NSArray arrayWithObjects:@"闹        钟",@"来电提醒",@"解除绑定",@"固件版本号", nil];
     
-    deviceManagerTable = [[UITableView alloc] initWithFrame:CGRectMake(0, _deviceHeadView.frameBottom, mScreenWidth, mScreenHeight-_deviceHeadView.frameBottom)];
+    deviceManagerTable = [[UITableView alloc] initWithFrame:CGRectMake(0, self.headerView.frameBottom, mScreenWidth, mScreenHeight-_deviceHeadView.frameBottom)];
     deviceManagerTable.dataSource = self;
     deviceManagerTable.delegate = self;
     deviceManagerTable.backgroundColor = [UIColor clearColor];
@@ -158,9 +162,9 @@
 #pragma mark - PaPaBLEManager Delegate
 -(void)PaPaBLEManagerHasRemainingBatteryCapacity:(NSUInteger)level
 {
-    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%%",level]];
-    [attrStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(2, 1)];
-    _deviceHeadView.ElectricalVoltage.attributedText = attrStr;
+//    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%ld%%",level]];
+//    [attrStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:20] range:NSMakeRange(2, 1)];
+//    _deviceHeadView.ElectricalVoltage.attributedText = attrStr;
 }
 
 -(void)PaPaBLEManagerHasSystemInformation:(NSDictionary *)info

@@ -86,10 +86,6 @@
     [self configTableUI];
     
     if ([SystemStateManager shareInstance].hasBindWristband) {
-//        if (APP_DELEGATE.userData) {
-//            [self getBandData];
-//        }
-        
         gradientView.locations = @[ @0.0f, @1.f];
         gradientView.CGColors = @[  (id)rgbaColor(2, 147, 223, 1).CGColor,
                                     (id)rgbaColor(21, 88, 168, 1).CGColor ];
@@ -141,7 +137,7 @@
     
     [[PaPaBLEManager shareInstance].bleManager getStepData];
     
-    [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
+//    [[PaPaBLEManager shareInstance].bleManager getCurrentSleepingData];
     
     [[PaPaBLEManager shareInstance].bleManager getSleepingData];
     
@@ -183,7 +179,7 @@
         
         NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
-        [dataDict1 setObject:strFormat(@"%@",stepCount?stepCount:@"0000")  forKey:@"content"];
+        [dataDict1 setObject:strFormat(@"%@",stepCount?stepCount:@"0")  forKey:@"content"];
         [dataDict1 setObject:strFormat(@"%@公里 | %@千卡",distance?distance:@"0" ,calorie?calorie:@"0") forKey:@"detail"];
         float progress = [stepCount doubleValue]/[APP_DELEGATE.userData.step doubleValue] >=1? 1.0 : [stepCount doubleValue]/[APP_DELEGATE.userData.step doubleValue];
         [dataDict1 setObject:strFormat(@"%f",progress) forKey:@"progress"];
@@ -228,7 +224,7 @@
     {
         NSMutableDictionary *dataDict1 = [NSMutableDictionary dictionary];
         [dataDict1 setObject:@"今日完成" forKey:@"title"];
-        [dataDict1 setObject:@"0000" forKey:@"content"];
+        [dataDict1 setObject:@"0" forKey:@"content"];
         [dataDict1 setObject:@"0公里 | 0千卡" forKey:@"detail"];
         [dataDict1 setObject:@"0" forKey:@"progress"];
         [dataDict1 setObject:[UIColor whiteColor] forKey:@"trackTintColor"];
@@ -485,7 +481,7 @@
 }
 
 //蓝牙返回余额
--(void)PaPaBLEManagerHasBalanceData:(NSUInteger)balance
+-(void)PaPaBLEManagerHasBalanceData:(NSString *)balance
 {
     [_detailTableView reloadData];
 }
@@ -577,7 +573,6 @@
 {
     //绑定过手环后直接连接成功后做操作
     NSLog(@"connetedViewRefreshing");
-    
 //    [self getBandData];
 }
 
@@ -615,9 +610,9 @@
         }
     }
     
-    if([keyPath isEqualToString:@"currentStepDataFinish"] || [keyPath isEqualToString:@"currentSleepDataFinish"])
+    if([keyPath isEqualToString:@"currentStepDataFinish"])
     {
-        if (self.currentStepDataFinish && self.currentSleepDataFinish) {
+        if (self.currentStepDataFinish) {
             [self changeBannersHeaderContent:self.indicatorView];
         }
     }

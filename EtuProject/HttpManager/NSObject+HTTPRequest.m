@@ -7,6 +7,7 @@
 //
 
 #import "NSObject+HTTPRequest.h"
+#import "SSZipArchive.h"
 
 @interface NSDictionary (Service)
 - (BOOL)isServiceError;
@@ -246,7 +247,24 @@ static NSString * ControllerInstanceUUID;
         // 下一步可以进行进一步处理，或者发送通知给用户。
         NSLog(@"下载成功");
         
-        success(operation,responseObject);
+        NSString *destPath = [NSString stringWithFormat:@"%@/new",docs[0]];
+        
+        [SSZipArchive unzipFileAtPath:savedPath toDestination:destPath overwrite:YES password:@"" progressHandler:^(NSString *entry, unz_file_info zipInfo, long entryNumber, long total) {
+            
+        } completionHandler:^(NSString *path, BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                NSLog(@"path = %@",path);
+                
+                success(operation,responseObject);
+            }
+            else
+            {
+                showTip(error.localizedDescription);
+                failure(operation,error);
+            }
+        }];
+        
+         [[NSFileManager defaultManager] removeItemAtPath:savedPath error:nil];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         failure(operation,error);

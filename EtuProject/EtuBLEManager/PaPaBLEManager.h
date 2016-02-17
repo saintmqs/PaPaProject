@@ -35,8 +35,8 @@ typedef void(^LatestBlock)(void);
 - (void) PaPaBLEManagerHasSleepFailed;
 //蓝牙返回今天的睡眠信息
 - (void) PaPaBLEManagerUpdateCurrentSleepData:(NSDictionary *)mins;
-//蓝牙返回钱包余额(以分记)
-- (void) PaPaBLEManagerHasBalanceData:(NSUInteger)balance;
+//蓝牙返回钱包余额(以元计，小数点后2位)
+- (void) PaPaBLEManagerHasBalanceData:(NSString *)balance;
 //剩余电量
 - (void) PaPaBLEManagerHasRemainingBatteryCapacity:(NSUInteger)level;
 //获取系统信息
@@ -54,7 +54,10 @@ typedef void(^LatestBlock)(void);
 @end
 
 @interface PaPaBLEManager : NSObject<BLEManagerDelegate,DFUStatusDelegate>
-
+{
+    BOOL isBootUpdating,isBootUpdated;
+    BOOL isApplicatiionUpdating,isApplicationUpdated;
+}
 @property (nonatomic, assign) id<PaPaBLEManagerDelegate> delegate;
 
 @property (nonatomic, strong) BLEManager *bleManager;
@@ -62,6 +65,8 @@ typedef void(^LatestBlock)(void);
 @property (nonatomic, assign) BOOL blePoweredOn;            //手机蓝牙是否打开
 
 @property (nonatomic, strong) NSDictionary *firmwareInfo;   //系统信息
+@property (nonatomic, assign) NSInteger    updateType;   //1 普通升级 2 复杂升级
+
 @property (nonatomic, strong) NSString     *balance;
 @property (nonatomic, strong) NSString     *cardId;
 @property (nonatomic, assign) BOOL         isUpdateDisconnect;

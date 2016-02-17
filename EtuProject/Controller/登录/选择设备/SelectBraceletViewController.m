@@ -107,6 +107,7 @@
     {
         if ([[PaPaBLEManager shareInstance].bleManager setCurrentPeripheralWithIndex:indexPath.row]) {
             
+//            [SystemStateManager shareInstance].bindUUID = peripheral.identifier.UUIDString;
             [[PaPaBLEManager shareInstance].bleManager startConnect];
         }
     }

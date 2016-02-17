@@ -121,11 +121,11 @@
         chartHeight = 200;
     }
 
-    _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, 300)
+    _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, chartHeight)
                                               withSource:self
                                                withStyle:PPChartLineStyle];
     _chartView.delegate = self;
-    _chartView.rows = (chartHeight - 20) / 44;
+    _chartView.rows = (chartHeight - 30) / 44;
     
     _chartView.backgroundColor = [UIColor clearColor];
     [_chartView showInView:self.view];
@@ -196,17 +196,17 @@
 //颜色数组
 - (NSArray *)PPChart_ColorArray:(PPChart *)chart
 {
-    return @[PPGreen,PPRed,PPBrown];
+    return @[rgbaColor(0, 110, 190, 1),PPRed,PPBrown];
 }
 
 //显示数值范围
 - (CGRange)PPChartChooseRangeInLineChart:(PPChart *)chart
 {
-    NSInteger rowCount = (long int)_chartView.rows;
-    if ((maxValue % rowCount) !=0) {
-        NSInteger modulus = maxValue%rowCount;
-        maxValue = maxValue + modulus;
-    }
+//    NSInteger rowCount = (long int)_chartView.rows;
+//    if ((maxValue % rowCount) !=0) {
+//        NSInteger modulus = maxValue%rowCount;
+//        maxValue = maxValue + modulus;
+//    }
     NSInteger rowValue =  maxValue/_chartView.rows;
     if (rowValue <= 0) {
         rowValue = 3;
@@ -288,9 +288,17 @@
             break;
     }
     
-    NSString *distance = strFormat(@"%ld公里",(long)[model.b integerValue]);
+    NSString *distance;
+    if ((long)[model.b integerValue] > 1000) {
+        distance = strFormat(@"%.2f公里",(double)[model.b integerValue]/1000);
+    }
+    else
+    {
+        distance = strFormat(@"%ld米",(long)[model.b integerValue]);
+    }
+    
     NSString *steps = strFormat(@"%ld",(long)[model.s integerValue]);
-    NSString *calorie = strFormat(@"%ld千卡",(long)[model.c integerValue]);
+    NSString *calorie = strFormat(@"%.2f千卡",(double)[model.c doubleValue]);
     
     [selectPointDataArray addObjectsFromArray:@[distance,steps,calorie]];
     [dataTable reloadData];
@@ -346,7 +354,9 @@
         if (!error) {
             NSDictionary *data = [dict objectForKey:@"data"];
             
-            maxValue = [[data objectForKey:@"maxYvalue"] integerValue];
+            if ([[data objectForKey:@"maxYvalue"] integerValue] >= maxValue) {
+                maxValue = [[data objectForKey:@"maxYvalue"] integerValue];
+            }
             
             NSArray *sportChartData = [data objectForKey:@"chartData"];
             switch (type) {

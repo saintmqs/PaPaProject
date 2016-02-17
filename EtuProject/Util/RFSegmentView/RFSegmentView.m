@@ -184,13 +184,15 @@
     __block CGFloat initX = 0;
     CGFloat initY         = 0;
     
-    NSInteger count         = self.titles.count;
-    CGFloat itemWidth       = CGRectGetWidth(self.bgView.frame)/count;
-    CGFloat itemHeight      = CGRectGetHeight(self.bgView.frame);
     CGFloat leftRightMargin = self.leftRightMargin?:kLeftRightMargin;
     
     //configure bgView
     self.bgView.frame = CGRectMake(leftRightMargin, (height - kItemHeight)/2, width - 2*kLeftRightMargin, kItemHeight);
+    
+    NSInteger count         = self.titles.count;
+    CGFloat itemWidth       = CGRectGetWidth(self.bgView.frame)/count;
+    CGFloat itemHeight      = CGRectGetHeight(self.bgView.frame);
+    
     
     //configure items
     [self.items enumerateObjectsUsingBlock:^(RFSegmentItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {

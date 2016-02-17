@@ -11,9 +11,18 @@
 
 /*删除已同步数据的类型*/
 typedef enum _deleteType {
-    DELETE_STEP_DATA,
-    DELETE_SLEEP_DATA,
+    DELETE_STEP_DATA,//删除计步信息
+    DELETE_SLEEP_DATA,//删除睡眠信息
 } deleteType;
+
+/*固件升级类型*/
+
+typedef enum _upgradeType {
+    UPGRADE_TYPE_SOFTDEVICE,//softdevice升级
+    UPGRADE_TYPE_BOOTLOADER,//bootloader升级
+    UPGRADE_TYPE_APPLICATION,//app升级
+    UPGRADE_TYPE_BOTH_SOFTDEVICE_BOOTLOADER//softdevice和bootloader同时升级
+}upgradeType;
 
 /*操作命令类型*/
 enum _packetCmdType
@@ -38,15 +47,14 @@ enum _packetCmdType
     //来电和短信
     PHONE_RING_SHOCK = 0x30,//来电手环震动
     PHONE_RING_SHOCK_STOP = 0x31,//接电话停止震动
-    PHONE_MESSAGE_SHOCK = 0x32,//短信手环震动
+    PHONE_MESSAGE_SHOCK = 0x32,//短信手环震动..............
     
     //时间
     WRISTBAND_SET_TIME = 0x40,//设置手环时间
     
     //闹钟
-    WRISTBAND_ALARM_CLOCK_ADD = 0x50,//增加手环闹钟
-    WRISTBAND_ALARM_CLOCK_REMOVE = 0x51,//删除手环闹钟
-    WRISTBAND_ALARM_CLOCK_ENABLE = 0x52,//设置手环闹钟可用或者不可用
+    WRISTBAND_ALARM_CLOCK_SET = 0x50,//设置手环闹钟
+    WRISTBAND_ALARM_CLOCK_SYN = 0x51,//同步手环闹钟
     
     //电池
     BATTERTY_REMAINING_CAPACITY = 0x61,//获取电池剩余电量
@@ -56,8 +64,8 @@ enum _packetCmdType
     WRISTBAND_UNBUND = 0x73,//解绑手环
     
     
-    //系统相关
-    WRISTBAND_UPDATE_FIRMWARE = 0x80,//蓝牙通讯固件升级
+    //系统相关......
+//    WRISTBAND_UPDATE_FIRMWARE = 0x80,//蓝牙通讯固件升级
     WRISTBAND_GET_SYSTEM_INFO = 0x81,//获取系统信息
     WRISTBAND_CHANGE_BLE_NAME = 0x82,//修改蓝牙名称
     
@@ -75,16 +83,17 @@ enum _packetCmdType
 - (void) BLEManagerReadyToReadAndWrite;//蓝牙可进行读写操作
 - (void) BLEManagerDisconnected:(NSError *)error;//蓝牙断开连接
 - (void) BLEManagerDiscoverNewDevice:(CBPeripheral *)peripheral RSSI:(NSNumber *)RSSI;//发现新设备
-- (void) BLEManagerFirmwaerInBootloaderMode;//手环处于bootloader模式，此时只能升级，无法获取信息。
+- (void) BLEManagerFirmwareInBootloaderMode;//手环处于bootloader模式，此时只能升级application，无法获取信息。
 - (void) BLEManagerSendDataFailed:(NSError *)error;//数据重发3次后仍然失败
 - (void) BLEManagerReceiveDataFailed:(NSError *)error;//接收数据失败
 - (void) BLEManagerOperationSucceed:(NSUInteger)cmdNo;//手环收到命令后操作成功
 - (void) BLEManagerOperationFailed:(NSUInteger)cmdNo;//手环收到命令后操作失败
 - (void) BLEManagerOperationTimeout:(NSUInteger)cmdNo;//手环收到命令后10s(暂定，获取计步、睡眠和消费记录是20s)未返回消息
-- (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
+- (void) BLEManagerHasBalanceData:(NSString *)balance;//蓝牙返回钱包余额(以元计，小数点后2位)
 - (void) BLEManagerHasExpensesRecord:(NSArray *)record;//蓝牙返回消费记录，每个记录以NSDictionary存储
-- (void) BLEManagerStepTargetAchieved;//达到目标步数消息
-- (void) BLEManagerAlarmClockStopped;//手环闹钟触摸后停止震动
+//- (void) BLEManagerStepTargetAchieved;//达到目标步数消息，暂未实现
+- (void) BLEManagerHasAlarmData:(NSArray *)alarms;//蓝牙返回闹钟信息(一次返回所有3个闹钟，alarm中共3个NSDictionary)
+//- (void) BLEManagerAlarmClockStopped;//手环闹钟触摸后停止震动，暂不需要
 - (void) BLEManagerHasStepData:(NSArray *)stepData;//蓝牙返回计步信息，每个记录以NSDictionary存储
 - (void) BLEManagerUpdateCurrentSteps:(NSUInteger)steps;//蓝牙返回今天的步数
 - (void) BLEManagerHasSleepData:(NSArray *)sleepData;//蓝牙返回睡眠信息，每个记录以NSDictionary存储

@@ -61,7 +61,7 @@
 
 - (void) getStepData;//获取计步信息
 
-- (void) getCurrentSleepingData;//获取今天已有的睡眠信息
+- (void) getCurrentSleepingData;//获取今天已有的睡眠信息(昨天12:00到当前)
 
 - (void) getSleepingData;//获取睡眠信息
 
@@ -71,11 +71,9 @@
 
 - (void) startMessageShock;//消息手环震动
 
-- (void) addAlarmClock:(NSDictionary *) alarm;//增加手环闹钟
+- (void) setAlarmClock:(NSDictionary *) alarm;//设置手环闹钟(index 0-2)
 
-- (void) removeAlarmClock:(int32_t) index;//删除手环闹钟（0-9共10个闹钟）
-
-- (void) enableAlarmClock:(int32_t)index enableStatus:(BOOL)enable;//打开或者关闭手环闹钟（false关闭，true打开）
+- (void) synchronizeAlarmClock;//同步手环闹钟（0-2共3个闹钟）
 
 - (void) removeSyncedData:(NSUInteger) type;//删除已同步的数据，type是数据类型(睡眠信息，计步信息等)，type类型是deleteType枚举(上面有定义)
 
@@ -85,7 +83,7 @@
 
 //- (void) getMACAddress;//获取手环MAC地址，目前影响app升级，暂时不用
 
-- (void) updateFirmware:(NSURL *)url;//固件升级,升级过程中再次调用该接口会取消升级（取消升级后会断开连接，app可以选择是否再次连接）
+- (void) updateFirmware:(NSURL *)url FileType:(upgradeType)type;//固件升级,升级过程中再次调用该接口会取消升级（取消升级后会断开连接，app可以选择是否再次连接）
 
 - (void) changeBLEName:(NSString *)name;//修改蓝牙名称，最长15个字符 
 

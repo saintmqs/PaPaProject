@@ -490,6 +490,9 @@ static NSString *LOOP_ITEM_ASS_KEY = @"loopview";
 #pragma mark - UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    if ([viewController isKindOfClass:[RecordViewController class]]) {
+        return;
+    }
     if (navigationController.viewControllers.count == 1) {
         NSUInteger index = [self.rootTabbarController.viewControllers indexOfObject:navigationController];
         

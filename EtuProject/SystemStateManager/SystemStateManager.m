@@ -111,4 +111,33 @@ static SystemStateManager *systemStateManager;
     } url:kRequestUrl(@"Version", @"appversion")];
 }
 
+
+- (NSArray *)getAllFileNames:(NSString *)dirName
+{
+    // 获得此程序的沙盒路径
+    NSArray *patchs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    // 获取Documents路径
+    NSString *documentsDirectory = [patchs objectAtIndex:0];
+    NSString *fileDirectory = [documentsDirectory stringByAppendingPathComponent:dirName];
+    
+    NSArray *files = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:fileDirectory error:nil];
+    return files;
+}
+
+-(NSString *)getFileDirectoryPath:(NSString *)dirName
+{
+    NSArray *patchs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    // 获取Documents路径
+    NSString *documentsDirectory = [patchs objectAtIndex:0];
+    NSString *fileDirectory = [documentsDirectory stringByAppendingPathComponent:dirName];
+    return fileDirectory;
+}
+
+-(NSString *)getFilePath:(NSString *)fileName inDirectory:(NSString *)directory
+{
+    NSString *filePath = [NSString stringWithFormat:@"%@/%@",directory,fileName];
+    return filePath;
+}
 @end

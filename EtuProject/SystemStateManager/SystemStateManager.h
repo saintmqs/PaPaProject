@@ -35,4 +35,8 @@ typedef void(^versionBlock)(void);
 -(void)appVersionNeedUpdate:(versionBlock)updateBlock
             isLatestVersion:(versionBlock)isLatestBlock
          checkVersionFailed:(versionBlock)failedBlock;
+
+-(NSString *)getFilePath:(NSString *)fileName inDirectory:(NSString *)directory;
+-(NSString *)getFileDirectoryPath:(NSString *)dirName;
+-(NSArray *)getAllFileNames:(NSString *)dirName;
 @end

@@ -45,12 +45,12 @@
     CGFloat viewFrameY;
     if (!iPhone4) {
         viewFrameY = self.headerView.frameBottom+90/4;
-        viewFrameHeight = 420;
+        viewFrameHeight = 380;
     }
     else
     {
         viewFrameY = self.headerView.frameBottom+20/4;
-        viewFrameHeight = 320;
+        viewFrameHeight = 280;
     }
     
     bgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, viewFrameY + viewFrameHeight)];
@@ -112,11 +112,11 @@
 {
     CGFloat chartHeight;
     if (!iPhone4) {
-        chartHeight = 340;
+        chartHeight = 300;
     }
     else
     {
-        chartHeight = 240;
+        chartHeight = 200;
     }
     
     _chartView = [[PPChart alloc]initwithPPChartDataFrame:CGRectMake(10, self.headerView.bottom + 10+50, [UIScreen mainScreen].bounds.size.width-20, chartHeight)
@@ -124,7 +124,7 @@
                                                 withStyle:PPChartLineStyle];
     _chartView.delegate = self;
     _chartView.lineChartStyle = SLEEP_TYPE;
-    _chartView.rows = (chartHeight - 20) / 44;
+    _chartView.rows = (chartHeight - 30) / 44;
     
     _chartView.backgroundColor = [UIColor clearColor];
     [_chartView showInView:self.view];

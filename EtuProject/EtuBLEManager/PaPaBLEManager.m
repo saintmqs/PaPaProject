@@ -32,6 +32,8 @@ static PaPaBLEManager *papaBLEManager;
         [bleManager setBLEDelegate:self];
         
         self.balance = @"0.00元";
+        
+        self.updateType = 1;
     }
     return self;
 }
@@ -63,6 +65,9 @@ static PaPaBLEManager *papaBLEManager;
         NSString *version = [data objectForKey:@"version"];
         NSString *updateUrl = [data objectForKey:@"downloadurl"];
         
+        NSString *type = [data objectForKey:@"type"];
+        self.updateType = [type integerValue];
+        
         NSString *firmVersion = [info objectForKey:@"f"];
         
         [MBProgressHUD hideHUD];
@@ -79,8 +84,15 @@ static PaPaBLEManager *papaBLEManager;
                 
                 [bleManager setDFUDelegate:self];
                 
-                [bleManager updateFirmware:[NSURL URLWithString:DOWNLOAD_ZIP_PATH]];
-                
+                if (self.updateType == 1) {
+                    [bleManager updateFirmware:[NSURL URLWithString:DOWNLOAD_ZIP_PATH] FileType:UPGRADE_TYPE_APPLICATION];
+                }
+                else
+                {
+                    [bleManager updateFirmware:[NSURL URLWithString:[[SystemStateManager shareInstance] getFileDirectoryPath:@"new/boot.zip"]] FileType:UPGRADE_TYPE_BOTH_SOFTDEVICE_BOOTLOADER];
+                    isBootUpdating = YES;
+                    isBootUpdated = NO;
+                }                
             } downloadFailure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
                 [MBProgressHUD hideHUD];
@@ -94,7 +106,7 @@ static PaPaBLEManager *papaBLEManager;
         else
         {
             lastestblock();
-            showTip(@"固件版本已经是最新版本");
+            [MBProgressHUD showSuccess:@"固件版本已经是最新版本"];
         }
         
     } failed:^(NSError *error) {
@@ -190,8 +202,16 @@ static PaPaBLEManager *papaBLEManager;
 #pragma mark 发现新设备
 - (void) BLEManagerDiscoverNewDevice:(CBPeripheral *)peripheral RSSI:(NSNumber *)RSSI//发现新设备
 {
-    //发现新设备若和绑定手环Idenifier匹配一致自动连接手环
+    if (isBootUpdated && !isApplicationUpdated) {
+//        if ([peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
+//            
+//        }
+        [bleManager setCurrentPeripheralWithObject:peripheral];
+        [bleManager startConnect];
+        return;
+    }
     
+    //发现新设备若和绑定手环Idenifier匹配一致自动连接手环
     if ([peripheral.identifier.UUIDString isEqualToString:[SystemStateManager shareInstance].bindUUID]) {
         [bleManager setCurrentPeripheralWithObject:peripheral];
         [bleManager startConnect];
@@ -201,18 +221,60 @@ static PaPaBLEManager *papaBLEManager;
 #pragma mark 手环处于bootloader模式，此时只能升级，无法获取信息
 - (void) BLEManagerFirmwaerInBootloaderMode//手环处于bootloader模式，此时只能升级，无法获取信息。
 {
+    [MBProgressHUD hideHUD];
+    
+    [MBProgressHUD showMessage:@"您的手环需要升级固件"];
+    
+    if (!isApplicationUpdated) {
+        [SystemStateManager shareInstance].hasBindWristband = YES;
+        [APP_DELEGATE loginSuccess];
+    }
+    
+    if (self.updateType == 2 && isBootUpdated) {
+        [MBProgressHUD hideHUD];
+        
+        [MBProgressHUD showMessage:@"开始固件升级..."];
+        
+        [bleManager setDFUDelegate:self];
+        
+        [bleManager updateFirmware:[NSURL URLWithString:[[SystemStateManager shareInstance] getFileDirectoryPath:@"new/app.zip"]] FileType:UPGRADE_TYPE_APPLICATION];
+        
+        isApplicatiionUpdating = YES;
+        isApplicationUpdated = NO;
+        
+        return;
+    }
+    
     [self getUpDateFirmwareFromServer:^(NSDictionary *data) {
         NSString *updateUrl = [data objectForKey:@"downloadurl"];
         
+        NSString *type = [data objectForKey:@"type"];
+        self.updateType = [type integerValue];
+        
         [self downloadFileWithOption:bandversion() withInferface:updateUrl savedPath:DOWNLOAD_ZIP_PATH downloadSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            [MBProgressHUD hideHUD];
-            
-            [MBProgressHUD showMessage:@"准备固件升级..."];
-            
-            [bleManager setDFUDelegate:self];
-            
-            [bleManager updateFirmware:[NSURL URLWithString:DOWNLOAD_ZIP_PATH]];
+            if (self.updateType == 1) {
+                [MBProgressHUD hideHUD];
+                
+                [MBProgressHUD showMessage:@"准备固件升级..."];
+                
+                [bleManager setDFUDelegate:self];
+                
+                [bleManager updateFirmware:[NSURL URLWithString:DOWNLOAD_ZIP_PATH] FileType:UPGRADE_TYPE_APPLICATION];
+            }
+            else
+            {
+                [MBProgressHUD hideHUD];
+                
+                [MBProgressHUD showMessage:@"开始固件升级..."];
+                
+                [bleManager setDFUDelegate:self];
+                
+                [bleManager updateFirmware:[NSURL URLWithString:[[SystemStateManager shareInstance] getFileDirectoryPath:@"new/app.zip"]] FileType:UPGRADE_TYPE_APPLICATION];
+                
+                isApplicatiionUpdating = YES;
+                isApplicationUpdated = NO;
+            }
             
         } downloadFailure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
@@ -223,6 +285,9 @@ static PaPaBLEManager *papaBLEManager;
         } progress:^(float progress) {
             
         }];
+        
+        
+        
         
     } failed:^(NSError *error) {
         
@@ -287,11 +352,9 @@ static PaPaBLEManager *papaBLEManager;
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK_ADD://增加手环闹钟
+        case WRISTBAND_ALARM_CLOCK_SET://设置手环闹钟
             break;
-        case WRISTBAND_ALARM_CLOCK_REMOVE://删除手环闹钟
-            break;
-        case WRISTBAND_ALARM_CLOCK_ENABLE://设置手环闹钟可用或者不可用
+        case WRISTBAND_ALARM_CLOCK_SYN://同步手环闹钟
             break;
             
             //电池
@@ -313,8 +376,8 @@ static PaPaBLEManager *papaBLEManager;
             
             
             //系统相关
-        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
-            break;
+//        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
+//            break;
         case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
             break;
         case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
@@ -374,11 +437,9 @@ static PaPaBLEManager *papaBLEManager;
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK_ADD://增加手环闹钟
+        case WRISTBAND_ALARM_CLOCK_SET://设置手环闹钟
             break;
-        case WRISTBAND_ALARM_CLOCK_REMOVE://删除手环闹钟
-            break;
-        case WRISTBAND_ALARM_CLOCK_ENABLE://设置手环闹钟可用或者不可用
+        case WRISTBAND_ALARM_CLOCK_SYN://同步手环闹钟
             break;
             
             //电池
@@ -422,8 +483,8 @@ static PaPaBLEManager *papaBLEManager;
             
             
             //系统相关
-        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
-            break;
+//        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
+//            break;
         case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
             break;
         case WRISTBAND_CHANGE_BLE_NAME://修改蓝牙名称
@@ -494,11 +555,9 @@ static PaPaBLEManager *papaBLEManager;
             break;
             
             //闹钟
-        case WRISTBAND_ALARM_CLOCK_ADD://增加手环闹钟
+        case WRISTBAND_ALARM_CLOCK_SET://设置手环闹钟
             break;
-        case WRISTBAND_ALARM_CLOCK_REMOVE://删除手环闹钟
-            break;
-        case WRISTBAND_ALARM_CLOCK_ENABLE://设置手环闹钟可用或者不可用
+        case WRISTBAND_ALARM_CLOCK_SYN://同步手环闹钟
             break;
             
             //电池
@@ -518,6 +577,9 @@ static PaPaBLEManager *papaBLEManager;
             [def synchronize];
             
             [SystemStateManager shareInstance].bindUUID = @"";
+            
+            //尝试重新绑定
+            [bleManager bindCurrentWristband];
         }
             break;
         case WRISTBAND_UNBUND://解绑手环
@@ -538,11 +600,11 @@ static PaPaBLEManager *papaBLEManager;
             
             
             //系统相关
-        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
-        {
-            [SystemStateManager shareInstance].isUpdatingFirmware = NO;
-        }
-            break;
+//        case WRISTBAND_UPDATE_FIRMWARE://蓝牙通讯固件升级
+//        {
+//            [SystemStateManager shareInstance].isUpdatingFirmware = NO;
+//        }
+//            break;
         case WRISTBAND_GET_SYSTEM_INFO://获取系统信息
         {
             errorMsg = @"获取系统信息失败";
@@ -567,9 +629,9 @@ static PaPaBLEManager *papaBLEManager;
 }
 
 #pragma mark 蓝牙返回钱包余额(以分记)
-- (void) BLEManagerHasBalanceData:(NSUInteger)balance;//蓝牙返回钱包余额(以分记)
+- (void) BLEManagerHasBalanceData:(NSString *)balance//蓝牙返回钱包余额(以分记)
 {
-    self.balance = [NSString stringWithFormat:@"%.2f元",(float)balance/100];
+    self.balance = strFormat(@"%@",[NSString isStringEmpty:balance] ? @"0.00": balance);
     
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaBLEManagerHasBalanceData:)]) {
         [_delegate PaPaBLEManagerHasBalanceData:balance];
@@ -661,18 +723,26 @@ static PaPaBLEManager *papaBLEManager;
 -(void)onDeviceDisconnected:(CBPeripheral *)peripheral//升级时蓝牙连接断开
 {
     self.isUpdateDisconnect = YES;
-    showTip(@"升级时蓝牙连接断开");
-    [SystemStateManager shareInstance].hasBindWristband = NO;
+    NSLog(@"升级时蓝牙连接断开");
     
     if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnDeviceDisconnected:)]) {
         [_delegate PaPaOnDeviceDisconnected:peripheral];
     }
     
+    if (isBootUpdated && !isApplicationUpdated) {
+        return;
+    }
+    
+    [SystemStateManager shareInstance].hasBindWristband = NO;
     //发起重连扫描
     double delayInSeconds = 0.5;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        showTip(@"请重新连接手环");
+        NSLog(@"请重新连接手环");
+        
+        [MBProgressHUD hideHUD];
+        
+        [MBProgressHUD showSuccess:@"请重新连接手环"];
         
         //本地缓存绑定手环
         NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
@@ -711,9 +781,9 @@ static PaPaBLEManager *papaBLEManager;
     NSLog(@"协议栈升级开始");
 }
 
--(void)onBootloaderUploadStarted//bootloader升级完成
+-(void)onBootloaderUploadStarted//bootloader升级开始
 {
-    NSLog(@"bootloader升级完成");
+    NSLog(@"bootloader升级开始");
 }
 
 -(void)onSoftDeviceUploadCompleted//协议栈升级完成
@@ -735,13 +805,60 @@ static PaPaBLEManager *papaBLEManager;
 
 -(void)onSuccessfulFileTranferred//发送文件成功(即升级成功)，升级成功后最好等个2，3秒再重连手环
 {
-    [MBProgressHUD hideHUD];
-    
-    [MBProgressHUD showSuccess:@"固件升级成功"];
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnSuccessfulFileTranferred)]) {
-        [_delegate PaPaOnSuccessfulFileTranferred];
+    if (self.updateType == 1) {
+        [MBProgressHUD hideHUD];
+        
+        [MBProgressHUD showSuccess:@"固件升级成功"];
+        
+        if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnSuccessfulFileTranferred)]) {
+            [_delegate PaPaOnSuccessfulFileTranferred];
+        }
     }
+    else
+    {
+        if (isBootUpdating && !isBootUpdated) {
+            //发起重连
+            double delayInSeconds = 2;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                [MBProgressHUD hideHUD];
+                
+                [MBProgressHUD showSuccess:@"2s后重连手环"];
+                
+                [bleManager startScan];
+                
+            });
+            
+            isBootUpdated = YES;
+            isApplicationUpdated = NO;
+            isBootUpdating = NO;
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnSuccessfulFileTranferred)]) {
+                [_delegate PaPaOnSuccessfulFileTranferred];
+            }
+            
+            return;
+        }
+        
+        if (isApplicatiionUpdating && !isApplicationUpdated) {
+            isBootUpdated = YES;
+            isApplicationUpdated = YES;
+            isApplicatiionUpdating = NO;
+        }
+        
+        if ((isBootUpdated && isApplicationUpdated) || isApplicationUpdated) {
+            
+            [MBProgressHUD hideHUD];
+            
+            [MBProgressHUD showSuccess:@"固件升级成功,请重新绑定手环"];
+            
+            if (_delegate && [_delegate respondsToSelector:@selector(PaPaOnSuccessfulFileTranferred)]) {
+                [_delegate PaPaOnSuccessfulFileTranferred];
+            }
+        }
+    }
+    
 }
 
 -(void)onError:(NSString *)errorMessage//错误信息
